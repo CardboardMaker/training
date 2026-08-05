@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardboard Maker · Training for Educators</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-note:#FFFFFF;
+    --kraft:#A4DFDC;
+    --kraft-dark:#000000;
+    --ink:#000000;
+    --ink-soft:#3A3A3A;
+    --orange:#FF6300;
+    --sky:#9EDBFF;
+    --yellow:#FCDC67;
+    --line: rgba(0,0,0,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Quicksand', sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Quicksand', sans-serif; font-weight:700;}
+  a{color:var(--orange);}
+  button{font-family:inherit;}
+
+  /* ============ PUBLIC SITE — DASHBOARD SHELL ============ */
+  body.public-body{
+    background:#F6F1E7;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  .blob{ position:fixed; border-radius:50%; z-index:0; pointer-events:none; }
+  .blob-mint{ width:520px; height:520px; background:var(--kraft); top:-220px; right:-160px; }
+  .blob-yellow{ width:420px; height:420px; background:var(--yellow); bottom:-200px; left:-160px; opacity:.9; }
+
+  .dash-wrap{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:28px 20px 60px; }
+  .dash-card{
+    background:#fff; border-radius:28px; box-shadow:0 30px 70px -30px rgba(0,0,0,0.35);
+    display:flex; overflow:hidden; min-height:80vh;
+  }
+
+  /* sidebar */
+  .rail{ width:84px; flex:0 0 auto; background:#000; padding:26px 12px; display:flex; flex-direction:column; align-items:center; }
+  .rail .cap{ width:34px; height:34px; margin:0 0 30px; color:var(--kraft); }
+  .rail-main{ display:flex; flex-direction:column; gap:6px; width:100%; align-items:center; }
+  .rail-item{
+    display:flex; align-items:center; justify-content:center; padding:13px; border-radius:12px; cursor:pointer;
+    color:rgba(255,255,255,0.68); width:52px;
+  }
+  .rail-item svg{ width:20px; height:20px; flex-shrink:0; }
+  .rail-avatar{ width:26px; height:26px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+  .rail-item:hover{ background:rgba(255,255,255,0.07); color:#fff; }
+  .rail-item.active{ background:var(--orange); color:#fff; }
+  .rail-spacer{ flex:1; }
+  .rail-bottom{ border-top:1px solid rgba(255,255,255,0.15); padding-top:10px; margin-top:8px; display:flex; flex-direction:column; gap:6px; width:100%; align-items:center; }
+  .rail-version{ color:rgba(255,255,255,0.32); font-size:10px; text-align:center; padding-top:6px; }
+
+  /* main pane */
+  .dash-main{ flex:1; min-width:0; background:#FBF8F1; padding:38px 34px; overflow-y:auto; }
+  .dash-hello h1{ margin:0 0 4px; font-size:30px; }
+  .dash-hello p{ margin:0 0 22px; color:var(--ink-soft); font-size:15px; }
+  .dash-search{ position:relative; margin-bottom:26px; }
+  .dash-search input{
+    width:100%; padding:13px 16px 13px 42px; border-radius:14px; border:1px solid var(--line);
+    background:#fff; font-family:inherit; font-size:14px;
+  }
+  .dash-search .ic{ position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--ink-soft); font-size:15px; }
+
+  .card-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; }
+  .mod-card{
+    border-radius:20px; padding:22px; cursor:pointer; position:relative; overflow:hidden;
+    min-height:150px; border:2px solid transparent; transition:transform .15s ease;
+  }
+  .mod-card:hover{ transform:translateY(-2px); }
+  .mod-card.active{ border-color:var(--ink); }
+  .mod-card h3{ margin:0 0 10px; font-size:19px; }
+  .mod-card .stats{ font-size:12.5px; line-height:1.7; color:rgba(0,0,0,0.65); font-weight:600; }
+  .mod-card .icon{ position:absolute; right:16px; bottom:12px; width:56px; height:56px; opacity:.9; }
+
+  /* right panel (Modules page TOC) */
+  .dash-side{ width:300px; flex:0 0 auto; padding:34px 26px; border-left:1px solid var(--line); overflow-y:auto; }
+  .profile-row{ display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .avatar{
+    width:52px; height:52px; border-radius:14px; background:var(--kraft); flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; color:#000; overflow:hidden;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .profile-row .who{ font-weight:700; font-size:14.5px; }
+  .profile-row .role{ font-size:12px; color:var(--ink-soft); }
+  .profile-progress{ margin-top:6px; }
+  .profile-progress .lbl{ font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em; font-weight:700; }
+  .profile-progress .bar{ height:5px; background:var(--line); border-radius:100px; margin-top:5px; overflow:hidden; }
+  .profile-progress .bar > div{ height:100%; background:var(--orange); }
+
+  .toc-heading{ font-size:20px; margin:0 0 2px; }
+  .toc-sub{ font-size:12px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em; font-weight:700; margin:0 0 18px; }
+  .toc-item{ display:flex; align-items:flex-start; gap:12px; padding:10px 6px; border-radius:10px; cursor:pointer; }
+  .toc-item:hover{ background:rgba(164,223,220,0.2); }
+  .toc-item .no{ font-size:26px; font-weight:700; color:var(--kraft); flex:0 0 auto; width:38px; line-height:1; }
+  .toc-item .txt .t{ font-size:13.5px; font-weight:700; margin-bottom:2px; }
+  .toc-item .txt .m{ font-size:11.5px; color:var(--ink-soft); }
+  .toc-item.done .no{ color:var(--orange); }
+
+  /* Me page */
+  .me-progress-card{ background:#fff; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
+  .me-progress-top{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
+  .me-progress-top .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:700; }
+  .me-progress-top .big{ font-size:30px; font-weight:700; line-height:1; margin-top:4px; }
+  .me-progress-sub{ font-size:13px; color:var(--ink-soft); }
+  .progress-bar-lg{ height:10px; border-radius:100px; background:var(--line); overflow:hidden; }
+  .progress-bar-lg > div{ height:100%; background:var(--orange); border-radius:100px; }
+
+  .me-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+  .me-card{ background:#fff; border-radius:16px; padding:20px; }
+  .me-card-label{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--orange); font-weight:700; margin-bottom:8px; }
+  .me-card-title{ font-size:16px; font-weight:700; margin-bottom:2px; }
+  .me-card-sub{ font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; }
+  .me-external-card{
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:0;
+  }
+
+  /* To-do widget (Calendar page, right column) — clean card style */
+  .events-card{ background:#fff; border-radius:16px; padding:20px 22px; margin-bottom:18px; }
+  .events-card h4{ margin:0 0 12px; font-size:15px; }
+  .event-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; padding:8px 0; border-bottom:1px solid var(--line); }
+  .event-row:last-child{ border-bottom:none; }
+  .event-date{ color:var(--ink-soft); font-size:11.5px; white-space:nowrap; flex-shrink:0; }
+
+  .todo-card{ background:#fff; border-radius:16px; padding:20px 20px 18px; max-width:100%; box-sizing:border-box; }
+  .todo-card-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .todo-card-head h4{ margin:0; font-size:19px; font-weight:700; }
+  .todo-card-sub{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:11.5px; color:var(--ink-soft); margin:6px 0 12px; flex-wrap:wrap; }
+
+  .todo-row{ display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); }
+  .todo-row:last-child{ border-bottom:none; }
+  .todo-row-text{ flex:1; min-width:0; }
+  .todo-row-title{ font-size:14px; font-weight:600; color:var(--ink); overflow-wrap:anywhere; }
+  .todo-row.done .todo-row-title{ text-decoration:line-through; color:var(--ink-soft); }
+  .todo-row-meta{ font-size:11.5px; color:var(--ink-soft); margin-top:2px; cursor:pointer; }
+  .todo-row-meta:hover{ color:var(--orange); }
+
+  .todo-check-circle{
+    width:28px; height:28px; border-radius:50%; border:2px solid var(--line); flex-shrink:0; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:14px; color:#00593f; background:#fff;
+  }
+  .todo-check-circle.done{ background:var(--kraft); border-color:var(--kraft); }
+  .todo-del-x{ border:none; background:none; cursor:pointer; color:var(--line); font-size:12px; flex-shrink:0; padding:4px; }
+  .todo-del-x:hover{ color:var(--orange); }
+
+  .todo-add-row{ margin-top:6px; text-align:center; }
+  .todo-add-trigger{
+    border:none; background:none; cursor:pointer; font-weight:700; font-size:14px; color:var(--ink);
+    padding:10px; display:inline-flex; align-items:center; gap:8px;
+  }
+  .todo-add-trigger:hover{ color:var(--orange); }
+  .todo-add-inline{ display:flex; gap:8px; max-width:100%; }
+  .todo-add-inline input{ flex:1; min-width:0; padding:9px 11px; border:2px solid var(--ink); border-radius:8px; font-family:inherit; font-size:13px; box-sizing:border-box; }
+
+  .todo-memo{ margin-top:16px; border-top:1px solid var(--line); padding-top:14px; }
+  .todo-memo-label{ color:var(--ink-soft); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .todo-memo textarea{ width:100%; min-height:56px; border:1px solid var(--line); border-radius:8px; padding:8px 10px; resize:vertical; font-family:inherit; font-size:12.5px; box-sizing:border-box; }
+
+  /* lesson popup modal */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:100;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .modal-card{
+    background:#fff; border-radius:20px; max-width:560px; width:100%; max-height:85vh; overflow-y:auto;
+    padding:30px 30px 28px; position:relative;
+  }
+  .modal-close{
+    position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
+    border:2px solid var(--ink); background:#fff; cursor:pointer; font-weight:700; font-size:15px;
+  }
+  .modal-card .m-eyebrow{ font-size:11px; color:var(--orange); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin:0 0 6px; }
+  .modal-card h3{ margin:0 0 6px; font-size:21px; }
+  .modal-card .m-subtitle{ margin:0 0 16px; color:var(--ink-soft); font-size:14px; }
+  .modal-card .label{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin:16px 0 6px; font-weight:700; }
+  .modal-card .rte-view{ line-height:1.65; font-size:15px; }
+  .modal-card .rte-view p{ margin:0 0 10px; }
+  .modal-card .example{ border-top:2px dashed var(--line); padding-top:14px; margin-top:16px; }
+  .modal-card .example .label{ color:var(--orange); }
+  .modal-card .media-block{ margin:12px 0; }
+  .modal-card .media-block::after{ content:""; display:table; clear:both; }
+  .modal-card .media-block img{ border-radius:10px; }
+  .modal-card .media-block video{ max-width:100%; border-radius:10px; display:block; }
+  .modal-card .media-block iframe{ width:100%; aspect-ratio:16/9; border:0; border-radius:10px; display:block; }
+  .file-attach{ margin:14px 0; }
+  .file-attach a{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    background:var(--kraft); color:#000; font-weight:700; font-size:13.5px;
+    padding:9px 16px; border-radius:100px; border:2px solid var(--ink);
+  }
+  .file-attach a:hover{ opacity:0.85; }
+  .modal-mark{ margin-top:20px; text-align:center; }
+
+  /* simple placeholder pages: account / calendar */
+  .placeholder-page h1{ font-size:26px; margin:0 0 8px; }
+  .placeholder-page p{ color:var(--ink-soft); font-size:14.5px; line-height:1.6; max-width:480px; }
+  .account-card{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px; max-width:420px; margin-top:20px; }
+  .account-card .field{ margin-bottom:14px; }
+  .avatar-row{ display:flex; align-items:center; gap:18px; margin-bottom:20px; }
+  .avatar-big{
+    width:76px; height:76px; border-radius:50%; background:var(--kraft); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:22px; color:#000; overflow:hidden;
+  }
+  .avatar-big img{ width:100%; height:100%; object-fit:cover; }
+
+  .cal-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; max-width:520px; }
+  .cal-nav{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; }
+  .cal-legend{ display:flex; gap:16px; font-size:12px; color:var(--ink-soft); margin:12px 0 4px; align-items:center; }
+  .cal-legend span{ display:flex; align-items:center; gap:6px; }
+  .dot{ width:7px; height:7px; border-radius:50%; display:inline-block; }
+  .dot-mint{ background:var(--kraft); }
+  .dot-orange{ background:var(--orange); }
+
+  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-top:16px; max-width:520px; }
+  .cal-grid .dow{ font-size:11px; text-align:center; color:var(--ink-soft); font-weight:700; text-transform:uppercase; }
+  .cal-grid .day{
+    aspect-ratio:1; border-radius:8px; background:#fff; border:1px solid var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    font-size:12.5px; cursor:pointer;
+  }
+  .cal-grid .day:hover{ border-color:var(--ink); }
+  .cal-grid .day.today{ background:var(--orange); color:#fff; border-color:var(--orange); font-weight:700; }
+  .cal-grid .day.blank{ border:none; cursor:default; }
+  .cal-grid .day-dots{ display:flex; gap:3px; height:7px; }
+
+  footer{ text-align:center; padding:20px 24px 10px; color:var(--ink-soft); font-size:12.5px; position:relative; z-index:1; }
+
+  @media (max-width:900px){
+    .dash-card{ flex-direction:column; }
+    .rail{ width:100%; flex-direction:row; padding:12px 10px; align-items:center; flex-wrap:wrap; }
+    .rail .cap{ margin:0 10px 0 0; }
+    .rail-main, .rail-bottom{ flex-direction:row; border:none; margin:0; padding:0; }
+    .rail-item{ padding:8px 10px; }
+    .rail-spacer{ display:none; }
+    .rail-version{ display:none; }
+    .dash-side{ border-left:none; border-top:1px solid var(--line); width:100%; }
+    .card-grid, .me-grid{ grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce){ .mod-card{ transition:none; } }
+
+  /* ============ ADMIN ============ */
+  .admin-login-wrap{ min-height:100vh; display:flex; align-items:center; justify-content:center; background:#000; padding:24px; }
+  .login-card{ background:#fff; border-radius:10px; padding:36px 32px; width:100%; max-width:380px; box-shadow:0 30px 60px rgba(0,0,0,0.4); }
+  .login-card h2{ margin:0 0 4px; font-size:22px; }
+  .login-card .sub{ color:var(--ink-soft); font-size:13px; margin:0 0 24px; }
+  .login-card label{ display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin:14px 0 6px; }
+  .login-card input{ width:100%; padding:11px 12px; border:2px solid var(--ink); border-radius:6px; font-family:inherit; font-size:14px; }
+  .login-card .error{ color:var(--orange); font-size:13px; font-weight:600; margin-top:10px; min-height:16px; }
+  .login-card .hint{ margin-top:20px; font-size:12px; color:var(--ink-soft); background:rgba(164,223,220,0.35); border-radius:6px; padding:10px 12px; }
+
+  .btn{ border-radius:100px; border:2px solid var(--ink); background:#fff; color:var(--ink); padding:9px 18px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; }
+  .btn:hover{ opacity:0.85; }
+  .btn-primary{ background:var(--orange); border-color:var(--orange); color:#fff; }
+  .btn-block{ width:100%; margin-top:22px; }
+  .btn-sm{ padding:5px 12px; font-size:12px; }
+  .btn-icon{ width:28px; height:28px; padding:0; border-radius:6px; font-size:13px; line-height:1; }
+
+  .admin-shell{ display:flex; min-height:100vh; background:#fff; }
+  .admin-sidebar{ width:320px; flex:0 0 auto; background:#000; color:#fff; padding:22px 16px; overflow-y:auto; }
+  .admin-sidebar h1{ font-size:17px; margin:0 0 2px; color:#fff; }
+  .admin-sidebar .tag{ font-size:11px; color:var(--sky); text-transform:uppercase; letter-spacing:.1em; margin:0 0 18px; }
+  .sidebar-actions{ display:flex; gap:8px; margin-bottom:18px; }
+  .sidebar-actions .btn{ flex:1; font-size:12px; padding:8px 10px; }
+  .tree-module{ margin-bottom:6px; border-radius:8px; overflow:hidden; }
+  .tree-module-head{
+    display:flex; align-items:center; gap:8px; padding:10px 10px; background:rgba(255,255,255,0.06);
+    cursor:pointer; border-radius:8px;
+  }
+  .tree-module-head.active{ background:var(--orange); }
+  .tree-module-head .num{ font-size:11px; font-weight:700; opacity:.7; }
+  .tree-module-head .name{ flex:1; font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tree-lessons{ padding:4px 4px 8px 26px; display:flex; flex-direction:column; gap:2px; }
+  .tree-lesson{
+    display:flex; align-items:center; gap:6px; padding:7px 8px; border-radius:6px; cursor:pointer;
+    font-size:12.5px; color:rgba(255,255,255,0.8);
+  }
+  .tree-lesson.active{ background:var(--sky); color:#000; font-weight:700; }
+  .tree-lesson .name{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tree-reorder{ display:flex; gap:2px; }
+  .tree-reorder button{ background:none; border:none; color:inherit; cursor:pointer; font-size:11px; padding:2px 4px; opacity:0.7; }
+  .tree-reorder button:hover{ opacity:1; }
+  .tree-add-lesson{ margin:2px 0 0 0; font-size:11.5px; color:var(--yellow); background:none; border:none; cursor:pointer; padding:4px 8px; text-align:left; }
+  .sidebar-footer{ margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.15); }
+  .sidebar-footer a, .sidebar-footer button{ display:block; width:100%; text-align:left; background:none; border:none; color:rgba(255,255,255,0.75); font-size:12.5px; padding:8px 6px; cursor:pointer; text-decoration:none; }
+  .sidebar-footer a:hover, .sidebar-footer button:hover{ color:#fff; }
+
+  .admin-main{ flex:1; padding:30px 40px 80px; overflow-y:auto; max-width:900px; }
+  .admin-empty{ color:var(--ink-soft); padding:60px 0; text-align:center; }
+  .panel{ margin-bottom:28px; }
+  .panel h2{ font-size:20px; margin:0 0 4px; }
+  .panel .path{ font-size:12px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em; margin:0 0 18px; font-weight:600; }
+
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; color:var(--ink-soft); }
+  .field input[type=text], .field input[type=url], .field input[type=password], .field select{
+    width:100%; padding:10px 12px; border:2px solid var(--ink); border-radius:6px; font-family:inherit; font-size:14px;
+  }
+  .style-row{ display:flex; align-items:center; gap:10px; margin-top:8px; flex-wrap:wrap; }
+  .align-group{ display:inline-flex; border:2px solid var(--ink); border-radius:6px; overflow:hidden; }
+  .align-group button{ border:none; background:#fff; padding:6px 10px; cursor:pointer; font-size:13px; border-right:1px solid var(--line); }
+  .align-group button:last-child{ border-right:none; }
+  .align-group button.active{ background:var(--ink); color:#fff; }
+  .swatch{ width:22px; height:22px; border-radius:50%; border:2px solid var(--ink); cursor:pointer; padding:0; }
+  .swatch.active{ outline:2px solid var(--orange); outline-offset:2px; }
+  .swatch-row{ display:flex; align-items:center; gap:7px; }
+  .swatch-row input[type=color]{ width:26px; height:26px; border:none; padding:0; background:none; cursor:pointer; }
+
+  .rte-toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+  .rte-toolbar button{ border:2px solid var(--ink); background:#fff; border-radius:6px; width:30px; height:30px; font-weight:700; cursor:pointer; font-size:13px; }
+  .rte-toolbar button.wide{ width:auto; padding:0 10px; font-size:11px; }
+  .rte-toolbar button.active{ background:var(--ink); color:#fff; }
+  .rte-toolbar .sep{ width:1px; align-self:stretch; background:var(--line); margin:0 2px; }
+  .rte{ min-height:110px; border:2px solid var(--ink); border-radius:6px; padding:12px; font-size:14px; line-height:1.6; }
+  .rte h3, .rte-view h3{ font-size:19px; margin:14px 0 8px; font-weight:700; }
+  .rte h4, .rte-view h4{ font-size:15px; margin:12px 0 6px; font-weight:700; color:var(--ink-soft); }
+  .rte img, .rte-view img{ max-width:100%; }
+  .rte:focus{ outline:2px solid var(--sky); }
+  .rte p{ margin:0 0 8px; }
+
+  .media-tabs{ display:flex; gap:8px; margin-bottom:10px; }
+  .media-tabs button{ border:2px solid var(--ink); background:#fff; border-radius:100px; padding:6px 14px; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .media-tabs button.active{ background:var(--sky); }
+  .media-preview{ margin-top:12px; padding:12px; border:2px dashed var(--line); border-radius:8px; }
+  .media-preview img{ max-width:220px; border-radius:6px; display:block; }
+  .media-preview video{ max-width:260px; border-radius:6px; display:block; }
+  .hint-box{ font-size:12px; color:var(--ink-soft); background:rgba(158,219,255,0.2); border-radius:6px; padding:8px 10px; margin-top:8px; }
+  .warn-box{ font-size:12px; color:#7a3b00; background:rgba(252,220,103,0.4); border-radius:6px; padding:8px 10px; margin-top:8px; }
+
+  .action-row{ display:flex; gap:10px; align-items:center; margin-top:20px; }
+  .toast{ display:inline-block; font-size:12.5px; font-weight:700; color:#1e8a4c; opacity:0; transition:opacity .3s ease; }
+  .toast.show{ opacity:1; }
+  .danger-zone{ margin-top:30px; padding-top:18px; border-top:1px solid var(--line); }
+  .danger-zone .btn{ border-color:var(--orange); color:var(--orange); }
+
+  .confirm-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:300; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .confirm-box{ background:#fff; border-radius:14px; padding:24px; max-width:360px; width:100%; box-shadow:0 20px 50px rgba(0,0,0,0.4); }
+  .confirm-box p{ margin:0 0 18px; font-size:14.5px; line-height:1.5; color:var(--ink); }
+  .confirm-actions{ display:flex; gap:10px; justify-content:flex-end; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   STORAGE LAYER (artifact persistent storage, with in-memory
+   fallback so the CMS still works if window.storage is absent)
+   ============================================================ */
+const memoryDB = {};
+const hasStorage = (typeof window !== 'undefined' && !!window.storage);
+
+async function storageGet(key, shared){
+  if(hasStorage){
+    try{ const r = await window.storage.get(key, shared); return r ? JSON.parse(r.value) : null; }
+    catch(e){ return null; }
+  }
+  return memoryDB[key] !== undefined ? memoryDB[key] : null;
+}
+async function storageSet(key, value, shared){
+  if(hasStorage){
+    try{ await window.storage.set(key, JSON.stringify(value), shared); return true; }
+    catch(e){ return false; }
+  }
+  memoryDB[key] = value;
+  return true;
+}
+
+function escapeHTML(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+function sanitizeRTE(html){
+  // strip script/style tags defensively; contenteditable output otherwise
+  return (html || '').replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '');
+}
+function uid(){ return Math.random().toString(36).slice(2, 9); }
+
+// Native confirm()/alert() are silently blocked inside sandboxed iframes
+// (e.g. the Claude.ai artifact preview) unless "allow-modals" is set, which
+// we can't rely on — so we build our own lightweight modal versions instead.
+function showConfirm(message, onYes, confirmLabel){
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = `
+    <div class="confirm-box">
+      <p>${escapeHTML(message)}</p>
+      <div class="confirm-actions">
+        <button class="btn" data-confirm="cancel">Cancel</button>
+        <button class="btn btn-primary" data-confirm="ok">${escapeHTML(confirmLabel || 'Confirm')}</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay || e.target.dataset.confirm === 'cancel'){ overlay.remove(); return; }
+    if(e.target.dataset.confirm === 'ok'){ overlay.remove(); onYes(); }
+  });
+}
+function showAlert(message){
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = `
+    <div class="confirm-box">
+      <p>${escapeHTML(message)}</p>
+      <div class="confirm-actions">
+        <button class="btn btn-primary" data-confirm="ok">OK</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay || e.target.dataset.confirm === 'ok') overlay.remove();
+  });
+}
+
+// Lets an admin drop a photo at the cursor position inside a rich-text field,
+// with a choice of layout (left/right/center/full-width) — used by the
+// "🖼 Photo" toolbar button so photos can go anywhere in the text, not just
+// in one fixed hero-media slot.
+function showImageInsertModal(onInsert){
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = `
+    <div class="confirm-box" style="max-width:420px;">
+      <p style="font-weight:700;">Insert a photo</p>
+      <div class="field"><label>Image URL</label><input type="url" id="ins-img-url" placeholder="https://…"></div>
+      <div class="hint-box">Or upload a small image (recommended under ~3MB)</div>
+      <input type="file" id="ins-img-file" accept="image/*" style="margin:8px 0 4px;">
+      <div class="field" style="margin-top:12px;">
+        <label>Layout</label>
+        <div class="align-group" id="ins-img-align">
+          <button data-align="left" class="active">Left</button>
+          <button data-align="center">Center</button>
+          <button data-align="right">Right</button>
+          <button data-align="full">Full width</button>
+        </div>
+      </div>
+      <div class="confirm-actions">
+        <button class="btn" data-confirm="cancel">Cancel</button>
+        <button class="btn btn-primary" id="ins-img-go">Insert</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  let pendingSrc = '';
+  let align = 'left';
+  overlay.querySelector('#ins-img-url').addEventListener('input', (e) => { pendingSrc = e.target.value; });
+  overlay.querySelector('#ins-img-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(file.size > 3.5 * 1024 * 1024){
+      showAlert('That image is over ~3.5MB — try a smaller file or paste an image URL instead.');
+      e.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => { pendingSrc = reader.result; };
+    reader.readAsDataURL(file);
+  });
+  overlay.querySelectorAll('#ins-img-align button').forEach(b => {
+    b.addEventListener('click', () => {
+      overlay.querySelectorAll('#ins-img-align button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      align = b.dataset.align;
+    });
+  });
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay || e.target.dataset.confirm === 'cancel'){ overlay.remove(); }
+  });
+  overlay.querySelector('#ins-img-go').addEventListener('click', () => {
+    if(!pendingSrc){ showAlert('Add an image URL or upload a file first.'); return; }
+    let style = 'border-radius:8px;';
+    if(align === 'left') style += 'float:left;max-width:45%;margin:4px 16px 10px 0;';
+    else if(align === 'right') style += 'float:right;max-width:45%;margin:4px 0 10px 16px;';
+    else if(align === 'full') style += 'display:block;width:100%;margin:12px 0;';
+    else style += 'display:block;max-width:80%;margin:12px auto;';
+    const html = `<img src="${pendingSrc}" style="${style}">`;
+    overlay.remove();
+    onInsert(html);
+  });
+}
+
+/* ============================================================
+   DEFAULT CONTENT
+   ============================================================ */
+function lesson(title, learn, example){
+  return {
+    id: uid(), title, subtitle: '',
+    titleAlign: 'left', titleColor: '', subtitleAlign: 'left', subtitleColor: '',
+    learnHTML: `<p>${escapeHTML(learn)}</p>`,
+    exampleHTML: `<p>${escapeHTML(example)}</p>`,
+    media: null,
+    file: null,
+    updatedAt: null
+  };
+}
+function mod(eyebrow, title, lessons){
+  return { id: uid(), eyebrow, title, accent: '', lessons };
+}
+
+const DEFAULT_MODULES = [
+  mod("Module 01", "The Cardboard Maker Story", [
+    lesson("Founded by Little Lot", "Cardboard Maker is the founding program of Little Lot, built to give children an early, hands-on relationship with design rather than a passive one.", "When new educators join, their first orientation session is the founding story itself — not a policy binder."),
+    lesson("Introduce Children to a Design World", "The program's purpose is to open up a design-interactive world for children — showing them, through building, that they have the power to create change around them.", "A child who assumes furniture and toys are just 'how things are' builds her own version of a chair and realizes she could have made it differently."),
+    lesson("The Magic Maker Kit (Stupid Coder)", "Cardboard Maker introduces its own maker toolkit, nicknamed Stupid Coder internally, which pairs simple circuits with cardboard building so a design idea becomes interactive instead of static.", "A child adds a button and an LED from the kit to her cardboard house, so a light turns on the moment someone 'arrives home.'"),
+    lesson("Experience with Human Touch", "The kit and templates are just a starting point — the defining part of the program is the human presence: an educator paying attention, responding, and building alongside the child.", "Rather than correcting a child's wobbly hinge, an educator sits down and helps her test it together, letting the fix come from her.")
+  ]),
+  mod("Module 02", "Core Competencies &amp; Objectives", [
+    lesson("Working with Children", "Educators build core skills for engaging directly with children — reading their interest level, adjusting language, and knowing when to step in versus step back.", "An educator notices a child has gone quiet mid-build and checks in with a question instead of an instruction: 'What are you stuck on?'"),
+    lesson("Working with Parents / Adults", "Educators also learn to communicate with parents and other adults — translating what happened in a session into something a parent can understand and support at home.", "At pickup, an educator tells a parent not just 'she built a car' but what problem she solved to make the wheels turn."),
+    lesson("Lesson Planning &amp; Development", "Every session is backed by a lesson plan that balances structure with flexibility, so a class can hold its shape while still following where the children's ideas go.", "An educator plans a 45-minute build block but leaves 15 minutes unscheduled for whichever detail the group gets excited about.")
+  ]),
+  mod("Module 03", "Children and Cardboard Maker", [
+    lesson("Design Thinking", "Children learn to move from an idea, to a plan, to a built object — treating each attempt as information rather than a failure.", "A child's first bridge design collapses; instead of starting over, she studies where it bent and reinforces just that spot."),
+    lesson("Problem Solving", "Children build the habit of noticing a specific problem and testing small fixes, rather than waiting for an adult to solve it for them.", "When a wheel keeps falling off, a child tries three different axle fixes before landing on the one that holds."),
+    lesson("Visual Communication", "Children learn to express an idea before it's built, through a quick sketch or labeled diagram, so a plan can be shared with others.", "Before cutting cardboard, a child draws where each door and window will go, then shows it to a teammate to agree on the layout."),
+    lesson("Interactive Mechanics", "Children explore basic physical mechanisms — hinges, levers, wheels — that let a cardboard build move or respond.", "A child adds a hinge to a cardboard mailbox door so it flips open and shut."),
+    lesson("Electronics Literacy", "Children get a working, hands-on understanding of basic electronics — how a button, light, or motor gets wired into a simple circuit.", "A child learns why nothing lights up until the circuit is a complete loop, then fixes a loose wire himself."),
+    lesson("Material Awareness", "Children learn the properties of the materials they build with — where cardboard bends, where it needs reinforcing, and which glue or tape is right for the job.", "A child reinforces a load-bearing wall of her cardboard house with a double layer after her first version buckled."),
+    lesson("Interpersonal Skills", "Children practice reading a teammate's reaction, taking turns, and negotiating when two people want different things for the same project.", "Two children disagree on paint color for their shared project and settle it by each choosing one section."),
+    lesson("Team Work", "Children learn to split a bigger build into parts that different people can work on, then bring the pieces back together.", "One child builds the base of a Ferris wheel while another builds the cars, then they join the pieces together."),
+    lesson("Presentation Skills", "Children practice explaining their build out loud — what it does, what problem it solves, and what they'd try next.", "At the end-of-month showcase, a child walks a parent through how her sensor-triggered light works.")
+  ]),
+  mod("Module 04", "Documentation and Tools", [
+    lesson("Lesson Plan", "A standard lesson plan template keeps every session's structure and goals consistent across educators, while leaving room to adjust by age group.", "An educator checks the lesson plan for a 5-7 group and swaps in a simpler build goal than the 7-10 version."),
+    lesson("Project Planning", "A project planning sheet helps a child, or group, define what they're building and what steps it will take before diving in.", "A group fills in their project sheet with 'Ferris wheel,' listing base, motor, and cars as the three build steps."),
+    lesson("Interaction Planning", "This sheet helps educators plan how they'll engage each child during the session — when to ask a question, when to demonstrate, when to step back.", "An educator notes on the interaction plan to check in with a quieter student twice during the session instead of waiting for her to ask."),
+    lesson("Designing Sheet", "The designing sheet is where a child sketches and labels their build before cutting any cardboard.", "A child sketches his robot's arm on the designing sheet, marking where the servo motor will sit."),
+    lesson("Exhibition Plan &amp; Schedule", "This sheet lays out when and how finished projects will be shown to parents or the wider group, keeping the showcase organized across age groups.", "An educator schedules the Junior Designer showcase for 4:00 PM and the Chief Imaginator showcase for 4:30 PM the same day.")
+  ]),
+  mod("Module 05", "Project-based Learning", [
+    lesson("Project-based Learning", "Children learn best by working through a real, self-directed project rather than following step-by-step instructions to a fixed result.", "Instead of a worksheet on levers, a child builds a cardboard catapult to see a lever work firsthand."),
+    lesson("Creating Projects with Children", "Educators learn how to co-create a project brief with a child, starting from the child's own interest rather than assigning a topic.", "An educator asks a child what he wants to build and shapes the day's project around his answer: 'a robot dog.'"),
+    lesson("Inquiry-based Project", "Projects start from a question children investigate through building, rather than a task they're simply told to complete.", "'What makes something float?' leads a group to test three different cardboard hull shapes in a water tray."),
+    lesson("Common Challenges", "Educators are trained to recognize the recurring snags in these projects, like glue not holding or motivation dropping mid-build, and how to work through them without taking over.", "When a child's motivation drops halfway through a long build, the educator breaks the remaining work into two smaller, finishable goals.")
+  ]),
+  mod("Module 06", "Routine and Experience", [
+    lesson("Workshop (2 hrs)", "The 2-hour Workshop format gives the most time for a full project cycle: planning, building, and finishing in one sitting.", "A Saturday workshop group plans, builds, and finishes a full cardboard arcade game in the two hours."),
+    lesson("ECA (1 hr)", "The 1-hour ECA, or after-school, format compresses the same routine into a tighter session, often spreading one project across several weeks.", "A weekly ECA group builds one section of a shared cardboard city each week over a month."),
+    lesson("Camp (3 hrs)", "The 3-hour Camp format allows for a bigger, more ambitious build with more exploration time built in.", "A day-camp group spends the extra time testing multiple motor placements before settling on a final design."),
+    lesson("Create Sense of Belonging", "Across all formats, educators are trained to build a group culture where every child feels like a valued part of the maker community.", "An educator learns and uses every child's name and one detail about their project by the second session."),
+    lesson("Project as Original Product", "Each child's project is treated as their own original creation rather than a copy of a template, and educators reinforce ownership of the idea, not just the object.", "An educator refers to a child's build as 'your invention' rather than 'the project,' reinforcing that it's hers."),
+    lesson("Innovator's Mindset", "Beyond the build itself, the goal is to grow a mindset that treats problems as things worth experimenting on.", "When a build doesn't work, an educator asks 'what could we try next?' instead of 'what went wrong?'")
+  ]),
+  mod("Module 07", "The Magic Maker Kit", [
+    lesson("Introduction to Magic Maker", "Every child receives a Magic Maker Kit, the shared set of maker materials, planning sheets, and design templates used across all sessions.", "On day one, each child unpacks their own kit and labels it with their name."),
+    lesson("Visual Communication", "The kit includes design templates that help children translate an idea into a shape they can actually cut and build.", "A child traces a wheel template rather than free-cutting a circle, so both sides of her car match."),
+    lesson("Electronic Parts", "The kit's electronic parts, buttons, LED lights, a DC gear motor, sensors, and a servo motor, each teach a different kind of control, from a simple on/off state to precise, continuous movement.", "A Junior Designer uses a single button to control one LED, while a Chief Imaginator wires a sensor to control a servo motor's exact position."),
+    lesson("How the Circuit Works", "Children learn the basic idea of a circuit, power, connection, and a complete loop, well enough to troubleshoot their own build when something doesn't light up.", "A child traces his own wiring and finds the gap where a wire had come loose from the battery pack.")
+  ]),
+  mod("Module 08", "Workplace Policies", [
+    lesson("Employment Roles", "This lesson covers the different roles at Little Lot and what each one is responsible for, so new educators know who to go to for what.", "A new hire learns that scheduling questions go to their site lead, not head office."),
+    lesson("Dress Code", "Educators follow a simple, practical dress code suited to a hands-on, craft-heavy workshop environment.", "An educator wears closed-toe shoes and avoids loose scarves before a session involving cutting tools."),
+    lesson("Performance Management", "This lesson explains how educator performance is reviewed and supported over time, including regular check-ins and feedback.", "An educator receives quarterly feedback focused on parent communication and lesson pacing."),
+    lesson("Working Hours", "This lesson sets expectations for scheduled hours, including prep and pack-down time around each session.", "An educator blocks 30 minutes before a workshop to set up stations, counted as part of working hours."),
+    lesson("Holiday / Sick / Annual / Personal / Business Leave", "Educators are trained on the different leave types available, holiday, sick, annual, personal, and business leave, and how to request each one.", "An educator submits a personal leave request two weeks ahead of a family event, following the standard process.")
+  ]),
+  mod("Module 09", "Child Safety", [
+    lesson("Children's Right", "Educators are trained on children's fundamental rights within the program, including the right to be heard, respected, and kept safe.", "An educator makes sure a child's 'no' to being photographed for a showcase is respected without question."),
+    lesson("Protection", "This lesson covers the procedures educators follow to protect children from harm, including how and when to raise a concern.", "An educator who notices something concerning follows the reporting procedure that same day, rather than waiting."),
+    lesson("First Aid Policies", "Educators are trained in first-aid response for the kinds of minor injuries a craft workshop can involve, plus how to log and report them.", "After a small scissor nick, an educator cleans and bandages the cut, logs the incident, and informs the parent at pickup.")
+  ]),
+  mod("Module 10", "Maker Environment", [
+    lesson("Cardboard Templates", "Educators prepare age-appropriate cardboard templates in advance, giving younger children a guided starting shape and older children more freedom to deviate from it.", "A Junior Designer session starts with a pre-cut template outline; a Chief Imaginator session starts with a blank sheet and a ruler."),
+    lesson("Cut &amp; Glue Stations", "The room is organized into dedicated stations for cutting and gluing, keeping tools contained and safety easier to supervise.", "An educator keeps all cutting tools at one supervised table so no scissors travel around the room unsupervised."),
+    lesson("Educator as a Design Buddy", "In the maker environment, the educator's role is a design buddy, not an instructor, asking questions and offering options rather than handing down the 'right' answer.", "Instead of telling a child his tower will fall, an educator asks, 'what do you think will happen if you add more on top?'")
+  ])
+];
+
+/* ============================================================
+   APP STATE
+   ============================================================ */
+const state = {
+  modules: null,
+  authed: false,           // in-memory only — resets on reload by design
+  selModule: 0,
+  selLesson: 0,
+  loginError: ''
+};
+
+const SWATCHES = ['', '#FF6300', '#9EDBFF', '#FCDC67', '#000000'];
+
+async function loadModules(){
+  const saved = await storageGet('cms-site-data', true);
+  if(saved && Array.isArray(saved.modules) && saved.modules.length){
+    state.modules = saved.modules;
+  } else {
+    state.modules = DEFAULT_MODULES;
+    await storageSet('cms-site-data', { modules: state.modules }, true);
+  }
+}
+async function persist(){
+  await storageSet('cms-site-data', { modules: state.modules }, true);
+}
+async function getCredentials(){
+  let c = await storageGet('cms-credentials', true);
+  if(!c){
+    c = { user: 'admin', pass: 'cardboard2026' };
+    await storageSet('cms-credentials', c, true);
+  }
+  return c;
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+window.addEventListener('hashchange', render);
+
+async function boot(){
+  await loadModules();
+  render();
+}
+boot();
+
+function render(){
+  const hash = location.hash;
+  if(hash.startsWith('#admin')){
+    if(state.authed) renderAdmin(); else renderLogin();
+  } else {
+    renderPublic();
+  }
+}
+
+/* ============================================================
+   PUBLIC SITE — DASHBOARD (cards + popup lessons)
+   ============================================================ */
+function styleFor(align, color){
+  let s = '';
+  if(align) s += `text-align:${align};`;
+  if(color) s += `color:${color};`;
+  return s;
+}
+
+function mediaHTML(media){
+  if(!media || !media.src) return '';
+  if(media.type === 'image'){
+    const align = media.align || 'center';
+    let style = 'border-radius:8px;';
+    if(align === 'left') style += 'float:left;max-width:48%;margin:4px 16px 12px 0;';
+    else if(align === 'right') style += 'float:right;max-width:48%;margin:4px 0 12px 16px;';
+    else if(align === 'full') style += 'display:block;width:100%;margin:0 0 16px;';
+    else style += 'display:block;max-width:100%;margin:0 auto 16px;';
+    return `<div class="media-block"><img src="${media.src}" alt="${escapeHTML(media.alt||'')}" style="${style}"></div>`;
+  }
+  if(media.type === 'video'){
+    const src = media.src;
+    const yt = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/);
+    const vm = src.match(/vimeo\.com\/(\d+)/);
+    if(yt) return `<div class="media-block"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen></iframe></div>`;
+    if(vm) return `<div class="media-block"><iframe src="https://player.vimeo.com/video/${vm[1]}" allowfullscreen></iframe></div>`;
+    return `<div class="media-block"><video src="${src}" controls></video></div>`;
+  }
+  return '';
+}
+function fileHTML(file){
+  if(!file || !file.src) return '';
+  return `<div class="file-attach">
+    <a href="${file.src}" download="${escapeHTML(file.name || 'download')}" target="_blank" rel="noopener">
+      📎 Download ${escapeHTML(file.name || 'attachment')}
+    </a>
+  </div>`;
+}
+
+const CARD_BG = ['#CFEFEC', '#FFE0C7', '#E3F4FF', '#FFF3C2', '#EAEAEA'];
+function cardBg(m, mi){
+  if(m.accent && m.accent.toLowerCase() !== '#000000') return m.accent;
+  return CARD_BG[mi % CARD_BG.length];
+}
+function formatMinutes(mins){
+  if(mins < 60) return mins + ' min';
+  const h = Math.floor(mins/60), r = mins % 60;
+  return h + 'h' + (r ? ' ' + r + 'm' : '');
+}
+
+// simple line-art icon per module (stroke uses currentColor)
+const MODULE_ICON_PATHS = [
+  '<path d="M6 10c6-4 14-4 18 0v26c-6-4-14-4-18 0Z"/><path d="M42 10c-6-4-14-4-18 0v26c6-4 14-4 18 0Z"/>',
+  '<circle cx="18" cy="22" r="9"/><circle cx="30" cy="22" r="9"/>',
+  '<circle cx="24" cy="19" r="10"/><path d="M18 30h12M20 36h8"/>',
+  '<rect x="12" y="8" width="24" height="32" rx="3"/><rect x="18" y="4" width="12" height="6" rx="2"/><path d="M17 20h14M17 27h14M17 34h9"/>',
+  '<path d="M14 14h9v-1a4 4 0 118 0v1h9v9h1a4 4 0 110 8h-1v9h-9v-1a4 4 0 10-8 0v1h-9v-9h-1a4 4 0 110-8h1Z"/>',
+  '<circle cx="24" cy="24" r="16"/><path d="M24 14v10l7 5"/>',
+  '<path d="M26 4L10 26h10l-4 18 20-24H26Z"/>',
+  '<rect x="8" y="16" width="32" height="22" rx="3"/><path d="M18 16v-4a4 4 0 014-4h4a4 4 0 014 4v4"/><path d="M8 26h32"/>',
+  '<path d="M24 4l16 6v12c0 10-7 17-16 20-9-3-16-10-16-20V10Z"/><path d="M17 24l5 5 10-11"/>',
+  '<path d="M6 16l18-8 18 8-18 8Z"/><path d="M6 16v18l18 8 18-8V16"/><path d="M24 24v18"/>'
+];
+function moduleIconSVG(mi){
+  const d = MODULE_ICON_PATHS[mi % MODULE_ICON_PATHS.length];
+  return `<svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+}
+
+const RAIL_ICONS = {
+  cap: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18l20-9 20 9-20 9-20-9Z"/><path d="M14 23v9c0 3 5 6 10 6s10-3 10-6v-9"/><path d="M44 18v11"/></svg>',
+  me: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h5v-6h2v6h5V10"/></svg>',
+  grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>',
+  cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 000-3l2-1.6-2-3.4-2.4.7a7.6 7.6 0 00-2.6-1.5L14 2h-4l-.4 2.7a7.6 7.6 0 00-2.6 1.5l-2.4-.7-2 3.4 2 1.6a7.6 7.6 0 000 3l-2 1.6 2 3.4 2.4-.7c.7.6 1.6 1.1 2.6 1.5L10 22h4l.4-2.7c1-.4 1.9-.9 2.6-1.5l2.4.7 2-3.4-2-1.6Z"/></svg>'
+};
+
+// public-view-only state
+if(!state.pub) state.pub = {
+  module: 0, search: '', page: 'me', modal: null,
+  completions: {},   // "mi-li" -> "YYYY-MM-DD" the day it was marked complete
+  events: {},        // "YYYY-MM-DD" -> [{id, text}]
+  todos: [],         // [{id, text, done, priority}]
+  todoMemo: '',
+  todoAdding: false,
+  calYear: new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
+  account: { name: 'Program Admin', role: 'Training Lead', avatar: null }
+};
+
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function isDoneKey(key){ return !!state.pub.completions[key]; }
+function toggleDoneKey(key){
+  if(state.pub.completions[key]) delete state.pub.completions[key];
+  else state.pub.completions[key] = todayStr();
+}
+function overallProgress(){
+  let total = 0, done = 0;
+  state.modules.forEach((m, mi) => {
+    m.lessons.forEach((l, li) => {
+      total++;
+      if(isDoneKey(mi+'-'+li)) done++;
+    });
+  });
+  return { done, total, pct: total ? Math.round((done/total)*100) : 0 };
+}
+function findContinueLesson(){
+  for(let mi=0; mi<state.modules.length; mi++){
+    for(let li=0; li<state.modules[mi].lessons.length; li++){
+      if(!isDoneKey(mi+'-'+li)) return { mi, li };
+    }
+  }
+  return null;
+}
+function findLatestUpdate(){
+  let best = null, bestTime = -Infinity;
+  state.modules.forEach((m, mi) => {
+    m.lessons.forEach((l, li) => {
+      if(l.updatedAt && l.updatedAt > bestTime){ bestTime = l.updatedAt; best = { mi, li }; }
+    });
+  });
+  return best;
+}
+function formatRelativeDate(ts){
+  if(!ts) return '';
+  const diff = Date.now() - ts, day = 86400000;
+  if(diff < 3600000) return 'just now';
+  if(diff < day) return Math.round(diff/3600000) + 'h ago';
+  const days = Math.round(diff/day);
+  if(days === 1) return 'yesterday';
+  if(days < 30) return days + ' days ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+let publicListenerBound = false;
+function bindPublicListenersOnce(){
+  if(publicListenerBound) return;
+  document.getElementById('app').addEventListener('click', handlePublicClick);
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && state.pub.modal){ state.pub.modal = null; renderPublic(); }
+  });
+  publicListenerBound = true;
+}
+
+function renderPublic(){
+  document.body.className = 'public-body';
+  const app = document.getElementById('app');
+  const pub = state.pub;
+
+  const topItems = [
+    { key:'me', label:'Me', icon: RAIL_ICONS.me },
+    { key:'modules', label:'Modules', icon: RAIL_ICONS.grid },
+    { key:'calendar', label:'Calendar', icon: RAIL_ICONS.cal }
+  ];
+  const railTopHTML = topItems.map(it => `
+    <div class="rail-item ${pub.page===it.key ? 'active':''}" data-rail="${it.key}" title="${it.label}">
+      ${it.icon}
+    </div>`).join('');
+  const accountIcon = pub.account.avatar
+    ? `<img class="rail-avatar" src="${pub.account.avatar}" alt="">`
+    : RAIL_ICONS.user;
+
+  app.innerHTML = `
+    <div class="blob blob-mint"></div>
+    <div class="blob blob-yellow"></div>
+    <div class="dash-wrap">
+      <div class="dash-card">
+        <nav class="rail">
+          <div class="cap">${RAIL_ICONS.cap}</div>
+          <div class="rail-main">${railTopHTML}</div>
+          <div class="rail-spacer"></div>
+          <div class="rail-bottom">
+            <div class="rail-item ${pub.page==='account' ? 'active':''}" data-rail="account" title="My Account">${accountIcon}</div>
+            <div class="rail-item" data-rail="admin" title="Admin">${RAIL_ICONS.gear}</div>
+          </div>
+          <div class="rail-version">v1.0.1</div>
+        </nav>
+        <main class="dash-main" id="dash-main"></main>
+        <aside class="dash-side" id="dash-side"></aside>
+      </div>
+    </div>
+    <footer><strong>Little Lot</strong> · Cardboard Maker Curriculum — Powered by Imagination</footer>
+    <div id="modal-root"></div>
+  `;
+
+  renderMainPane();
+  renderModal();
+  bindPublicListenersOnce();
+}
+
+function renderMainPane(){
+  const page = state.pub.page;
+  if(page === 'account') return renderAccountPage();
+  if(page === 'calendar') return renderCalendarPage();
+  if(page === 'modules') return renderModulesPage();
+  return renderMePage();
+}
+
+/* ---------- Me page ---------- */
+function renderMePage(){
+  const main = document.getElementById('dash-main');
+  const side = document.getElementById('dash-side');
+  side.style.display = 'none';
+  const acc = state.pub.account;
+  const { done, total, pct } = overallProgress();
+  const cont = findContinueLesson();
+  const latest = findLatestUpdate();
+  const firstName = (acc.name || '').split(' ')[0] || 'there';
+
+  main.innerHTML = `
+    <div class="dash-hello">
+      <h1>Hi, ${escapeHTML(firstName)}!</h1>
+      <p>Here's where you left off in Cardboard Maker training.</p>
+    </div>
+
+    <div class="me-progress-card">
+      <div class="me-progress-top">
+        <div>
+          <div class="lbl">Overall progress</div>
+          <div class="big">${pct}%</div>
+        </div>
+        <div class="me-progress-sub">${done} of ${total} lessons complete</div>
+      </div>
+      <div class="progress-bar-lg"><div style="width:${pct}%"></div></div>
+    </div>
+
+    <div class="me-grid">
+      <div class="me-card">
+        <div class="me-card-label">Continue learning</div>
+        ${cont ? `
+          <div class="me-card-title">${escapeHTML(state.modules[cont.mi].lessons[cont.li].title.replace(/&amp;/g,'&'))}</div>
+          <div class="me-card-sub">Module ${cont.mi+1} · Lesson ${cont.mi+1}.${cont.li+1}</div>
+          <button class="btn btn-primary btn-sm" data-open-lesson="${cont.mi}-${cont.li}">Continue →</button>
+        ` : `<div class="me-card-title">All caught up! 🎉</div><div class="me-card-sub">You've completed every lesson.</div>`}
+      </div>
+
+      <div class="me-card">
+        <div class="me-card-label">Latest update</div>
+        ${latest ? `
+          <div class="me-card-title">${escapeHTML(state.modules[latest.mi].lessons[latest.li].title.replace(/&amp;/g,'&'))}</div>
+          <div class="me-card-sub">Module ${latest.mi+1} · updated ${formatRelativeDate(state.modules[latest.mi].lessons[latest.li].updatedAt)}</div>
+          <button class="btn btn-sm" data-open-lesson="${latest.mi}-${latest.li}">View lesson →</button>
+        ` : `<div class="me-card-title">No edits yet</div><div class="me-card-sub">Recently updated lessons will show up here.</div>`}
+      </div>
+    </div>
+
+    <div class="me-card me-external-card" style="background:var(--kraft);">
+      <div>
+        <div class="me-card-label">Ready to build?</div>
+        <div class="me-card-title">Head to the Maker Studio</div>
+        <div class="me-card-sub" style="margin-bottom:0;">Bring your cardboard designs to life.</div>
+      </div>
+      <a class="btn btn-primary btn-sm" href="https://maker.littlelot.studio" target="_blank" rel="noopener">Open maker.littlelot.studio ↗</a>
+    </div>
+  `;
+}
+
+const PRIORITY_CYCLE = ['low', 'med', 'high'];
+const PRIORITY_LABEL = { low: 'Low priority', med: 'Medium priority', high: 'High priority' };
+
+function todoRowHTML(t){
+  return `
+    <div class="todo-row ${t.done?'done':''}">
+      <span class="todo-check-circle ${t.done?'done':''}" data-toggle-todo="${t.id}">${t.done?'✓':''}</span>
+      <span class="todo-row-text">
+        <div class="todo-row-title">${escapeHTML(t.text)}</div>
+        <div class="todo-row-meta" data-cycle-priority="${t.id}" title="Tap to change priority">${PRIORITY_LABEL[t.priority || 'med']}</div>
+      </span>
+      <button class="todo-del-x" data-del-todo="${t.id}" title="Delete">✕</button>
+    </div>`;
+}
+
+function renderTodoWidget(){
+  const rows = state.pub.todos.map(todoRowHTML).join('');
+  const doneCount = state.pub.todos.filter(t => t.done).length;
+  const todayLabel = new Date().toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
+  const adding = !!state.pub.todoAdding;
+
+  return `
+    <div class="todo-card">
+      <div class="todo-card-head">
+        <h4>My Tasks</h4>
+      </div>
+      <div class="todo-card-sub">
+        <span>${todayLabel}</span>
+        <span>${doneCount}/${state.pub.todos.length} done</span>
+      </div>
+      <div id="todo-list">
+        ${rows || '<div class="nav-empty" style="padding:10px 0;">No tasks yet — add one below.</div>'}
+      </div>
+      <div class="todo-add-row" id="todo-add-row">
+        ${adding ? `
+          <div class="todo-add-inline">
+            <input type="text" id="todo-input" placeholder="Add a task…" autofocus>
+            <button class="btn btn-sm btn-primary" data-action="submit-todo">Add</button>
+          </div>
+        ` : `<button class="todo-add-trigger" data-action="open-add-todo">＋ Add Task</button>`}
+      </div>
+      <div class="todo-memo">
+        <div class="todo-memo-label">Memo</div>
+        <textarea id="todo-memo" placeholder="Notes for yourself…">${escapeHTML(state.pub.todoMemo || '')}</textarea>
+      </div>
+    </div>
+  `;
+}
+function wireTodoWidget(){
+  const input = document.getElementById('todo-input');
+  if(input){
+    input.focus();
+    input.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){ e.preventDefault(); document.querySelector('[data-action="submit-todo"]').click(); }
+      if(e.key === 'Escape'){ state.pub.todoAdding = false; renderCalendarSide(); }
+    });
+  }
+  const memo = document.getElementById('todo-memo');
+  if(memo) memo.addEventListener('input', (e) => { state.pub.todoMemo = e.target.value; });
+}
+function renderTodoList(){
+  const list = document.getElementById('todo-list');
+  if(!list) return;
+  list.innerHTML = state.pub.todos.map(todoRowHTML).join('') || '<div class="nav-empty" style="padding:10px 0;">No tasks yet — add one below.</div>';
+  const sub = document.querySelector('.todo-card-sub span:last-child');
+  if(sub) sub.textContent = `${state.pub.todos.filter(t=>t.done).length}/${state.pub.todos.length} done`;
+}
+
+/* ---------- Modules page ---------- */
+function renderModulesPage(){
+  const main = document.getElementById('dash-main');
+  const side = document.getElementById('dash-side');
+  side.style.display = 'block';
+
+  main.innerHTML = `
+    <div class="dash-hello">
+      <h1>Modules</h1>
+      <p>Browse the Cardboard Maker modules and open a lesson for the full breakdown.</p>
+    </div>
+    <div class="dash-search">
+      <span class="ic">⌕</span>
+      <input type="text" id="dash-search" placeholder="Search modules…" value="${escapeHTML(state.pub.search)}">
+    </div>
+    <div class="card-grid" id="card-grid"></div>
+  `;
+  renderCardGrid();
+  renderSidePanel();
+  document.getElementById('dash-search').addEventListener('input', (e) => {
+    state.pub.search = e.target.value;
+    renderCardGrid();
+  });
+}
+
+function renderCardGrid(){
+  const grid = document.getElementById('card-grid');
+  if(!grid) return;
+  const q = state.pub.search.trim().toLowerCase();
+  const items = state.modules
+    .map((m, mi) => ({ m, mi }))
+    .filter(({m}) => !q || m.title.replace(/&amp;/g,'&').toLowerCase().includes(q));
+
+  if(!items.length){
+    grid.innerHTML = `<div class="nav-empty">No modules match "${escapeHTML(state.pub.search)}"</div>`;
+    return;
+  }
+  grid.innerHTML = items.map(({m, mi}) => {
+    const count = m.lessons.length;
+    return `
+      <div class="mod-card ${mi===state.pub.module?'active':''}" data-mi="${mi}" style="background:${cardBg(m, mi)}">
+        <h3>${escapeHTML(m.title.replace(/&amp;/g,'&'))}</h3>
+        <div class="stats">Lessons: ${count}<br>Est. time: ${formatMinutes(count*15)}</div>
+        <div class="icon">${moduleIconSVG(mi)}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderSidePanel(){
+  const side = document.getElementById('dash-side');
+  const mi = state.pub.module;
+  const m = state.modules[mi];
+  const acc = state.pub.account;
+  if(!m){ side.innerHTML = ''; return; }
+
+  const doneCount = m.lessons.filter((_, li) => isDoneKey(mi+'-'+li)).length;
+  const total = m.lessons.length;
+  const pct = total ? Math.round((doneCount/total)*100) : 0;
+
+  const items = m.lessons.map((l, li) => {
+    const key = mi+'-'+li;
+    const done = isDoneKey(key);
+    return `
+      <div class="toc-item ${done?'done':''}" data-open-lesson="${key}">
+        <span class="no">${String(li+1).padStart(2,'0')}</span>
+        <span class="txt">
+          <div class="t">${escapeHTML(l.title.replace(/&amp;/g,'&'))}</div>
+          <div class="m">Study time: 15 min</div>
+        </span>
+      </div>`;
+  }).join('');
+
+  side.innerHTML = `
+    <div class="profile-row">
+      <div class="avatar">${acc.avatar ? `<img src="${acc.avatar}" alt="">` : acc.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
+      <div>
+        <div class="who">${escapeHTML(acc.name)}</div>
+        <div class="role">${escapeHTML(acc.role)}</div>
+      </div>
+    </div>
+    <div class="profile-progress">
+      <div class="lbl">Progress · ${escapeHTML(m.title.replace(/&amp;/g,'&'))}</div>
+      <div class="bar"><div style="width:${pct}%"></div></div>
+    </div>
+    <h3 class="toc-heading" style="margin-top:22px;">${escapeHTML(m.title.replace(/&amp;/g,'&'))}</h3>
+    <p class="toc-sub">Table of content</p>
+    ${items || '<div class="nav-empty">No lessons yet.</div>'}
+  `;
+}
+
+function patchRailAvatar(){
+  const item = document.querySelector('[data-rail="account"]');
+  if(!item) return;
+  item.innerHTML = state.pub.account.avatar ? `<img class="rail-avatar" src="${state.pub.account.avatar}" alt="">` : RAIL_ICONS.user;
+}
+
+/* ---------- My Account page ---------- */
+function renderAccountPage(){
+  const main = document.getElementById('dash-main');
+  const side = document.getElementById('dash-side');
+  side.style.display = 'none';
+  const acc = state.pub.account;
+  const initials = acc.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  main.innerHTML = `
+    <div class="placeholder-page">
+      <h1>My Account</h1>
+      <p>These details are just for display in this preview — they reset when the page reloads.</p>
+      <div class="account-card">
+        <div class="avatar-row">
+          <div class="avatar-big" id="avatar-preview">${acc.avatar ? `<img src="${acc.avatar}" alt="">` : initials}</div>
+          <div>
+            <input type="file" id="acc-avatar-file" accept="image/*">
+            <div class="hint-box" style="margin-top:6px;">Square photos work best, under ~2MB.</div>
+            ${acc.avatar ? `<button class="btn btn-sm" id="acc-avatar-remove" style="margin-top:8px;">Remove photo</button>` : ''}
+          </div>
+        </div>
+        <div class="field"><label>Name</label><input type="text" id="acc-name" value="${escapeHTML(acc.name)}"></div>
+        <div class="field"><label>Role</label><input type="text" id="acc-role" value="${escapeHTML(acc.role)}"></div>
+        <button class="btn btn-primary" id="acc-save">Save</button>
+        <span class="toast" id="acc-toast">Saved ✓</span>
+      </div>
+    </div>
+  `;
+  document.getElementById('acc-avatar-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(file.size > 2 * 1024 * 1024){
+      showAlert('That photo is over ~2MB, which is too large for this preview storage. Try a smaller image.');
+      e.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      acc.avatar = reader.result;
+      renderAccountPage();
+      patchRailAvatar();
+    };
+    reader.readAsDataURL(file);
+  });
+  const removeBtn = document.getElementById('acc-avatar-remove');
+  if(removeBtn){
+    removeBtn.addEventListener('click', () => {
+      acc.avatar = null;
+      renderAccountPage();
+      patchRailAvatar();
+    });
+  }
+  document.getElementById('acc-save').addEventListener('click', () => {
+    acc.name = document.getElementById('acc-name').value || acc.name;
+    acc.role = document.getElementById('acc-role').value || acc.role;
+    flashToast('acc-toast');
+
+  });
+}
+
+/* ---------- Calendar page ---------- */
+function renderCalendarPage(){
+  const main = document.getElementById('dash-main');
+  const side = document.getElementById('dash-side');
+  side.style.display = 'block';
+
+  const year = state.pub.calYear, month = state.pub.calMonth;
+  const first = new Date(year, month, 1);
+  const startDow = first.getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const monthName = first.toLocaleString('en-US', { month:'long', year:'numeric' });
+  const todayKey = todayStr();
+
+  const completionsByDay = {};
+  state.modules.forEach((m, mi) => {
+    m.lessons.forEach((l, li) => {
+      const d = state.pub.completions[mi+'-'+li];
+      if(d){ (completionsByDay[d] = completionsByDay[d] || []).push(l.title.replace(/&amp;/g,'&')); }
+    });
+  });
+
+  let cells = '';
+  for(let i=0;i<startDow;i++) cells += `<div class="day blank"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const key = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const hasCompletion = !!completionsByDay[key];
+    const hasEvent = !!(state.pub.events[key] && state.pub.events[key].length);
+    cells += `
+      <div class="day ${key===todayKey?'today':''}" data-day="${key}">
+        <span>${d}</span>
+        <span class="day-dots">${hasCompletion?'<i class="dot dot-mint"></i>':''}${hasEvent?'<i class="dot dot-orange"></i>':''}</span>
+      </div>`;
+  }
+
+  main.innerHTML = `
+    <div class="placeholder-page">
+      <div class="cal-header">
+        <h1>Calendar</h1>
+        <div class="cal-nav">
+          <button class="btn btn-icon" data-action="cal-prev">‹</button>
+          <span>${monthName}</span>
+          <button class="btn btn-icon" data-action="cal-next">›</button>
+        </div>
+      </div>
+      <p>Click any day to add an event, or see which lessons you completed that day.</p>
+      <div class="cal-legend"><span><i class="dot dot-mint"></i> Lesson completed</span><span><i class="dot dot-orange"></i> Event</span></div>
+      <div class="cal-grid">
+        ${['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="dow">${d}</div>`).join('')}
+        ${cells}
+      </div>
+    </div>
+  `;
+
+  renderCalendarSide();
+}
+
+function renderCalendarSide(){
+  const side = document.getElementById('dash-side');
+  if(!side) return;
+
+  // gather upcoming events (today or later), sorted by date
+  const todayKey = todayStr();
+  const upcoming = [];
+  Object.keys(state.pub.events).forEach(dateKey => {
+    if(dateKey >= todayKey){
+      (state.pub.events[dateKey] || []).forEach(ev => upcoming.push({ dateKey, text: ev.text }));
+    }
+  });
+  upcoming.sort((a,b) => a.dateKey.localeCompare(b.dateKey));
+  const eventsHTML = upcoming.slice(0, 6).map(ev => `
+    <div class="event-row">
+      <span>${escapeHTML(ev.text)}</span>
+      <span class="event-date">${new Date(ev.dateKey + 'T00:00:00').toLocaleDateString(undefined, { month:'short', day:'numeric' })}</span>
+    </div>`).join('');
+
+  side.innerHTML = `
+    <div class="events-card">
+      <h4>Your Events</h4>
+      ${eventsHTML || '<div class="nav-empty">No upcoming events — click a day to add one.</div>'}
+    </div>
+    ${renderTodoWidget()}
+  `;
+  wireTodoWidget();
+}
+
+function showDayModal(dateKey){
+  const completions = [];
+  state.modules.forEach((m, mi) => {
+    m.lessons.forEach((l, li) => {
+      if(state.pub.completions[mi+'-'+li] === dateKey) completions.push(l.title.replace(/&amp;/g,'&'));
+    });
+  });
+  const niceDate = new Date(dateKey + 'T00:00:00').toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = `
+    <div class="confirm-box" style="max-width:420px;text-align:left;">
+      <p style="font-weight:700;margin-bottom:14px;">${niceDate}</p>
+      ${completions.length ? `
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--orange);font-weight:700;margin-bottom:6px;">Lessons completed</div>
+        <ul style="margin:0 0 14px;padding-left:18px;font-size:13.5px;">${completions.map(c=>`<li>${escapeHTML(c)}</li>`).join('')}</ul>
+      ` : ''}
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700;margin-bottom:6px;">Events</div>
+      <div id="day-events-list" style="margin-bottom:12px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="day-event-input" placeholder="Add an event…" style="flex:1;padding:8px 10px;border:2px solid var(--ink);border-radius:6px;font-family:inherit;">
+        <button class="btn btn-sm" id="day-event-add">Add</button>
+      </div>
+      <div class="confirm-actions" style="margin-top:16px;">
+        <button class="btn" data-confirm="cancel">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  function renderEventsList(){
+    const evs = state.pub.events[dateKey] || [];
+    overlay.querySelector('#day-events-list').innerHTML = evs.length ? evs.map(ev => `
+      <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:6px;">
+        <span style="flex:1;">${escapeHTML(ev.text)}</span>
+        <button data-del-event="${ev.id}" style="border:none;background:none;cursor:pointer;color:var(--ink-soft);">✕</button>
+      </div>`).join('') : '<div style="font-size:12.5px;color:var(--ink-soft);">No events yet.</div>';
+  }
+  renderEventsList();
+
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay || e.target.dataset.confirm === 'cancel'){ overlay.remove(); renderCalendarPage(); return; }
+    const delBtn = e.target.closest('[data-del-event]');
+    if(delBtn){
+      state.pub.events[dateKey] = (state.pub.events[dateKey]||[]).filter(ev => ev.id !== delBtn.dataset.delEvent);
+      renderEventsList();
+    }
+  });
+  overlay.querySelector('#day-event-add').addEventListener('click', () => {
+    const input = overlay.querySelector('#day-event-input');
+    const text = input.value.trim();
+    if(!text) return;
+    if(!state.pub.events[dateKey]) state.pub.events[dateKey] = [];
+    state.pub.events[dateKey].push({ id: uid(), text });
+    input.value = '';
+    renderEventsList();
+  });
+}
+
+/* ---------- Lesson popup modal ---------- */
+function renderModal(){
+  const root = document.getElementById('modal-root');
+  if(!root) return;
+  const modal = state.pub.modal;
+  if(!modal){ root.innerHTML = ''; return; }
+  const m = state.modules[modal.mi];
+  const l = m && m.lessons[modal.li];
+  if(!l){ root.innerHTML = ''; return; }
+  const key = modal.mi + '-' + modal.li;
+  const done = isDoneKey(key);
+
+  root.innerHTML = `
+    <div class="modal-backdrop" data-close-modal="1">
+      <div class="modal-card">
+        <button class="modal-close" data-close-modal="1">✕</button>
+        <p class="m-eyebrow">${escapeHTML(m.eyebrow)} · Lesson ${modal.mi+1}.${modal.li+1}</p>
+        <h3 style="${styleFor(l.titleAlign, l.titleColor)}">${escapeHTML(l.title.replace(/&amp;/g,'&'))}</h3>
+        ${l.subtitle ? `<p class="m-subtitle" style="${styleFor(l.subtitleAlign, l.subtitleColor)}">${escapeHTML(l.subtitle)}</p>` : ''}
+        ${mediaHTML(l.media)}
+        <p class="label">Read me</p>
+        <div class="rte-view">${sanitizeRTE(l.learnHTML)}</div>
+        <div class="example">
+          <p class="label">Exercise</p>
+          <div class="rte-view">${sanitizeRTE(l.exampleHTML)}</div>
+        </div>
+        ${fileHTML(l.file)}
+        <div class="modal-mark">
+          <button class="btn ${done?'btn-primary':''}" data-mark-done="${key}">${done ? '✓ Marked complete' : 'Mark as complete'}</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- click delegation ---------- */
+function handlePublicClick(e){
+  const railItem = e.target.closest('.rail-item');
+  if(railItem){
+    const key = railItem.dataset.rail;
+    if(key === 'admin'){ location.hash = '#admin'; return; }
+    state.pub.page = key;
+    renderPublic();
+    return;
+  }
+
+  const card = e.target.closest('.mod-card');
+  if(card){
+    state.pub.module = Number(card.dataset.mi);
+    renderCardGrid();
+    renderSidePanel();
+    return;
+  }
+
+  const tocItem = e.target.closest('[data-open-lesson]');
+  if(tocItem){
+    const [mi, li] = tocItem.dataset.openLesson.split('-').map(Number);
+    state.pub.modal = { mi, li };
+    renderModal();
+    return;
+  }
+
+  const markBtn = e.target.closest('[data-mark-done]');
+  if(markBtn){
+    toggleDoneKey(markBtn.dataset.markDone);
+    renderModal();
+    if(state.pub.page === 'modules') renderSidePanel();
+    return;
+  }
+
+  if(e.target.matches('[data-close-modal]')){
+    state.pub.modal = null;
+    renderModal();
+    return;
+  }
+
+  const calNav = e.target.closest('[data-action="cal-prev"], [data-action="cal-next"]');
+  if(calNav){
+    const dir = calNav.dataset.action === 'cal-prev' ? -1 : 1;
+    let mo = state.pub.calMonth + dir, yr = state.pub.calYear;
+    if(mo < 0){ mo = 11; yr--; } if(mo > 11){ mo = 0; yr++; }
+    state.pub.calMonth = mo; state.pub.calYear = yr;
+    renderCalendarPage();
+    return;
+  }
+  const dayCell = e.target.closest('.cal-grid .day');
+  if(dayCell && dayCell.dataset.day){
+    showDayModal(dayCell.dataset.day);
+    return;
+  }
+
+  const openAddBtn = e.target.closest('[data-action="open-add-todo"]');
+  if(openAddBtn){
+    state.pub.todoAdding = true;
+    const row = document.getElementById('todo-add-row');
+    if(row){
+      row.innerHTML = `
+        <div class="todo-add-inline">
+          <input type="text" id="todo-input" placeholder="Add a task…">
+          <button class="btn btn-sm btn-primary" data-action="submit-todo">Add</button>
+        </div>`;
+      wireTodoWidget();
+    }
+    return;
+  }
+  const submitAddBtn = e.target.closest('[data-action="submit-todo"]');
+  if(submitAddBtn){
+    const input = document.getElementById('todo-input');
+    const text = input.value.trim();
+    if(text) state.pub.todos.push({ id: uid(), text, done:false, priority:'med' });
+    state.pub.todoAdding = false;
+    renderCalendarSide();
+    return;
+  }
+  const todoToggle = e.target.closest('[data-toggle-todo]');
+  if(todoToggle){
+    const t = state.pub.todos.find(x => x.id === todoToggle.dataset.toggleTodo);
+    if(t) t.done = !t.done;
+    renderTodoList();
+    return;
+  }
+  const todoDel = e.target.closest('[data-del-todo]');
+  if(todoDel){
+    state.pub.todos = state.pub.todos.filter(x => x.id !== todoDel.dataset.delTodo);
+    renderTodoList();
+    return;
+  }
+  const priorityMeta = e.target.closest('[data-cycle-priority]');
+  if(priorityMeta){
+    const t = state.pub.todos.find(x => x.id === priorityMeta.dataset.cyclePriority);
+    if(t){
+      const i = PRIORITY_CYCLE.indexOf(t.priority || 'med');
+      t.priority = PRIORITY_CYCLE[(i + 1) % PRIORITY_CYCLE.length];
+    }
+    renderTodoList();
+    return;
+  }
+}
+
+/* ============================================================
+   ADMIN — LOGIN
+   ============================================================ */
+function renderLogin(){
+  document.body.className = '';
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="admin-login-wrap">
+      <div class="login-card">
+        <h2>Admin Login</h2>
+        <p class="sub">Cardboard Maker CMS</p>
+        <form id="login-form">
+          <label>Username</label>
+          <input type="text" id="login-user" autocomplete="username" required>
+          <label>Password</label>
+          <input type="password" id="login-pass" autocomplete="current-password" required>
+          <div class="error" id="login-error">${state.loginError}</div>
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
+        <div class="hint">Demo credentials: <strong>admin</strong> / <strong>cardboard2026</strong><br>Change these once logged in, under Account settings.</div>
+        <div class="hint" style="margin-top:8px;background:rgba(252,220,103,0.4);">Heads up: this is a UI login gate for editing convenience, not production-grade user authentication.</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    const creds = await getCredentials();
+    if(user === creds.user && pass === creds.pass){
+      state.authed = true;
+      state.loginError = '';
+      render();
+    } else {
+      state.loginError = 'Incorrect username or password.';
+      render();
+    }
+  });
+}
+
+/* ============================================================
+   ADMIN — DASHBOARD
+   ============================================================ */
+let activeRTE = null; // last-focused contenteditable, for toolbar commands
+
+function renderAdmin(){
+  document.body.className = '';
+  const app = document.getElementById('app');
+  const m = state.modules[state.selModule] || null;
+  const l = m ? (m.lessons[state.selLesson] || null) : null;
+
+  const treeHTML = state.modules.map((mod, mi) => {
+    const isActiveMod = mi === state.selModule;
+    const lessonsHTML = mod.lessons.map((les, li) => {
+      const isActiveLes = isActiveMod && li === state.selLesson;
+      return `
+        <div class="tree-lesson ${isActiveLes ? 'active':''}" data-mi="${mi}" data-li="${li}">
+          <span class="name">${mi+1}.${li+1} ${escapeHTML(les.title.replace(/&amp;/g,'&'))}</span>
+          <span class="tree-reorder">
+            <button data-act="up-lesson" data-mi="${mi}" data-li="${li}" title="Move up">↑</button>
+            <button data-act="down-lesson" data-mi="${mi}" data-li="${li}" title="Move down">↓</button>
+            <button data-act="del-lesson" data-mi="${mi}" data-li="${li}" title="Delete">✕</button>
+          </span>
+        </div>`;
+    }).join('');
+    return `
+      <div class="tree-module">
+        <div class="tree-module-head ${isActiveMod ? 'active':''}" data-act="sel-module" data-mi="${mi}">
+          <span class="num">${String(mi+1).padStart(2,'0')}</span>
+          <span class="name">${escapeHTML(mod.title.replace(/&amp;/g,'&'))}</span>
+          <span class="tree-reorder">
+            <button data-act="up-module" data-mi="${mi}" title="Move up">↑</button>
+            <button data-act="down-module" data-mi="${mi}" title="Move down">↓</button>
+            <button data-act="del-module" data-mi="${mi}" title="Delete">✕</button>
+          </span>
+        </div>
+        <div class="tree-lessons">
+          ${lessonsHTML}
+          <button class="tree-add-lesson" data-act="add-lesson" data-mi="${mi}">+ New lesson</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <h1>Cardboard Maker</h1>
+        <div class="tag">CMS · Content Manager</div>
+        <div class="sidebar-actions">
+          <button class="btn" data-act="add-module">+ New module</button>
+        </div>
+        <div id="tree">${treeHTML}</div>
+        <div class="sidebar-footer">
+          <a href="#" id="view-site">↗ View public site</a>
+          <button data-act="account">⚙ Account settings</button>
+          <button data-act="logout">⎋ Log out</button>
+        </div>
+      </aside>
+      <main class="admin-main" id="admin-main"></main>
+    </div>
+  `;
+
+  const main = document.getElementById('admin-main');
+  if(state.editingAccount){
+    renderAccountPanel(main);
+  } else if(l){
+    renderLessonEditor(main, m, l, state.selModule, state.selLesson);
+  } else if(m){
+    renderModuleEditor(main, m, state.selModule);
+  } else {
+    main.innerHTML = `<div class="admin-empty">No modules yet. Use "+ New module" to create your first one.</div>`;
+  }
+
+  wireAdminEvents();
+}
+
+function wireAdminEvents(){
+  document.getElementById('view-site').addEventListener('click', (e) => { e.preventDefault(); location.hash = ''; });
+  document.querySelector('[data-act="logout"]').addEventListener('click', () => { state.authed = false; state.editingAccount=false; render(); });
+  document.querySelector('[data-act="account"]').addEventListener('click', () => { state.editingAccount = true; state.selLesson = -1; renderAdmin(); });
+  document.querySelector('[data-act="add-module"]').addEventListener('click', async () => {
+    const n = state.modules.length + 1;
+    state.modules.push(mod(`Module ${String(n).padStart(2,'0')}`, 'Untitled module', []));
+    state.selModule = state.modules.length - 1;
+    state.selLesson = -1;
+    state.editingAccount = false;
+    await persist();
+    renderAdmin();
+  });
+
+  document.getElementById('tree').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-act]');
+    const treeItem = e.target.closest('.tree-module-head, .tree-lesson');
+    if(!btn && treeItem && treeItem.classList.contains('tree-lesson')){
+      state.selModule = Number(treeItem.dataset.mi);
+      state.selLesson = Number(treeItem.dataset.li);
+      state.editingAccount = false;
+      renderAdmin();
+      return;
+    }
+    if(!btn) return;
+    const act = btn.dataset.act;
+    const mi = btn.dataset.mi !== undefined ? Number(btn.dataset.mi) : null;
+    const li = btn.dataset.li !== undefined ? Number(btn.dataset.li) : null;
+
+    if(act === 'sel-module'){
+      state.selModule = mi; state.selLesson = -1; state.editingAccount = false; renderAdmin(); return;
+    }
+    if(act === 'add-lesson'){
+      state.modules[mi].lessons.push(lesson('New lesson', 'Write what this lesson teaches…', 'Add a short real-world example…'));
+      state.selModule = mi; state.selLesson = state.modules[mi].lessons.length - 1; state.editingAccount=false;
+      await persist(); renderAdmin(); return;
+    }
+    if(act === 'up-module' && mi > 0){
+      [state.modules[mi-1], state.modules[mi]] = [state.modules[mi], state.modules[mi-1]];
+      if(state.selModule === mi) state.selModule = mi-1; else if(state.selModule === mi-1) state.selModule = mi;
+      await persist(); renderAdmin(); return;
+    }
+    if(act === 'down-module' && mi < state.modules.length - 1){
+      [state.modules[mi+1], state.modules[mi]] = [state.modules[mi], state.modules[mi+1]];
+      if(state.selModule === mi) state.selModule = mi+1; else if(state.selModule === mi+1) state.selModule = mi;
+      await persist(); renderAdmin(); return;
+    }
+    if(act === 'del-module'){
+      showConfirm(`Delete "${state.modules[mi].title.replace(/&amp;/g,'&')}" and all its lessons?`, async () => {
+        state.modules.splice(mi, 1);
+        state.selModule = Math.max(0, mi - 1); state.selLesson = -1;
+        await persist(); renderAdmin();
+      }, 'Delete module');
+      return;
+    }
+    if(act === 'up-lesson' && li > 0){
+      const arr = state.modules[mi].lessons;
+      [arr[li-1], arr[li]] = [arr[li], arr[li-1]];
+      if(state.selModule===mi && state.selLesson===li) state.selLesson = li-1;
+      else if(state.selModule===mi && state.selLesson===li-1) state.selLesson = li;
+      await persist(); renderAdmin(); return;
+    }
+    if(act === 'down-lesson'){
+      const arr = state.modules[mi].lessons;
+      if(li < arr.length - 1){
+        [arr[li+1], arr[li]] = [arr[li], arr[li+1]];
+        if(state.selModule===mi && state.selLesson===li) state.selLesson = li+1;
+        else if(state.selModule===mi && state.selLesson===li+1) state.selLesson = li;
+        await persist(); renderAdmin();
+      }
+      return;
+    }
+    if(act === 'del-lesson'){
+      showConfirm('Delete this lesson?', async () => {
+        state.modules[mi].lessons.splice(li, 1);
+        if(state.selModule === mi) state.selLesson = -1;
+        await persist(); renderAdmin();
+      }, 'Delete lesson');
+      return;
+    }
+  });
+}
+
+/* ---------- module editor panel ---------- */
+function renderModuleEditor(main, m, mi){
+  main.innerHTML = `
+    <div class="panel">
+      <div class="path">Module ${mi+1}</div>
+      <h2>Edit module</h2>
+      <div class="field">
+        <label>Eyebrow label</label>
+        <input type="text" id="f-eyebrow" value="${escapeHTML(m.eyebrow)}">
+      </div>
+      <div class="field">
+        <label>Module title</label>
+        <input type="text" id="f-modtitle" value="${escapeHTML(m.title.replace(/&amp;/g,'&'))}">
+      </div>
+      <div class="field">
+        <label>Accent color (badge &amp; box tint)</label>
+        <div class="swatch-row">
+          ${SWATCHES.map(c => `<button class="swatch ${m.accent===c?'active':''}" data-color="${c}" style="background:${c||'#A4DFDC'}" data-target="accent"></button>`).join('')}
+          <input type="color" id="f-accent-custom" value="${m.accent || '#A4DFDC'}">
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-primary" id="save-module">Save module</button>
+        <span class="toast" id="toast-mod">Saved ✓</span>
+      </div>
+      <div class="hint-box">This module has ${m.lessons.length} lesson${m.lessons.length===1?'':'s'}. Use "+ New lesson" in the sidebar to add one.</div>
+      <div class="danger-zone">
+        <button class="btn" id="del-module-btn">Delete this module</button>
+      </div>
+    </div>
+  `;
+  let pendingAccent = m.accent;
+  main.querySelectorAll('.swatch[data-target="accent"]').forEach(sw => {
+    sw.addEventListener('click', () => {
+      pendingAccent = sw.dataset.color;
+      main.querySelectorAll('.swatch[data-target="accent"]').forEach(s=>s.classList.remove('active'));
+      sw.classList.add('active');
+    });
+  });
+  main.querySelector('#f-accent-custom').addEventListener('input', (e) => { pendingAccent = e.target.value; });
+
+  main.querySelector('#save-module').addEventListener('click', async () => {
+    m.eyebrow = main.querySelector('#f-eyebrow').value || m.eyebrow;
+    m.title = escapeHTML(main.querySelector('#f-modtitle').value || m.title);
+    m.accent = pendingAccent;
+    await persist();
+    flashToast('toast-mod');
+  });
+  main.querySelector('#del-module-btn').addEventListener('click', () => {
+    document.querySelector(`[data-act="del-module"][data-mi="${mi}"]`).click();
+  });
+}
+
+/* ---------- lesson editor panel ---------- */
+function renderLessonEditor(main, m, l, mi, li){
+  main.innerHTML = `
+    <div class="panel">
+      <div class="path">Module ${mi+1} · Lesson ${mi+1}.${li+1}</div>
+      <h2>Edit lesson</h2>
+
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="f-title" value="${escapeHTML(l.title.replace(/&amp;/g,'&'))}">
+        ${styleControls('title', l.titleAlign, l.titleColor)}
+      </div>
+
+      <div class="field">
+        <label>Subtitle (optional)</label>
+        <input type="text" id="f-subtitle" value="${escapeHTML(l.subtitle)}">
+        ${styleControls('subtitle', l.subtitleAlign, l.subtitleColor)}
+      </div>
+
+      <div class="field">
+        <label>Read me</label>
+        ${rteToolbar('learn')}
+        <div class="rte" id="rte-learn" contenteditable="true">${sanitizeRTE(l.learnHTML)}</div>
+      </div>
+
+      <div class="field">
+        <label>Exercise</label>
+        ${rteToolbar('example')}
+        <div class="rte" id="rte-example" contenteditable="true">${sanitizeRTE(l.exampleHTML)}</div>
+      </div>
+
+      <div class="field">
+        <label>Media</label>
+        <div class="media-tabs">
+          <button data-mtab="image" class="active">Image</button>
+          <button data-mtab="video">Video</button>
+          <button data-mtab="none">None</button>
+        </div>
+        <div id="media-panel-image" class="media-panel">
+          <input type="url" id="img-url" placeholder="Paste an image URL…" value="${l.media && l.media.type==='image' ? l.media.src : ''}">
+          <div class="hint-box">Or upload a small image directly (recommended under ~3MB).</div>
+          <input type="file" id="img-file" accept="image/*" style="margin-top:8px;">
+          <div style="margin-top:12px;">
+            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:6px;">Layout</label>
+            <div class="align-group" id="img-align-group">
+              <button data-align="left" class="${(l.media && l.media.align)==='left'?'active':''}">Left</button>
+              <button data-align="center" class="${!l.media || !l.media.align || l.media.align==='center' ? 'active':''}">Center</button>
+              <button data-align="right" class="${(l.media && l.media.align)==='right'?'active':''}">Right</button>
+              <button data-align="full" class="${(l.media && l.media.align)==='full'?'active':''}">Full width</button>
+            </div>
+          </div>
+        </div>
+        <div id="media-panel-video" class="media-panel" style="display:none;">
+          <input type="url" id="video-url" placeholder="Paste a YouTube, Vimeo, or direct video (.mp4) link…" value="${l.media && l.media.type==='video' ? l.media.src : ''}">
+          <div class="hint-box">Recommended — links work at any length/size. Direct file upload below is capped to small clips only.</div>
+          <input type="file" id="video-file" accept="video/*" style="margin-top:8px;">
+        </div>
+        <div class="media-preview" id="media-preview">${mediaHTML(l.media) || '<em style="color:var(--ink-soft);font-size:13px;">No media yet</em>'}</div>
+      </div>
+
+      <div class="field">
+        <label>Attachment (downloadable file)</label>
+        <input type="text" id="file-name" placeholder="Display name, e.g. Worksheet.pdf" value="${escapeHTML(l.file ? l.file.name : '')}">
+        <input type="url" id="file-url" placeholder="Paste a hosted file URL…" value="${l.file && !String(l.file.src).startsWith('data:') ? l.file.src : ''}" style="margin-top:8px;">
+        <div class="hint-box">Or upload a small file directly (recommended under ~3.5MB) — PDFs, worksheets, templates, etc.</div>
+        <input type="file" id="file-upload" style="margin-top:8px;">
+        <div class="media-preview" id="file-preview">${fileHTML(l.file) || '<em style="color:var(--ink-soft);font-size:13px;">No file attached</em>'}</div>
+        <button class="btn btn-sm" id="file-remove" style="margin-top:10px;">Remove attachment</button>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" id="save-lesson">Save lesson</button>
+        <span class="toast" id="toast-lesson">Saved ✓</span>
+      </div>
+      <div class="danger-zone">
+        <button class="btn" id="del-lesson-btn">Delete this lesson</button>
+      </div>
+    </div>
+  `;
+
+  // pending media state
+  let pendingMedia = l.media ? JSON.parse(JSON.stringify(l.media)) : null;
+  let activeMediaTab = pendingMedia ? pendingMedia.type : 'image';
+  setMediaTab(activeMediaTab);
+
+  function setMediaTab(tab){
+    activeMediaTab = tab;
+    main.querySelectorAll('[data-mtab]').forEach(b => b.classList.toggle('active', b.dataset.mtab === tab));
+    main.querySelector('#media-panel-image').style.display = tab === 'image' ? 'block' : 'none';
+    main.querySelector('#media-panel-video').style.display = tab === 'video' ? 'block' : 'none';
+  }
+  main.querySelectorAll('[data-mtab]').forEach(b => b.addEventListener('click', () => setMediaTab(b.dataset.mtab)));
+
+  main.querySelector('#img-url').addEventListener('input', (e) => {
+    const align = pendingMedia && pendingMedia.type==='image' ? pendingMedia.align : 'center';
+    pendingMedia = e.target.value ? { type:'image', src: e.target.value, alt: l.title, align } : null;
+    updatePreview();
+  });
+  main.querySelector('#img-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(file.size > 3.5 * 1024 * 1024){
+      showAlert('That image is over ~3.5MB, which is too large for this preview storage. Try a smaller file or paste an image URL instead.');
+      e.target.value = '';
+      return;
+    }
+    const align = pendingMedia && pendingMedia.type==='image' ? pendingMedia.align : 'center';
+    const reader = new FileReader();
+    reader.onload = () => {
+      pendingMedia = { type:'image', src: reader.result, alt: l.title, align };
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  main.querySelectorAll('#img-align-group button').forEach(b => {
+    b.addEventListener('click', () => {
+      main.querySelectorAll('#img-align-group button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      if(pendingMedia && pendingMedia.type === 'image'){
+        pendingMedia.align = b.dataset.align;
+        updatePreview();
+      }
+    });
+  });
+  main.querySelector('#video-url').addEventListener('input', (e) => {
+    pendingMedia = e.target.value ? { type:'video', src: e.target.value } : null;
+    updatePreview();
+  });
+  main.querySelector('#video-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(file.size > 3.5 * 1024 * 1024){
+      showAlert('That video is over ~3.5MB, which is too large for this preview storage. Please paste a hosted video link instead (YouTube, Vimeo, or a direct .mp4 URL).');
+      e.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      pendingMedia = { type:'video', src: reader.result };
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  function updatePreview(){
+    main.querySelector('#media-preview').innerHTML = mediaHTML(pendingMedia) || '<em style="color:var(--ink-soft);font-size:13px;">No media yet</em>';
+  }
+
+  // pending attachment (downloadable file) state
+  let pendingFile = l.file ? JSON.parse(JSON.stringify(l.file)) : null;
+  function updateFilePreview(){
+    main.querySelector('#file-preview').innerHTML = fileHTML(pendingFile) || '<em style="color:var(--ink-soft);font-size:13px;">No file attached</em>';
+  }
+  main.querySelector('#file-name').addEventListener('input', (e) => {
+    if(!pendingFile) pendingFile = { name:'', src:'' };
+    pendingFile.name = e.target.value;
+    updateFilePreview();
+  });
+  main.querySelector('#file-url').addEventListener('input', (e) => {
+    if(!pendingFile) pendingFile = { name:'', src:'' };
+    pendingFile.src = e.target.value;
+    if(!pendingFile.name) pendingFile.name = e.target.value.split('/').pop() || 'file';
+    updateFilePreview();
+  });
+  main.querySelector('#file-upload').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(file.size > 3.5 * 1024 * 1024){
+      showAlert('That file is over ~3.5MB, which is too large for this preview storage. Try a smaller file or paste a hosted link instead.');
+      e.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      pendingFile = { name: main.querySelector('#file-name').value || file.name, src: reader.result };
+      main.querySelector('#file-name').value = pendingFile.name;
+      updateFilePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  main.querySelector('#file-remove').addEventListener('click', () => {
+    pendingFile = null;
+    main.querySelector('#file-name').value = '';
+    main.querySelector('#file-url').value = '';
+    updateFilePreview();
+  });
+
+  // style controls (title/subtitle align + color)
+  wireStyleControls(main, 'title', l);
+  wireStyleControls(main, 'subtitle', l);
+
+  // rich text toolbars
+  wireRTEToolbar(main, 'learn');
+  wireRTEToolbar(main, 'example');
+  main.querySelectorAll('.rte').forEach(el => {
+    el.addEventListener('focus', () => { activeRTE = el; });
+  });
+
+  main.querySelector('#save-lesson').addEventListener('click', async () => {
+    l.title = escapeHTML(main.querySelector('#f-title').value || l.title);
+    l.subtitle = main.querySelector('#f-subtitle').value;
+    l.learnHTML = sanitizeRTE(main.querySelector('#rte-learn').innerHTML);
+    l.exampleHTML = sanitizeRTE(main.querySelector('#rte-example').innerHTML);
+    l.media = pendingMedia;
+    l.file = (pendingFile && pendingFile.src) ? pendingFile : null;
+    l.updatedAt = Date.now();
+    await persist();
+    flashToast('toast-lesson');
+    // refresh sidebar labels (title may have changed)
+    renderAdmin();
+  });
+  main.querySelector('#del-lesson-btn').addEventListener('click', () => {
+    document.querySelector(`[data-act="del-lesson"][data-mi="${mi}"][data-li="${li}"]`).click();
+  });
+}
+
+function styleControls(field, align, color){
+  return `
+    <div class="style-row">
+      <div class="align-group" data-align-for="${field}">
+        <button data-align="left" class="${align==='left'||!align?'active':''}">⟸</button>
+        <button data-align="center" class="${align==='center'?'active':''}">≡</button>
+        <button data-align="right" class="${align==='right'?'active':''}">⟹</button>
+      </div>
+      <div class="swatch-row" data-color-for="${field}">
+        ${SWATCHES.map(c => `<button class="swatch ${color===c?'active':''}" data-color="${c}" style="background:${c||'#fff'}"></button>`).join('')}
+        <input type="color" data-custom-for="${field}" value="${color || '#000000'}">
+      </div>
+    </div>
+  `;
+}
+function wireStyleControls(main, field, l){
+  const alignGroup = main.querySelector(`[data-align-for="${field}"]`);
+  alignGroup.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      alignGroup.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      if(field==='title') l.titleAlign = btn.dataset.align; else l.subtitleAlign = btn.dataset.align;
+    });
+  });
+  const colorRow = main.querySelector(`[data-color-for="${field}"]`);
+  colorRow.querySelectorAll('.swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      colorRow.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+      sw.classList.add('active');
+      if(field==='title') l.titleColor = sw.dataset.color; else l.subtitleColor = sw.dataset.color;
+    });
+  });
+  colorRow.querySelector(`[data-custom-for="${field}"]`).addEventListener('input', (e) => {
+    if(field==='title') l.titleColor = e.target.value; else l.subtitleColor = e.target.value;
+  });
+}
+
+function rteToolbar(field){
+  return `
+    <div class="rte-toolbar" data-toolbar-for="${field}">
+      <button class="wide" data-cmd="formatBlock" data-val="H3" title="Title block">Title</button>
+      <button class="wide" data-cmd="formatBlock" data-val="H4" title="Subtitle block">Subtitle</button>
+      <button class="wide" data-cmd="formatBlock" data-val="P" title="Body text">Text</button>
+      <span class="sep"></span>
+      <button data-cmd="bold" title="Bold"><b>B</b></button>
+      <button data-cmd="italic" title="Italic"><i>I</i></button>
+      <button data-cmd="underline" title="Underline"><u>U</u></button>
+      <button data-cmd="justifyLeft" title="Align left">⟸</button>
+      <button data-cmd="justifyCenter" title="Align center">≡</button>
+      <button data-cmd="justifyRight" title="Align right">⟹</button>
+      ${SWATCHES.filter(c=>c).map(c => `<button data-cmd="foreColor" data-val="${c}" style="background:${c};width:24px;height:24px;border-radius:50%;"></button>`).join('')}
+      <button data-cmd="removeFormat" title="Clear formatting">⨯</button>
+      <span class="sep"></span>
+      <button class="wide" data-cmd="insertImageBlock" title="Insert a photo anywhere in this text">🖼 Photo</button>
+    </div>
+  `;
+}
+function wireRTEToolbar(main, field){
+  const bar = main.querySelector(`[data-toolbar-for="${field}"]`);
+  const rte = main.querySelector(`#rte-${field}`);
+  bar.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if(btn.dataset.cmd === 'insertImageBlock'){
+        rte.focus();
+        const sel = window.getSelection();
+        let savedRange = null;
+        if(sel.rangeCount > 0 && rte.contains(sel.anchorNode)) savedRange = sel.getRangeAt(0).cloneRange();
+        showImageInsertModal((html) => {
+          rte.focus();
+          if(savedRange){
+            const sel2 = window.getSelection();
+            sel2.removeAllRanges();
+            sel2.addRange(savedRange);
+          }
+          document.execCommand('insertHTML', false, html);
+        });
+        return;
+      }
+      rte.focus();
+      document.execCommand(btn.dataset.cmd, false, btn.dataset.val || null);
+    });
+  });
+}
+
+function flashToast(id){
+  const t = document.getElementById(id);
+  if(!t) return;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+/* ---------- account settings ---------- */
+function renderAccountPanel(main){
+  main.innerHTML = `
+    <div class="panel">
+      <div class="path">Settings</div>
+      <h2>Account</h2>
+      <div class="field"><label>New username</label><input type="text" id="acc-user" placeholder="admin"></div>
+      <div class="field"><label>New password</label><input type="password" id="acc-pass" placeholder="••••••••"></div>
+      <div class="action-row">
+        <button class="btn btn-primary" id="save-account">Update credentials</button>
+        <span class="toast" id="toast-acc">Saved ✓</span>
+      </div>
+      <div class="warn-box">Reminder: this login only gates the editing UI in this preview — it isn't a substitute for real backend authentication in production.</div>
+      <div class="danger-zone">
+        <button class="btn" id="reset-content">Reset all content to defaults</button>
+      </div>
+    </div>
+  `;
+  main.querySelector('#save-account').addEventListener('click', async () => {
+    const u = main.querySelector('#acc-user').value.trim();
+    const p = main.querySelector('#acc-pass').value;
+    const current = await getCredentials();
+    const next = { user: u || current.user, pass: p || current.pass };
+    await storageSet('cms-credentials', next, true);
+    flashToast('toast-acc');
+  });
+  main.querySelector('#reset-content').addEventListener('click', () => {
+    showConfirm('This replaces ALL modules and lessons with the original defaults. Continue?', async () => {
+      state.modules = JSON.parse(JSON.stringify(DEFAULT_MODULES));
+      state.selModule = 0; state.selLesson = 0; state.editingAccount = false;
+      await persist();
+      renderAdmin();
+    }, 'Reset content');
+  });
+}
+</script>
+</body>
+</html>
