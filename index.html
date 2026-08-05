@@ -37,7 +37,7 @@
     overflow-x:hidden;
   }
 
-  .dash-wrap{ position:relative; z-index:1; max-width:1280px; min-height: 800px; margin:0 auto; padding:55px 20px 50px; }
+  .dash-wrap{ position:relative; z-index:1; max-width:1280px; min-height: 1000px; margin:0 auto; padding:55px 20px 50px; }
   .dash-card{
     background:#fffef8; border-radius:28px; box-shadow:0 30px 30px -30px rgba(0,0,0,0.35);
     display:flex; overflow:hidden; min-height:80vh;
@@ -231,6 +231,8 @@
   .cal-grid .day.today{ background:var(--orange); color:#fff; border-color:var(--orange); font-weight:700; }
   .cal-grid .day.blank{ border:none; cursor:default; }
   .cal-grid .day-dots{ display:flex; gap:3px; height:7px; }
+
+  footer{ text-align:center; padding:10px 24px 10px; color:var(--ink-soft); font-size:12.5px; position:relative; z-index:1; }
 
   @media (max-width:900px){
     .dash-card{ flex-direction:column; }
