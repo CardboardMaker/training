@@ -39,7 +39,7 @@
 
   .dash-wrap{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:60px 20px 60px; }
   .dash-card{
-    background:#fffef8; border-radius:28px; box-shadow:0 30px 70px -30px rgba(0,0,0,0.35);
+    background:#fffef8; border-radius:28px; box-shadow:0 30px 30px -30px rgba(0,0,0,0.35);
     display:flex; overflow:hidden; min-height:80vh;
   }
 
@@ -107,7 +107,7 @@
   .toc-item.done .no{ color:var(--orange); }
 
   /* Me page */
-  .me-progress-card{ background:#b9efe6; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
+  .me-progress-card{ background:#d9f4ef; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
   .me-progress-top{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
   .me-progress-top .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:700; }
   .me-progress-top .big{ font-size:30px; font-weight:700; line-height:1; margin-top:4px; }
@@ -116,7 +116,7 @@
   .progress-bar-lg > div{ height:100%; background:var(--orange); border-radius:100px; }
 
   .me-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
-  .me-card{ background:#b9efe6; border-radius:16px; padding:20px; }
+  .me-card{ background:#d9f4ef; border-radius:16px; padding:20px; }
   .me-card-label{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--orange); font-weight:700; margin-bottom:8px; }
   .me-card-title{ font-size:16px; font-weight:700; margin-bottom:2px; }
   .me-card-sub{ font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; }
@@ -125,13 +125,13 @@
   }
 
   /* To-do widget (Calendar page, right column) — clean card style */
-  .events-card{ background:#fff; border-radius:16px; padding:20px 22px; margin-bottom:18px; }
+  .events-card{ background:#fffef8; border-radius:16px; padding:20px 22px; margin-bottom:18px; }
   .events-card h4{ margin:0 0 12px; font-size:15px; }
   .event-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; padding:8px 0; border-bottom:1px solid var(--line); }
   .event-row:last-child{ border-bottom:none; }
   .event-date{ color:var(--ink-soft); font-size:11.5px; white-space:nowrap; flex-shrink:0; }
 
-  .todo-card{ background:#fff; border-radius:16px; padding:20px 20px 18px; max-width:100%; box-sizing:border-box; }
+  .todo-card{ background:#fffef8; border-radius:16px; padding:20px 20px 18px; max-width:100%; box-sizing:border-box; }
   .todo-card-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .todo-card-head h4{ margin:0; font-size:19px; font-weight:700; }
   .todo-card-sub{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:11.5px; color:var(--ink-soft); margin:6px 0 12px; flex-wrap:wrap; }
@@ -203,7 +203,7 @@
   /* simple placeholder pages: account / calendar */
   .placeholder-page h1{ font-size:26px; margin:0 0 8px; }
   .placeholder-page p{ color:var(--ink-soft); font-size:14.5px; line-height:1.6; max-width:480px; }
-  .account-card{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px; max-width:420px; margin-top:20px; }
+  .account-card{ background:#fffef8; border:0px solid var(--line); border-radius:16px; padding:22px; max-width:420px; margin-top:20px; }
   .account-card .field{ margin-bottom:14px; }
   .avatar-row{ display:flex; align-items:center; gap:18px; margin-bottom:20px; }
   .avatar-big{
@@ -232,7 +232,7 @@
   .cal-grid .day.blank{ border:none; cursor:default; }
   .cal-grid .day-dots{ display:flex; gap:3px; height:7px; }
 
-  footer{ text-align:center; padding:20px 24px 10px; color:var(--ink-soft); font-size:12.5px; position:relative; z-index:1; }
+  footer{ text-align:center; padding:10px 24px 10px; color:var(--ink-soft); font-size:12.5px; position:relative; z-index:1; }
 
   @media (max-width:900px){
     .dash-card{ flex-direction:column; }
