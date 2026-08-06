@@ -258,6 +258,44 @@
   .login-card .error{ color:var(--orange); font-size:13px; font-weight:600; margin-top:10px; min-height:16px; }
   .login-card .hint{ margin-top:20px; font-size:12px; color:var(--ink-soft); background:rgba(164,223,220,0.35); border-radius:6px; padding:10px 12px; }
 
+  /* learner login (gates the public dashboard) */
+  body.learner-login-body{ background:#F3EEE0; min-height:100vh; }
+  .ll-wrap{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .ll-card{
+    background:#fff; border-radius:28px; overflow:hidden; display:flex; max-width:840px; width:100%;
+    min-height:520px; box-shadow:0 30px 70px -30px rgba(0,0,0,0.35);
+  }
+  .ll-visual{
+    flex:1; position:relative; padding:36px; display:flex; flex-direction:column; justify-content:space-between;
+    background:
+      radial-gradient(circle at 25% 18%, rgba(255,255,255,0.65), transparent 55%),
+      radial-gradient(circle at 75% 82%, var(--yellow), transparent 55%),
+      radial-gradient(circle at 15% 85%, var(--sky), transparent 55%),
+      var(--kraft);
+  }
+  .ll-mark, .ll-mark-dark{ font-size:26px; font-weight:800; color:#000; }
+  .ll-tag-eyebrow{ font-size:13px; font-weight:600; margin:0 0 6px; color:#000; opacity:.75; }
+  .ll-tag-title{ font-size:21px; font-weight:800; line-height:1.35; margin:0; max-width:260px; color:#000; }
+  .ll-form-side{ flex:1; padding:44px 40px; display:flex; flex-direction:column; justify-content:center; }
+  .ll-form-side h2{ margin:14px 0 6px; font-size:24px; }
+  .ll-sub{ color:var(--ink-soft); font-size:13.5px; margin:0 0 22px; line-height:1.5; }
+  .ll-form-side label{ display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin:14px 0 6px; }
+  .ll-form-side input[type=text], .ll-form-side input[type=password]{
+    width:100%; padding:11px 12px; border:2px solid var(--ink); border-radius:8px; font-family:inherit; font-size:14px; box-sizing:border-box;
+  }
+  .ll-pass-wrap{ position:relative; }
+  .ll-pass-wrap input{ padding-right:42px; }
+  .ll-eye{ position:absolute; right:8px; top:50%; transform:translateY(-50%); border:none; background:none; cursor:pointer; font-size:15px; }
+  .ll-form-side .error{ color:var(--orange); font-size:13px; font-weight:600; margin-top:10px; min-height:16px; }
+  .ll-form-side .hint{ margin-top:14px; font-size:12px; color:var(--ink-soft); background:rgba(164,223,220,0.35); border-radius:6px; padding:10px 12px; }
+  .ll-footnote{ text-align:center; font-size:12.5px; color:var(--ink-soft); margin-top:18px; }
+  .ll-link{ color:var(--orange); font-weight:700; }
+  @media (max-width:720px){
+    .ll-card{ flex-direction:column; min-height:0; }
+    .ll-visual{ min-height:170px; }
+    .ll-form-side{ padding:32px 24px; }
+  }
+
   .btn{ border-radius:100px; border:2px solid var(--ink); background:#fff; color:var(--ink); padding:9px 18px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; }
   .btn:hover{ opacity:0.85; }
   .btn-primary{ background:var(--orange); border-color:var(--orange); color:#fff; }
@@ -340,6 +378,11 @@
   .toast{ display:inline-block; font-size:12.5px; font-weight:700; color:#1e8a4c; opacity:0; transition:opacity .3s ease; }
   .toast.show{ opacity:1; }
   .danger-zone{ margin-top:30px; padding-top:18px; border-top:1px solid var(--line); }
+  .user-list{ border:2px solid var(--ink); border-radius:10px; overflow:hidden; }
+  .user-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
+  .user-row:last-child{ border-bottom:none; }
+  .user-row-name{ font-weight:700; font-size:14px; }
+  .user-row-meta{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
   .danger-zone .btn{ border-color:var(--orange); color:var(--orange); }
 
   .confirm-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:300; display:flex; align-items:center; justify-content:center; padding:20px; }
@@ -581,10 +624,13 @@ const DEFAULT_MODULES = [
    ============================================================ */
 const state = {
   modules: null,
-  authed: false,           // in-memory only — resets on reload by design
+  authed: false,           // admin (CMS) session — in-memory only, resets on reload
   selModule: 0,
   selLesson: 0,
-  loginError: ''
+  loginError: '',
+  users: null,             // learner accounts, managed by admin
+  learnerAuthed: false,    // learner (public site) session — in-memory only
+  learnerLoginError: ''
 };
 
 const SWATCHES = ['', '#FF6300', '#9EDBFF', '#FCDC67', '#000000'];
@@ -609,6 +655,20 @@ async function getCredentials(){
   }
   return c;
 }
+async function loadUsers(){
+  const saved = await storageGet('cms-users', true);
+  if(saved && Array.isArray(saved) && saved.length){
+    state.users = saved;
+  } else {
+    state.users = [
+      { id: uid(), name: 'Program Admin', username: 'educator', password: 'cardboard2026', role: 'Training Lead' }
+    ];
+    await storageSet('cms-users', state.users, true);
+  }
+}
+async function persistUsers(){
+  await storageSet('cms-users', state.users, true);
+}
 
 /* ============================================================
    ROUTER
@@ -617,6 +677,7 @@ window.addEventListener('hashchange', render);
 
 async function boot(){
   await loadModules();
+  await loadUsers();
   render();
 }
 boot();
@@ -626,7 +687,7 @@ function render(){
   if(hash.startsWith('#admin')){
     if(state.authed) renderAdmin(); else renderLogin();
   } else {
-    renderPublic();
+    if(state.learnerAuthed) renderPublic(); else renderLearnerLogin();
   }
 }
 
@@ -709,17 +770,20 @@ const RAIL_ICONS = {
 };
 
 // public-view-only state
-if(!state.pub) state.pub = {
-  module: 0, search: '', page: 'me', modal: null,
-  completions: {},   // "mi-li" -> "YYYY-MM-DD" the day it was marked complete
-  events: {},        // "YYYY-MM-DD" -> [{id, text}]
-  todos: [],         // [{id, text, done, priority}]
-  todoMemo: '',
-  todoAdding: false,
-  calYear: new Date().getFullYear(),
-  calMonth: new Date().getMonth(),
-  account: { name: 'Program Admin', role: 'Training Lead', avatar: null }
-};
+function defaultPubState(){
+  return {
+    module: 0, search: '', page: 'me', modal: null,
+    completions: {},   // "mi-li" -> "YYYY-MM-DD" the day it was marked complete
+    events: {},        // "YYYY-MM-DD" -> [{id, text}]
+    todos: [],         // [{id, text, done, priority}]
+    todoMemo: '',
+    todoAdding: false,
+    calYear: new Date().getFullYear(),
+    calMonth: new Date().getMonth(),
+    account: { name: 'Program Admin', role: 'Training Lead', avatar: null }
+  };
+}
+if(!state.pub) state.pub = defaultPubState();
 
 function todayStr(){
   const d = new Date();
@@ -1079,6 +1143,9 @@ function renderAccountPage(){
         <div class="field"><label>Role</label><input type="text" id="acc-role" value="${escapeHTML(acc.role)}"></div>
         <button class="btn btn-primary" id="acc-save">Save</button>
         <span class="toast" id="acc-toast">Saved ✓</span>
+        <div class="danger-zone">
+          <button class="btn" id="learner-logout">⎋ Log out</button>
+        </div>
       </div>
     </div>
   `;
@@ -1111,6 +1178,11 @@ function renderAccountPage(){
     acc.role = document.getElementById('acc-role').value || acc.role;
     flashToast('acc-toast');
 
+  });
+  document.getElementById('learner-logout').addEventListener('click', () => {
+    state.learnerAuthed = false;
+    state.learnerLoginError = '';
+    render();
   });
 }
 
@@ -1400,6 +1472,65 @@ function handlePublicClick(e){
 /* ============================================================
    ADMIN — LOGIN
    ============================================================ */
+/* ============================================================
+   LEARNER LOGIN (gates the public site)
+   ============================================================ */
+function renderLearnerLogin(){
+  document.body.className = 'learner-login-body';
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="ll-wrap">
+      <div class="ll-card">
+        <div class="ll-visual">
+          <div class="ll-mark">✂</div>
+          <div class="ll-tag">
+            <p class="ll-tag-eyebrow">You can easily</p>
+            <p class="ll-tag-title">Get access to your Cardboard Maker training, anytime.</p>
+          </div>
+        </div>
+        <div class="ll-form-side">
+          <div class="ll-mark ll-mark-dark">✂</div>
+          <h2>Log in to continue</h2>
+          <p class="ll-sub">Enter the account details your program admin gave you to access the modules.</p>
+          <form id="learner-login-form">
+            <label>Username</label>
+            <input type="text" id="ll-user" autocomplete="username" required>
+            <label>Password</label>
+            <div class="ll-pass-wrap">
+              <input type="password" id="ll-pass" autocomplete="current-password" required>
+              <button type="button" class="ll-eye" id="ll-eye" title="Show password">👁</button>
+            </div>
+            <div class="error" id="ll-error">${state.learnerLoginError}</div>
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          </form>
+          <p class="ll-footnote">Don't have an account? <span class="ll-link">Ask your admin to add you.</span></p>
+          <div class="hint" style="margin-top:14px;">Demo login: <strong>educator</strong> / <strong>cardboard2026</strong></div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('ll-eye').addEventListener('click', () => {
+    const pass = document.getElementById('ll-pass');
+    pass.type = pass.type === 'password' ? 'text' : 'password';
+  });
+  document.getElementById('learner-login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('ll-user').value.trim();
+    const password = document.getElementById('ll-pass').value;
+    const match = state.users.find(u => u.username === username && u.password === password);
+    if(match){
+      state.learnerAuthed = true;
+      state.learnerLoginError = '';
+      if(!state.pub) state.pub = defaultPubState();
+      state.pub.account = { name: match.name, role: match.role, avatar: (state.pub.account && state.pub.account.avatar) || null };
+      render();
+    } else {
+      state.learnerLoginError = 'Incorrect username or password.';
+      render();
+    }
+  });
+}
+
 function renderLogin(){
   document.body.className = '';
   const app = document.getElementById('app');
@@ -1491,6 +1622,7 @@ function renderAdmin(){
         <div id="tree">${treeHTML}</div>
         <div class="sidebar-footer">
           <a href="#" id="view-site">↗ View public site</a>
+          <button data-act="manage-users">👥 Manage users</button>
           <button data-act="account">⚙ Account settings</button>
           <button data-act="logout">⎋ Log out</button>
         </div>
@@ -1500,7 +1632,9 @@ function renderAdmin(){
   `;
 
   const main = document.getElementById('admin-main');
-  if(state.editingAccount){
+  if(state.editingUsers){
+    renderUsersPanel(main);
+  } else if(state.editingAccount){
     renderAccountPanel(main);
   } else if(l){
     renderLessonEditor(main, m, l, state.selModule, state.selLesson);
@@ -1515,14 +1649,16 @@ function renderAdmin(){
 
 function wireAdminEvents(){
   document.getElementById('view-site').addEventListener('click', (e) => { e.preventDefault(); location.hash = ''; });
-  document.querySelector('[data-act="logout"]').addEventListener('click', () => { state.authed = false; state.editingAccount=false; render(); });
-  document.querySelector('[data-act="account"]').addEventListener('click', () => { state.editingAccount = true; state.selLesson = -1; renderAdmin(); });
+  document.querySelector('[data-act="logout"]').addEventListener('click', () => { state.authed = false; state.editingAccount=false; state.editingUsers=false; render(); });
+  document.querySelector('[data-act="account"]').addEventListener('click', () => { state.editingAccount = true; state.editingUsers = false; state.selLesson = -1; renderAdmin(); });
+  document.querySelector('[data-act="manage-users"]').addEventListener('click', () => { state.editingUsers = true; state.editingAccount = false; state.selLesson = -1; renderAdmin(); });
   document.querySelector('[data-act="add-module"]').addEventListener('click', async () => {
     const n = state.modules.length + 1;
     state.modules.push(mod(`Module ${String(n).padStart(2,'0')}`, 'Untitled module', []));
     state.selModule = state.modules.length - 1;
     state.selLesson = -1;
-    state.editingAccount = false;
+    state.editingAccount = false; state.editingUsers = false;
+    state.editingUsers = false;
     await persist();
     renderAdmin();
   });
@@ -1533,7 +1669,7 @@ function wireAdminEvents(){
     if(!btn && treeItem && treeItem.classList.contains('tree-lesson')){
       state.selModule = Number(treeItem.dataset.mi);
       state.selLesson = Number(treeItem.dataset.li);
-      state.editingAccount = false;
+      state.editingAccount = false; state.editingUsers = false;
       renderAdmin();
       return;
     }
@@ -1543,7 +1679,7 @@ function wireAdminEvents(){
     const li = btn.dataset.li !== undefined ? Number(btn.dataset.li) : null;
 
     if(act === 'sel-module'){
-      state.selModule = mi; state.selLesson = -1; state.editingAccount = false; renderAdmin(); return;
+      state.selModule = mi; state.selLesson = -1; state.editingAccount = false; state.editingUsers = false; renderAdmin(); return;
     }
     if(act === 'add-lesson'){
       state.modules[mi].lessons.push(lesson('New lesson', 'Write what this lesson teaches…', 'Add a short real-world example…'));
@@ -1985,10 +2121,81 @@ function renderAccountPanel(main){
   main.querySelector('#reset-content').addEventListener('click', () => {
     showConfirm('This replaces ALL modules and lessons with the original defaults. Continue?', async () => {
       state.modules = JSON.parse(JSON.stringify(DEFAULT_MODULES));
-      state.selModule = 0; state.selLesson = 0; state.editingAccount = false;
+      state.selModule = 0; state.selLesson = 0; state.editingAccount = false; state.editingUsers = false;
       await persist();
       renderAdmin();
     }, 'Reset content');
+  });
+}
+
+function renderUsersPanel(main){
+  const rows = state.users.map(u => `
+    <div class="user-row">
+      <div class="user-row-info">
+        <div class="user-row-name">${escapeHTML(u.name)}</div>
+        <div class="user-row-meta">@${escapeHTML(u.username)} · ${escapeHTML(u.role)}</div>
+      </div>
+      <button class="btn btn-sm" data-del-user="${u.id}">Remove</button>
+    </div>
+  `).join('');
+
+  main.innerHTML = `
+    <div class="panel">
+      <div class="path">Users</div>
+      <h2>Manage platform users</h2>
+      <p style="color:var(--ink-soft);font-size:13.5px;margin:0 0 18px;">
+        Only people you add here can log in to the lesson site. The CMS itself (this dashboard) stays admin-only,
+        separate from these accounts.
+      </p>
+
+      <div class="user-list">
+        ${rows || '<div class="admin-empty" style="padding:20px 0;">No users yet — add one below.</div>'}
+      </div>
+
+      <div class="panel" style="margin-top:26px;">
+        <h3 style="margin:0 0 14px;font-size:16px;">Add a user</h3>
+        <div class="field"><label>Full name</label><input type="text" id="nu-name" placeholder="Jamie Lee"></div>
+        <div class="field"><label>Username</label><input type="text" id="nu-username" placeholder="jamie"></div>
+        <div class="field"><label>Password</label><input type="text" id="nu-password" placeholder="Choose a password"></div>
+        <div class="field"><label>Role</label><input type="text" id="nu-role" placeholder="Educator"></div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="add-user-btn">Add user</button>
+          <span class="toast" id="toast-user">Added ✓</span>
+        </div>
+      </div>
+
+      <div class="warn-box">Reminder: like the admin login, this is a UI-level access list for this preview, not hardened production authentication (passwords aren't hashed, etc).</div>
+    </div>
+  `;
+
+  main.querySelector('#add-user-btn').addEventListener('click', async () => {
+    const name = main.querySelector('#nu-name').value.trim();
+    const username = main.querySelector('#nu-username').value.trim();
+    const password = main.querySelector('#nu-password').value;
+    const role = main.querySelector('#nu-role').value.trim() || 'Educator';
+    if(!name || !username || !password){
+      showAlert('Please fill in name, username, and password before adding a user.');
+      return;
+    }
+    if(state.users.some(u => u.username === username)){
+      showAlert('That username is already taken — pick a different one.');
+      return;
+    }
+    state.users.push({ id: uid(), name, username, password, role });
+    await persistUsers();
+    flashToast('toast-user');
+    renderUsersPanel(main);
+  });
+
+  main.querySelectorAll('[data-del-user]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const u = state.users.find(x => x.id === btn.dataset.delUser);
+      showConfirm(`Remove ${u ? u.name : 'this user'}? They won't be able to log in anymore.`, async () => {
+        state.users = state.users.filter(x => x.id !== btn.dataset.delUser);
+        await persistUsers();
+        renderUsersPanel(main);
+      }, 'Remove user');
+    });
   });
 }
 </script>
