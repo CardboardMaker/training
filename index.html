@@ -31,22 +31,34 @@
 
   /* ============ PUBLIC SITE — DASHBOARD SHELL ============ */
   body.public-body{
-    background: url("assets/image/sitebackground.png") center center / cover no-repeat fixed;
+    background:#F6F1E7;
     min-height:100vh;
     position:relative;
     overflow-x:hidden;
   }
+  .blob{ position:fixed; border-radius:50%; z-index:0; pointer-events:none; }
+  .blob-mint{ width:520px; height:520px; background:var(--kraft); top:-220px; right:-160px; }
+  .blob-yellow{ width:420px; height:420px; background:var(--yellow); bottom:-200px; left:-160px; opacity:.9; }
 
-  .dash-wrap{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:45px 20px 25px; }
+  .dash-wrap{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:28px 20px 60px; }
   .dash-card{
-    background:#fffef8; border-radius:28px; box-shadow:0 30px 30px -30px rgba(0,0,0,0.2);
-     display:flex; overflow:hidden; aspect-ratio:16/9; width:100%;
+    background:#fff; border-radius:28px; box-shadow:0 30px 70px -30px rgba(0,0,0,0.35);
+    display:flex; overflow:hidden; aspect-ratio:16/10; width:100%;
+  }
+  .dash-content-col{ flex:1; min-width:0; display:flex; flex-direction:column; }
+  .dash-content-row{ flex:1; min-height:0; display:flex; }
+  .preview-banner{
+    flex:0 0 auto; background:var(--yellow); color:var(--ink); font-size:13px; font-weight:700;
+    padding:10px 20px; display:flex; align-items:center; justify-content:center; gap:14px;
+  }
+  .preview-banner button{
+    border:2px solid var(--ink); background:#fff; border-radius:100px; padding:4px 12px;
+    font-weight:700; font-size:12px; cursor:pointer; font-family:inherit;
   }
 
   /* sidebar */
   .rail{ width:84px; flex:0 0 auto; background:#000; padding:26px 12px; display:flex; flex-direction:column; align-items:center; }
-  .rail .cap svg{ display: none }
-  .rail .cap{ width: 34px; height: 34px; margin-bottom: 25px; background: url("assets/image/logo.png") center/contain no-repeat; }
+  .rail .cap{ width:34px; height:34px; margin:0 0 30px; color:var(--kraft); }
   .rail-main{ display:flex; flex-direction:column; gap:6px; width:100%; align-items:center; }
   .rail-item{
     display:flex; align-items:center; justify-content:center; padding:13px; border-radius:12px; cursor:pointer;
@@ -56,31 +68,46 @@
   .rail-avatar{ width:26px; height:26px; border-radius:50%; object-fit:cover; flex-shrink:0; }
   .rail-item:hover{ background:rgba(255,255,255,0.07); color:#fff; }
   .rail-item.active{ background:var(--orange); color:#fff; }
+  .rail-item.view-as-active{ background:var(--yellow); color:#000; }
   .rail-spacer{ flex:1; }
   .rail-bottom{ border-top:1px solid rgba(255,255,255,0.15); padding-top:10px; margin-top:8px; display:flex; flex-direction:column; gap:6px; width:100%; align-items:center; }
   .rail-version{ color:rgba(255,255,255,0.32); font-size:10px; text-align:center; padding-top:6px; }
 
   /* main pane */
-  .dash-main{ flex:1; min-width:0; background:#FFFFFF; padding:38px 34px; overflow-y:auto; }
+  .dash-main{ flex:1; min-width:0; background:#FBF8F1; padding:38px 34px; overflow-y:auto; display:flex; flex-direction:column; }
+  .dash-hello{ flex:0 0 auto; }
   .dash-hello h1{ margin:0 0 4px; font-size:30px; }
+  .dash-hello-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .dash-hello-row h1{ margin:0 0 4px; }
+  .status-badge{ display:inline-block; padding:5px 13px; border-radius:100px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
   .dash-hello p{ margin:0 0 22px; color:var(--ink-soft); font-size:15px; }
-  .dash-search{ position:relative; margin-bottom:26px; }
+  .dash-search-row{ display:flex; align-items:center; gap:12px; margin-bottom:26px; }
+  .dash-search-row .dash-search{ flex:1; margin-bottom:0; }
+  .dash-search{ position:relative; flex:0 0 auto; }
   .dash-search input{
     width:100%; padding:13px 16px 13px 42px; border-radius:14px; border:1px solid var(--line);
-    background:#FFFFFF; font-family:inherit; font-size:14px;
+    background:#fff; font-family:inherit; font-size:14px;
   }
   .dash-search .ic{ position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--ink-soft); font-size:15px; }
 
-  .card-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; }
+  .card-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:18px;
+    flex:1; min-height:0; overflow-y:auto; padding-right:6px; align-content:start;
+  }
   .mod-card{
     border-radius:20px; padding:22px; cursor:pointer; position:relative; overflow:hidden;
     min-height:150px; border:2px solid transparent; transition:transform .15s ease;
   }
   .mod-card:hover{ transform:translateY(-2px); }
   .mod-card.active{ border-color:var(--ink); }
-  .mod-card h3{ margin:0 0 10px; font-size:19px; }
+  .mod-card h3{ margin:0 0 10px; font-size:19px; padding-right:26px; }
   .mod-card .stats{ font-size:12.5px; line-height:1.7; color:rgba(0,0,0,0.65); font-weight:600; }
   .mod-card .icon{ position:absolute; right:16px; bottom:12px; width:56px; height:56px; opacity:.9; }
+  .mod-card-edit{
+    position:absolute; top:14px; right:14px; border:none; background:rgba(255,255,255,0.7);
+    border-radius:50%; width:26px; height:26px; cursor:pointer; font-size:12px; line-height:1;
+  }
+  .mod-card-edit:hover{ background:#fff; }
 
   /* right panel (Modules page TOC) */
   .dash-side{ width:300px; flex:0 0 auto; padding:34px 26px; border-left:1px solid var(--line); overflow-y:auto; }
@@ -107,7 +134,7 @@
   .toc-item.done .no{ color:var(--orange); }
 
   /* Me page */
-  .me-progress-card{ background:#d9f4ef; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
+  .me-progress-card{ background:#fff; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
   .me-progress-top{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
   .me-progress-top .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:700; }
   .me-progress-top .big{ font-size:30px; font-weight:700; line-height:1; margin-top:4px; }
@@ -116,7 +143,7 @@
   .progress-bar-lg > div{ height:100%; background:var(--orange); border-radius:100px; }
 
   .me-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
-  .me-card{ background:#d9f4ef; border-radius:16px; padding:20px; }
+  .me-card{ background:#fff; border-radius:16px; padding:20px; }
   .me-card-label{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--orange); font-weight:700; margin-bottom:8px; }
   .me-card-title{ font-size:16px; font-weight:700; margin-bottom:2px; }
   .me-card-sub{ font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; }
@@ -125,13 +152,13 @@
   }
 
   /* To-do widget (Calendar page, right column) — clean card style */
-  .events-card{ background:#fffef8; border-radius:16px; padding:20px 22px; margin-bottom:18px; }
+  .events-card{ background:#fff; border-radius:16px; padding:20px 22px; margin-bottom:18px; }
   .events-card h4{ margin:0 0 12px; font-size:15px; }
-  .event-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; padding:8px 0; background:#fffef8; }
+  .event-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; padding:8px 0; border-bottom:1px solid var(--line); }
   .event-row:last-child{ border-bottom:none; }
   .event-date{ color:var(--ink-soft); font-size:11.5px; white-space:nowrap; flex-shrink:0; }
 
-  .todo-card{ background:#fffef8; border-radius:16px; padding:20px 20px 18px; max-width:100%; box-sizing:border-box; }
+  .todo-card{ background:#fff; border-radius:16px; padding:20px 20px 18px; max-width:100%; box-sizing:border-box; }
   .todo-card-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .todo-card-head h4{ margin:0; font-size:19px; font-weight:700; }
   .todo-card-sub{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:11.5px; color:var(--ink-soft); margin:6px 0 12px; flex-wrap:wrap; }
@@ -179,6 +206,8 @@
     border:2px solid var(--ink); background:#fff; cursor:pointer; font-weight:700; font-size:15px;
   }
   .modal-card .m-eyebrow{ font-size:11px; color:var(--orange); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin:0 0 6px; }
+  .modal-top-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .modal-top-row .m-eyebrow{ margin:0 0 6px; }
   .modal-card h3{ margin:0 0 6px; font-size:21px; }
   .modal-card .m-subtitle{ margin:0 0 16px; color:var(--ink-soft); font-size:14px; }
   .modal-card .label{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin:16px 0 6px; font-weight:700; }
@@ -198,12 +227,12 @@
     padding:9px 16px; border-radius:100px; border:2px solid var(--ink);
   }
   .file-attach a:hover{ opacity:0.85; }
-  .modal-mark{ margin-top:20px; text-align:center; }
+  .modal-mark{ margin-top:20px; text-align:left; }
 
   /* simple placeholder pages: account / calendar */
   .placeholder-page h1{ font-size:26px; margin:0 0 8px; }
-  .placeholder-page p{ color:var(--ink-soft); font-size:14.5px; line-height:1.6; max-width:720px; }
-  .account-card{ background:#f2f2f2; border-radius:16px; padding:22px; max-width:720px; margin-top:20px; }
+  .placeholder-page p{ color:var(--ink-soft); font-size:14.5px; line-height:1.6; max-width:480px; }
+  .account-card{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px; max-width:420px; margin-top:20px; }
   .account-card .field{ margin-bottom:14px; }
   .avatar-row{ display:flex; align-items:center; gap:18px; margin-bottom:20px; }
   .avatar-big{
@@ -211,9 +240,14 @@
     display:flex; align-items:center; justify-content:center; font-weight:700; font-size:22px; color:#000; overflow:hidden;
   }
   .avatar-big img{ width:100%; height:100%; object-fit:cover; }
-  
-  .cal-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; width:100%; }
-  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-top:16px; width:100%; }
+  .status-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+  .status-row-sub{ font-size:12px; color:var(--ink-soft); }
+  .activity-block{ margin-top:22px; padding-top:16px; border-top:1px solid var(--line); }
+  .activity-row{ display:flex; justify-content:space-between; gap:10px; font-size:12.5px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .activity-row:last-child{ border-bottom:none; }
+  .activity-time{ color:var(--ink-soft); white-space:nowrap; flex-shrink:0; }
+
+  .cal-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; max-width:520px; }
   .cal-nav{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; }
   .cal-legend{ display:flex; gap:16px; font-size:12px; color:var(--ink-soft); margin:12px 0 4px; align-items:center; }
   .cal-legend span{ display:flex; align-items:center; gap:6px; }
@@ -221,10 +255,10 @@
   .dot-mint{ background:var(--kraft); }
   .dot-orange{ background:var(--orange); }
 
-  .cal-grid{ display:grid; grid-template-columns:repeat(7,90px); gap:10px; width:fit-content; }
-  .cal-grid .dow{ font-size:11px; text-align:left; color:var(--ink-soft); font-weight:700; text-transform:uppercase; }
+  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-top:16px; max-width:520px; }
+  .cal-grid .dow{ font-size:11px; text-align:center; color:var(--ink-soft); font-weight:700; text-transform:uppercase; }
   .cal-grid .day{
-    aspect-ratio:3/2; border-radius:8px; background:#f2f2f2;
+    aspect-ratio:1; border-radius:8px; background:#fff; border:1px solid var(--line);
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
     font-size:12.5px; cursor:pointer;
   }
@@ -233,10 +267,13 @@
   .cal-grid .day.blank{ border:none; cursor:default; }
   .cal-grid .day-dots{ display:flex; gap:3px; height:7px; }
 
-  footer{ text-align:center; padding:10px 24px 10px; color:var(--ink-soft); font-size:12.5px; position:relative; z-index:1; }
+  footer{ text-align:center; padding:20px 24px 10px; color:var(--ink-soft); font-size:12.5px; position:relative; z-index:1; }
 
   @media (max-width:900px){
-    .dash-card{ flex-direction:column; }
+    .dash-card{ flex-direction:column; aspect-ratio:auto; }
+    .dash-content-row{ flex-direction:column; }
+    .dash-main{ overflow-y:visible; }
+    .card-grid{ overflow-y:visible; flex:none; }
     .rail{ width:100%; flex-direction:row; padding:12px 10px; align-items:center; flex-wrap:wrap; }
     .rail .cap{ margin:0 10px 0 0; }
     .rail-main, .rail-bottom{ flex-direction:row; border:none; margin:0; padding:0; }
@@ -303,36 +340,6 @@
   .btn-sm{ padding:5px 12px; font-size:12px; }
   .btn-icon{ width:28px; height:28px; padding:0; border-radius:6px; font-size:13px; line-height:1; }
 
-  .admin-shell{ display:flex; min-height:100vh; background:#fff; }
-  .admin-sidebar{ width:320px; flex:0 0 auto; background:#000; color:#fff; padding:22px 16px; overflow-y:auto; }
-  .admin-sidebar h1{ font-size:17px; margin:0 0 2px; color:#fff; }
-  .admin-sidebar .tag{ font-size:11px; color:var(--sky); text-transform:uppercase; letter-spacing:.1em; margin:0 0 18px; }
-  .sidebar-actions{ display:flex; gap:8px; margin-bottom:18px; }
-  .sidebar-actions .btn{ flex:1; font-size:12px; padding:8px 10px; }
-  .tree-module{ margin-bottom:6px; border-radius:8px; overflow:hidden; }
-  .tree-module-head{
-    display:flex; align-items:center; gap:8px; padding:10px 10px; background:rgba(255,255,255,0.06);
-    cursor:pointer; border-radius:8px;
-  }
-  .tree-module-head.active{ background:var(--orange); }
-  .tree-module-head .num{ font-size:11px; font-weight:700; opacity:.7; }
-  .tree-module-head .name{ flex:1; font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .tree-lessons{ padding:4px 4px 8px 26px; display:flex; flex-direction:column; gap:2px; }
-  .tree-lesson{
-    display:flex; align-items:center; gap:6px; padding:7px 8px; border-radius:6px; cursor:pointer;
-    font-size:12.5px; color:rgba(255,255,255,0.8);
-  }
-  .tree-lesson.active{ background:var(--sky); color:#000; font-weight:700; }
-  .tree-lesson .name{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .tree-reorder{ display:flex; gap:2px; }
-  .tree-reorder button{ background:none; border:none; color:inherit; cursor:pointer; font-size:11px; padding:2px 4px; opacity:0.7; }
-  .tree-reorder button:hover{ opacity:1; }
-  .tree-add-lesson{ margin:2px 0 0 0; font-size:11.5px; color:var(--yellow); background:none; border:none; cursor:pointer; padding:4px 8px; text-align:left; }
-  .sidebar-footer{ margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.15); }
-  .sidebar-footer a, .sidebar-footer button{ display:block; width:100%; text-align:left; background:none; border:none; color:rgba(255,255,255,0.75); font-size:12.5px; padding:8px 6px; cursor:pointer; text-decoration:none; }
-  .sidebar-footer a:hover, .sidebar-footer button:hover{ color:#fff; }
-
-  .admin-main{ flex:1; padding:30px 40px 80px; overflow-y:auto; max-width:900px; }
   .admin-empty{ color:var(--ink-soft); padding:60px 0; text-align:center; }
   .panel{ margin-bottom:28px; }
   .panel h2{ font-size:20px; margin:0 0 4px; }
@@ -379,7 +386,8 @@
   .toast.show{ opacity:1; }
   .danger-zone{ margin-top:30px; padding-top:18px; border-top:1px solid var(--line); }
   .user-list{ border:2px solid var(--ink); border-radius:10px; overflow:hidden; }
-  .user-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
+  .user-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; flex-wrap:wrap; }
+  .status-select{ border:2px solid var(--ink); border-radius:8px; padding:6px 8px; font-family:inherit; font-size:12.5px; background:#fff; }
   .user-row:last-child{ border-bottom:none; }
   .user-row-name{ font-weight:700; font-size:14px; }
   .user-row-meta{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
@@ -464,9 +472,94 @@ function showAlert(message){
     if(e.target === overlay || e.target.dataset.confirm === 'ok') overlay.remove();
   });
 }
+function showActivityLog(user){
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  const log = (user && user.activityLog) || [];
+  overlay.innerHTML = `
+    <div class="confirm-box" style="max-width:420px;text-align:left;max-height:70vh;overflow-y:auto;">
+      <p style="font-weight:700;margin-bottom:4px;">${escapeHTML(user ? user.name : 'Activity')}</p>
+      <p style="font-size:12px;color:var(--ink-soft);margin:0 0 14px;">Recent activity on this account</p>
+      ${log.length ? log.map(e => `
+        <div class="activity-row">
+          <span>${escapeHTML(e.action)}</span>
+          <span class="activity-time">${formatRelativeDate(e.ts)}</span>
+        </div>`).join('') : '<div class="nav-empty" style="padding:10px 0;">Nothing logged yet.</div>'}
+      <div class="confirm-actions" style="margin-top:16px;">
+        <button class="btn" data-confirm="cancel">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay || e.target.dataset.confirm === 'cancel') overlay.remove();
+  });
+}
 
-// Lets an admin drop a photo at the cursor position inside a rich-text field,
-// with a choice of layout (left/right/center/full-width) — used by the
+// Admin's module editor — opens as an overlay right from the Modules page
+// card grid, so editing happens in the same place content is browsed.
+function showModuleEditPopup(m, mi){
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = `
+    <div class="confirm-box" style="max-width:420px;text-align:left;">
+      <p style="font-weight:700;margin-bottom:14px;">Edit module</p>
+      <div class="field"><label>Eyebrow label</label><input type="text" id="mod-eyebrow" value="${escapeHTML(m.eyebrow)}"></div>
+      <div class="field"><label>Module title</label><input type="text" id="mod-title" value="${escapeHTML(m.title.replace(/&amp;/g,'&'))}"></div>
+      <div class="field">
+        <label>Accent color (card tint)</label>
+        <div class="swatch-row" id="mod-accent-row">
+          ${SWATCHES.map(c => `<button class="swatch ${m.accent===c?'active':''}" data-color="${c}" style="background:${c||'#A4DFDC'}"></button>`).join('')}
+          <input type="color" id="mod-accent-custom" value="${m.accent || '#A4DFDC'}">
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--ink-soft);margin:0 0 4px;">${m.lessons.length} lesson${m.lessons.length===1?'':'s'} in this module — add more from the lesson list on the right.</p>
+      <div class="confirm-actions" style="justify-content:space-between;margin-top:16px;">
+        <button class="btn" id="mod-delete-btn" style="border-color:var(--orange);color:var(--orange);">Delete module</button>
+        <div style="display:flex;gap:10px;">
+          <button class="btn" data-confirm="cancel">Cancel</button>
+          <button class="btn btn-primary" id="mod-save-btn">Save</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  let pendingAccent = m.accent;
+  overlay.querySelectorAll('#mod-accent-row .swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      pendingAccent = sw.dataset.color;
+      overlay.querySelectorAll('#mod-accent-row .swatch').forEach(x => x.classList.remove('active'));
+      sw.classList.add('active');
+    });
+  });
+  overlay.querySelector('#mod-accent-custom').addEventListener('input', (e) => { pendingAccent = e.target.value; });
+
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay || e.target.dataset.confirm === 'cancel') overlay.remove();
+  });
+  overlay.querySelector('#mod-save-btn').addEventListener('click', async () => {
+    m.eyebrow = overlay.querySelector('#mod-eyebrow').value || m.eyebrow;
+    m.title = escapeHTML(overlay.querySelector('#mod-title').value || m.title);
+    m.accent = pendingAccent;
+    logActivity(state.currentUser, `Edited module "${m.title}"`);
+    await persist();
+    overlay.remove();
+    renderCardGrid();
+    renderSidePanel();
+  });
+  overlay.querySelector('#mod-delete-btn').addEventListener('click', () => {
+    showConfirm(`Delete "${m.title.replace(/&amp;/g,'&')}" and all its lessons?`, async () => {
+      const idx = state.modules.indexOf(m);
+      state.modules.splice(idx, 1);
+      state.pub.module = Math.max(0, Math.min(state.pub.module, state.modules.length - 1));
+      logActivity(state.currentUser, `Deleted module "${m.title}"`);
+      await persist();
+      overlay.remove();
+      renderCardGrid();
+      renderSidePanel();
+    }, 'Delete module');
+  });
+}
+
 // "🖼 Photo" toolbar button so photos can go anywhere in the text, not just
 // in one fixed hero-media slot.
 function showImageInsertModal(onInsert){
@@ -546,77 +639,358 @@ function lesson(title, learn, example){
     updatedAt: null
   };
 }
+// Renders an array of content "blocks" into HTML:
+//  - a plain string -> <p>
+//  - an array of strings -> <ul><li>
+//  - {h, p} -> a bold sub-heading followed by its paragraph
+function blocksToHTML(blocks){
+  return blocks.map(b => {
+    if(Array.isArray(b)) return '<ul>' + b.map(li => `<li>${escapeHTML(li)}</li>`).join('') + '</ul>';
+    if(b && typeof b === 'object' && b.h) return `<p><strong>${escapeHTML(b.h)}</strong>${b.p ? '<br>'+escapeHTML(b.p) : ''}</p>`;
+    return `<p>${escapeHTML(b)}</p>`;
+  }).join('');
+}
+function richLesson(title, learnBlocks, exampleBlocks){
+  return {
+    id: uid(), title, subtitle: '',
+    titleAlign: 'left', titleColor: '', subtitleAlign: 'left', subtitleColor: '',
+    learnHTML: blocksToHTML(learnBlocks),
+    exampleHTML: blocksToHTML(exampleBlocks),
+    media: null,
+    file: null,
+    updatedAt: null
+  };
+}
 function mod(eyebrow, title, lessons){
   return { id: uid(), eyebrow, title, accent: '', lessons };
 }
 
 const DEFAULT_MODULES = [
   mod("Module 01", "The Cardboard Maker Story", [
-    lesson("The Making of the Maker", "Every child has imagined something that doesn't exist. - What if I could actually make it? That question became the beginning of Cardboard Maker, the founding program of Little Lot.", "What's the latest invention you've imagined?"),
-    lesson("Introduce Children to a Design World", "The program's purpose is to open up a design-interactive world for children — showing them, through building, that they have the power to create change around them.", "A child who assumes furniture and toys are just 'how things are' builds her own version of a chair and realizes she could have made it differently."),
-    lesson("Cardboard and Code", "Cardboard Maker introduces its own maker toolkit, nicknamed Stupid Coder internally, which pairs simple circuits with cardboard building so a design idea becomes interactive instead of static.", "A child adds a button and an LED from the kit to her cardboard house, so a light turns on the moment someone 'arrives home.'"),
-    lesson("Innovator Experience", "The kit and templates are just a starting point — the defining part of the program is the human presence: an educator paying attention, responding, and building alongside the child.", "Rather than correcting a child's wobbly hinge, an educator sits down and helps her test it together, letting the fix come from her.")
+    richLesson("The Making of the Maker",
+      [
+        `Every child has imagined something that doesn't exist. — "What if I could actually make it?" That question became the beginning of Cardboard Maker, the founding program of Little Lot.`,
+        `Cardboard Maker was created to help them become inventors of their own ideas. We believe that creativity is strongest when children are trusted to imagine first and discover how later. Cardboard is our chosen material because it is humble, accessible, and wonderfully forgiving. It invites experimentation without fear of failure. A piece can be cut, folded, rebuilt, or completely transformed. The material reminds children that prototypes are meant to evolve — and that mistakes are simply part of the design process.`,
+        `An impossible idea often becomes the starting point for meaningful questions:`,
+        ['How could this move?', 'What would make it stronger?', "Why doesn't this mechanism work yet?"],
+        `Through these questions, imagination gradually meets scientific thinking.`,
+        `Children begin by building with their hands — cutting, folding, measuring, and constructing. Then they gradually introduce simple interactive technologies such as switches, buttons, LEDs, motors, and programmable components. They experience technology not as something mysterious hidden inside a screen, but as a creative material they can understand, control, and shape.`,
+        `These are more than technical skills. They are habits of mind — creative confidence, problem-solving, adaptability, and human-centered thinking — that prepare children for a future where technology and creativity will exist hand in hand.`,
+        `At Little Lot, we believe the future won't simply be built by those who know how to use technology, but by those who have the imagination and confidence to shape it.`
+      ],
+      [`What's the latest invention you've imagined?`]
+    ),
+    richLesson("Introduce Children to a Design World",
+      [
+        `Design is the practice of understanding people's needs and creating solutions that improve their experiences. Design begins by observing, listening, and asking questions before developing ideas, building prototypes, and testing solutions. It encourages designers to see the world through other people's perspectives and continuously improve their ideas through feedback and iteration.`,
+        `Children are natural designers. They constantly notice problems, imagine possibilities, and ask, "What if...?" Cardboard Maker gives them a process to turn those ideas into something they can build, test, and improve.`,
+        `Learning design helps children look at everyday objects with curiosity. Instead of simply accepting the world as it is, they begin asking questions such as, "Why was it made this way?", "Who is it for?", and "How could it work better?" These questions develop observation, empathy, creativity, and problem-solving — skills that extend far beyond a single project.`,
+        `Throughout the Cardboard Maker journey, children learn to…`,
+        ['Develop empathy by designing for others.', 'Communicate ideas visually and physically.', 'Solve everyday problems through creativity.', 'Explore many possibilities instead of finding one correct answer.', 'Connect imagination with scientific and engineering thinking.'],
+        `The world continues to evolve because people imagine better possibilities and take action to create them. By introducing children to design at an early age, we help them see that they can contribute to that future — one thoughtful idea at a time.`
+      ],
+      [`Think about your own experience. What is one product, place, or everyday object that has been improved through good design? Describe what changed, who it helped, and why you think the new design works better.`]
+    ),
+    richLesson("Cardboard and Code",
+      [
+        `Cardboard is one of the most powerful materials for learning because it is simple, accessible, inexpensive, and easy to transform. Designers and engineers have long used cardboard to build quick prototypes, test ideas, and improve designs before creating the final product.`,
+        `For Cardboard Maker Program, cardboard becomes much more than a craft material — it becomes a thinking tool. Children can cut it, fold it, connect it, rebuild it, and redesign it as many times as they need. Every change is visible, allowing them to see how an idea develops from imagination into a working prototype.`,
+        `Then comes the magic: code.`,
+        `For many children, programming, electronics, and interactive technology can feel abstract or unfamiliar. By combining them with cardboard, these invisible concepts become something they can see, touch, and understand. A push button makes a cardboard creature blink. A motor brings a cardboard machine to life. Code is no longer hidden inside a screen — it becomes part of a physical object they built with their own hands.`,
+        `Cardboard is the familiar world. Code is the new world. Together, they create a bridge between the Physical and Digital world.`
+      ],
+      [`Find three everyday cardboard products around you. Discuss why cardboard was chosen instead of plastic, metal, or wood, and how you could make each product interactive using electronics.`]
+    ),
+    richLesson("Innovator Experience",
+      [
+        `Innovation begins with the belief that "I can." We create an environment where children are encouraged to try, experiment, and discover that they are capable of turning their own ideas into reality. This mindset helps children develop confidence, resilience, and a willingness to take on new challenges.`,
+        `Innovation also means balancing imagination with reality. Children are free to dream about impossible inventions, but they also learn to consider materials, structures, mechanisms, and user needs. They discover that great ideas become meaningful when they can be built, tested, and improved.`,
+        `Throughout the Cardboard Maker journey, facilitators celebrate effort as much as outcomes. Every sketch, failed prototype, redesign, and successful invention becomes evidence that learning is an active process. By nurturing an "I can" mindset, children begin to see themselves not simply as learners, but as innovators who have the confidence and curiosity to shape the future.`,
+        `The words facilitators choose can shape how children think about challenges, creativity, and learning. Try saying:`,
+        ['"That\'s an interesting idea!"', '"What could we try next?"', '"There\'s always another way to solve it."', '"Let\'s experiment and see what happens."', '"Mistakes give us information."']
+      ],
+      [
+        `A child proudly finishes building a cardboard car and says, "I'm sure it will move!" Everyone gathers around to watch. The child presses the button, but the motor suddenly jerks, the cardboard structure comes apart, and several pieces fall to the floor.`,
+        `The child looks at the broken project and quietly says, "I don't want to make it again."`,
+        `As the facilitator, what would you say to turn this moment into a learning opportunity?`
+      ]
+    )
   ]),
   mod("Module 02", "Learning Culture", [
-    lesson("Be a Design Buddy", "Every child has imagined something that doesn't exist.", "What's the latest invention you've imagined?"),
-    lesson("Sense of Belonging", "Every child has imagined something that doesn't exist.", "What's the latest invention you've imagined?"),
-    lesson("Project-based Learning", "Educators build core skills for engaging directly with children — reading their interest level, adjusting language, and knowing when to step in versus step back.", "An educator notices a child has gone quiet mid-build and checks in with a question instead of an instruction: 'What are you stuck on?'"),
-    lesson("Crafter Community", "Educators also learn to communicate with parents and other adults — translating what happened in a session into something a parent can understand and support at home.", "At pickup, an educator tells a parent not just 'she built a car' but what problem she solved to make the wheels turn."),
-    lesson("Common Challenges", "Every session is backed by a lesson plan that balances structure with flexibility, so a class can hold its shape while still following where the children's ideas go.", "An educator plans a 45-minute build block but leaves 15 minutes unscheduled for whichever detail the group gets excited about.")
+    richLesson("Be a Design Buddy",
+      [
+        `At Cardboard Maker, facilitators are more than instructors — they are Design Buddies. A Design Buddy does not tell children what to make or how to make it. Instead, they listen, ask thoughtful questions, and support children as they turn their own ideas into reality.`,
+        `Children learn best when they feel ownership of their projects. Rather than providing answers immediately, a Design Buddy encourages children to think through challenges, test different solutions, and make their own design decisions.`,
+        `Being a Design Buddy means`,
+        ['Encourage children to make their own decisions. Support their thinking rather than providing the answer.', 'Start conversations instead of giving instructions.', 'Investigate what happened instead of pointing out mistakes.', 'Ask open-ended questions, such as: "What are you trying to make?"', 'Celebrate the design process. Value experimentation, revision, and learning just as much as the finished project.'],
+        `Struggle is a natural part of the design process. The role of a Design Buddy is to believe in children's ideas, celebrate their progress, and walk beside them throughout the creative journey. When children feel trusted to lead their own projects, they begin to see themselves not just as students, but as designers, makers, and innovators.`
+      ],
+      [`A child is building a cardboard robot. Halfway through the project, they ask, "Can you make the arms for me?" You already know a quick way to build the arms, and it would only take you a minute to do it yourself. But as a Design Buddy, how would you respond without taking over the project?`]
+    ),
+    richLesson("Sense of Belonging",
+      [
+        `A sense of belonging helps children feel safe, valued, and connected to the people around them. We create a safe space where every idea is welcomed, every project is unique, and every child has the opportunity to contribute. This positive learning environment encourages children to share their creativity, support one another, and take pride in their work.`,
+        `"We don't build the same invention. We build the same community."`,
+        `Children develop belonging when they are invited into the process instead of simply being given instructions. Questions such as "What do you think?", "How should we solve this together?", or "Would you like to show us your idea?" help children feel that their opinions matter and that they are valued members of the group.`,
+        `Facilitators play an important role in creating this culture. By encouraging collaboration, listening to children's ideas, and providing opportunities for every child to participate, they help build an environment where everyone feels respected and included.`,
+        `Simple changes in wording can make a meaningful difference:`,
+        { h: 'Instead of: "Now you need to do the floor plan."', p: 'Try: "How do you think we should plan the floor layout?"' },
+        { h: 'Instead of: "Are you sure you can do it?"', p: 'Try: "Let\'s figure it out together."' },
+        `A strong sense of belonging gives children the confidence to explore new ideas, ask questions, and take creative risks. It strengthens relationships within the group and creates a learning community where children feel connected, capable, and inspired to continue making together.`,
+        `"A child belongs when their ideas, their voice, and their presence matter."`
+      ],
+      [`Encourage with words — rewrite these sentences to create more sense of belonging: "Are you sure you can do it?" · "You are too noisy, please be quiet." · "You need to do this welcome sign together."`]
+    ),
+    richLesson("Project-based Learning",
+      [
+        `Project-Based Learning (PBL) is an approach where children learn by working on meaningful projects that solve a problem, answer a question, or create something with a real purpose. Instead of learning one subject at a time, children bring together knowledge and skills from different areas as they work toward a shared goal.`,
+        `A project begins with a challenge rather than a list of instructions. Children are encouraged to ask questions, generate ideas, make plans, build prototypes, test their solutions, and reflect on what they have learned. Throughout the process, facilitators guide learning by asking questions, providing resources, and supporting children's thinking instead of directing every step.`,
+        `This approach can be applied even when teaching a simple skill. For example, instead of demonstrating how to bend cardboard, present the challenge: "How could you bend this piece of cardboard without cutting it?"`,
+        `Children begin experimenting with different ideas. They fold it, roll it, score the surface, compare results, and discuss why some methods work better than others. After they have explored their own solutions, the facilitator introduces additional techniques and explains the science behind them. Because the children have already experienced the problem firsthand, the new knowledge becomes meaningful and memorable.`,
+        `Every Cardboard Maker project follows the same philosophy. Children are given a design challenge rather than a fixed outcome. They plan, build, test, improve, and present their creations while naturally applying ideas from design, engineering, science, mathematics, art, and technology.`
+      ],
+      [
+        `You are teaching children how to make a cardboard bridge. Your first instinct is to demonstrate each step: measure the cardboard, cut along the lines, fold the sides, glue the supports together.`,
+        `Instead, you decide to teach using Project-Based Learning. Rewrite the lesson plan in a Project-based Learning approach.`
+      ]
+    ),
+    richLesson("Crafter Community",
+      [
+        `Great ideas grow faster when they are shared. A Crafter Community is a learning environment where children help one another, exchange ideas, and celebrate different ways of making. Every child becomes both a learner and a contributor.`,
+        `Creating this community starts with the facilitator. Instead of answering every question, encourage children to learn from one another. For example, instead of saying, "I'll show you how to make it," try asking, "Who has found a way to solve this?"`,
+        `A child who has discovered a strong cardboard joint, a clever mechanism, or an effective painting technique can become the teacher for a moment. Sharing ideas helps the whole group grow while building confidence in the child who is demonstrating.`,
+        `Small habits create a strong community:`,
+        ['Invite children to walk around and observe each other\'s work.', 'Encourage them to ask questions before giving suggestions.', 'Celebrate different solutions instead of comparing whose project is "better."', 'Ask children to explain how they solved a problem so others can learn from their thinking.', 'Thank children who help their friends without taking over the project.'],
+        `The facilitator's role is to connect children with one another rather than becoming the center of every conversation. When children begin saying, "Can I show you how I did it?" or "Let's solve it together," the community is learning from itself.`
+      ],
+      [`Write 5 open-ended questions you can ask during class to encourage children to share their ideas, discoveries, and experiences with one another. Your questions should invite discussion rather than lead to a single correct answer.`]
+    ),
+    richLesson("Common Challenges",
+      [
+        `Every making session is different. Children have different personalities, abilities, and ideas, so unexpected situations are part of the learning experience. A facilitator's role is to respond in ways that keep children engaged, confident, and motivated to continue creating.`,
+        { h: 'Children are not listening and start running around', p: 'Children often lose focus when they have been listening for too long or are waiting with nothing to do. Instead of repeatedly asking for silence, regain their attention by making them part of the activity.' },
+        ['Keep explanations short and begin making as soon as possible.', 'Give children a small task while you explain.', 'Use a countdown or a familiar class routine to gather attention.'],
+        { h: 'Children struggle with the project', p: 'When children become frustrated, resist the urge to fix the project for them. Instead, help them break the challenge into smaller steps. Try asking: "What have you tried already?" or "What could we test first?" The goal is to help children experience success without taking ownership away from them.' },
+        { h: 'Children are too young to complete the project independently', p: 'Young children still want ownership, even when they need support. Think of the project as something you build together, not something you build for them. Let children make as many decisions as possible: choose the colors, hold pieces while you glue, or test the mechanism.' },
+        { h: 'Children want to build something beyond the available tools', p: 'Imagination often grows faster than available materials, and that is something to celebrate. Rather than saying, "We can\'t do that," try asking: "What could we build with the materials we have?" Children learn that innovation often begins by building the best possible solution with the resources available.' },
+        { h: "Things don't go as planned", p: 'Projects may break. Materials may run out. Electronics may stop working. Children watch how facilitators respond to these moments. Stay calm and model problem-solving. You might say: "What do you think happened?" or "What\'s another way we could do this?"' }
+      ],
+      [`Reflect on a challenge you have experienced while working with children. Share how you handled it and discuss what you would do differently using the Cardboard Maker approach.`]
+    )
   ]),
   mod("Module 03", "Core Competencies", [
-    lesson("Design Thinking", "Children learn to move from an idea, to a plan, to a built object — treating each attempt as information rather than a failure.", "A child's first bridge design collapses; instead of starting over, she studies where it bent and reinforces just that spot."),
-    lesson("Problem Solving", "Children build the habit of noticing a specific problem and testing small fixes, rather than waiting for an adult to solve it for them.", "When a wheel keeps falling off, a child tries three different axle fixes before landing on the one that holds."),
-    lesson("Visual Communication", "Children learn to express an idea before it's built, through a quick sketch or labeled diagram, so a plan can be shared with others.", "Before cutting cardboard, a child draws where each door and window will go, then shows it to a teammate to agree on the layout."),
-    lesson("Interactive Mechanics", "Children explore basic physical mechanisms — hinges, levers, wheels — that let a cardboard build move or respond.", "A child adds a hinge to a cardboard mailbox door so it flips open and shut."),
-    lesson("Electronics Literacy", "Children get a working, hands-on understanding of basic electronics — how a button, light, or motor gets wired into a simple circuit.", "A child learns why nothing lights up until the circuit is a complete loop, then fixes a loose wire himself."),
-    lesson("Material Awareness", "Children learn the properties of the materials they build with — where cardboard bends, where it needs reinforcing, and which glue or tape is right for the job.", "A child reinforces a load-bearing wall of her cardboard house with a double layer after her first version buckled."),
-    lesson("Interpersonal Skills", "Children practice reading a teammate's reaction, taking turns, and negotiating when two people want different things for the same project.", "Two children disagree on paint color for their shared project and settle it by each choosing one section."),
-    lesson("Team Work", "Children learn to split a bigger build into parts that different people can work on, then bring the pieces back together.", "One child builds the base of a Ferris wheel while another builds the cars, then they join the pieces together."),
-    lesson("Presentation Skills", "Children practice explaining their build out loud — what it does, what problem it solves, and what they'd try next.", "At the end-of-month showcase, a child walks a parent through how her sensor-triggered light works.")
+    richLesson("Creative Design Competence",
+      [
+        `Creative design competence is the ability to understand problems, develop ideas, and communicate solutions through the design process. It helps children move from simply making objects to becoming thoughtful creators who can observe, imagine, test, and improve their ideas.`,
+        { h: 'Design Thinking', p: 'Design Thinking is a human-centered process for creating solutions. It helps children look closely at a situation, understand people\'s needs, generate ideas, make something, and learn from testing it. The process can be introduced through five simple steps:' },
+        ['Empathize — Understand Others', 'Define — Find the Challenge', 'Ideate — Imagine Possibilities', 'Prototype — Make the Idea Real', 'Test — Try, Learn, Improve'],
+        `Testing often leads children back to an earlier step. They may redefine the challenge, create a new idea, or build another prototype. Design Thinking is a cycle, not a straight line.`,
+        { h: 'Creative Problem Solving', p: 'Creative Problem Solving is the ability to approach challenges with imagination, explore different solutions, and improve ideas through experimentation. It helps children become flexible thinkers who can create solutions instead of waiting for answers.' },
+        { h: 'Adaptability', p: 'Adaptability is the ability to respond to change, learn from experiences, and adjust ideas when situations change. It helps children become flexible thinkers who can approach challenges with curiosity instead of frustration. Children practice:' },
+        ['Adjusting their plans when challenges appear.', 'Trying different approaches when the first idea does not work.', 'Improving their designs through testing and reflection.']
+      ],
+      [`Choose one Cardboard Maker project and describe how children use the three Creative Design Competence areas.`]
+    ),
+    richLesson("Engineering and Technology Competence",
+      [
+        `Engineering and Technology Competence is the ability to understand how things work, use tools and technologies effectively, and create solutions through designing, building, and testing. It helps children move from being passive users of technology to becoming confident creators who can explore, experiment, and shape the world around them.`,
+        { h: 'Material Awareness', p: 'Material Awareness is the ability to understand the properties, limitations, and possibilities of different materials. Designers and engineers choose materials based on how they behave and how they support the purpose of a design. Children also learn how different tools and components work together:' },
+        ['Cardboard creates the structure and physical form.', 'Electronic parts create interaction.', 'Tools help transform ideas into prototypes: cut, glue, assemble.'],
+        { h: 'Interactive Mechanics', p: 'Interactive Mechanics is the ability to design how objects respond, move, and interact with people. In engineering and design, creating an interaction requires understanding the relationship between input, process, and output.' },
+        ['Input — How does a person control the object?', 'Process — How does the system decide what to do?', 'Output — How does the object respond?'],
+        { h: 'Computational Thinking', p: 'Computational Thinking is the ability to understand, use, and communicate with digital technologies. In a world where technology is increasingly connected to everyday life, children need opportunities to understand how digital systems work. It introduces children to computational thinking:' },
+        ['Sequence — Understanding that instructions happen in order.', 'Logic — Creating conditions and responses.', 'Debugging — Finding and fixing mistakes.']
+      ],
+      [`Choose one Cardboard Maker project and describe how children use the three Engineering and Technology Competence areas.`]
+    ),
+    richLesson("Social and Collaboration Competence",
+      [
+        `Social and Collaboration Competence is the ability to communicate with others, work together toward a shared goal, and contribute ideas within a community. It helps children move from creating independently to becoming thoughtful collaborators who can listen, support, and learn from one another.`,
+        { h: 'Initiative Skills', p: 'Initiative is the ability to take action, make decisions, and move ideas forward independently. It helps children become active contributors who are confident in exploring possibilities and taking responsibility for their work. Children practice:' },
+        ['Starting ideas and proposing solutions.', 'Making decisions during the design process.', 'Taking responsibility for their roles.', 'Continuing to explore even when challenges appear.'],
+        { h: 'Interpersonal Skills', p: 'Interpersonal Skills are the ability to communicate, understand, and build positive relationships with others. They help children express their ideas, listen to different perspectives, and work together respectfully. Children practice:' },
+        ["Listening to others' ideas.", 'Asking questions and giving feedback.', 'Expressing their own thoughts and needs.', 'Respecting different approaches and opinions.'],
+        { h: 'Presentation Skills', p: 'Designers do not only create solutions — they also need to explain their thinking behind those solutions. Presentation Skills are the ability to communicate ideas, explain the design process, and share learning with others. Children practice:' },
+        ['Explaining what they created and why.', 'Describing challenges and how they solved them.', 'Demonstrating how their project works.', 'Listening and responding to questions.']
+      ],
+      [`Choose one Cardboard Maker project and describe how children use the three Social and Collaboration Competence areas.`]
+    )
   ]),
   mod("Module 04", "Plan and Approach", [
-    lesson("Create a Lesson Plan", "A standard lesson plan template keeps every session's structure and goals consistent across educators, while leaving room to adjust by age group.", "An educator checks the lesson plan for a 5-7 group and swaps in a simpler build goal than the 7-10 version."),
-    lesson("Start a Project Planning", "A project planning sheet helps a child, or group, define what they're building and what steps it will take before diving in.", "A group fills in their project sheet with 'Ferris wheel,' listing base, motor, and cars as the three build steps."),
-    lesson("Interaction Planning", "This sheet helps educators plan how they'll engage each child during the session — when to ask a question, when to demonstrate, when to step back.", "An educator notes on the interaction plan to check in with a quieter student twice during the session instead of waiting for her to ask."),
-    lesson("Designing Visual", "The designing sheet is where a child sketches and labels their build before cutting any cardboard.", "A child sketches his robot's arm on the designing sheet, marking where the servo motor will sit."),
-    lesson("Set up an Exhibition", "This sheet lays out when and how finished projects will be shown to parents or the wider group, keeping the showcase organized across age groups.", "An educator schedules the Junior Designer showcase for 4:00 PM and the Chief Imaginator showcase for 4:30 PM the same day.")
+    richLesson("Create a Lesson Plan",
+      [
+        `At Cardboard Maker, each lesson is designed with clear learning goals while allowing children's ideas to shape the creative process. The curriculum progresses step by step, introducing new design challenges, scientific concepts, and interactive mechanisms at a pace that matches each age group's development.`,
+        { h: 'Junior Designer (5–7 years)', p: 'Junior Designers begin with project templates that provide a clear starting point. Children personalize each design by changing shapes, adding details, and making creative decisions that reflect their own ideas. Children also explore simple interactive mechanisms. These hands-on experiences introduce the relationship between structure, movement, electricity, and function in a way that is concrete and playful.' },
+        { h: 'Chief Imagination (7–10 years)', p: 'Chief Imagination encourages children to develop original projects from their own ideas. They sketch concepts, build prototypes, test different solutions, and refine their designs through repeated iterations. Projects become more open-ended as children apply their understanding of structure, mechanics, and interactive technology. Children learn how different systems work together and apply them to create inventions that respond to movement, light, sound, or touch.' },
+        `Across both levels, lesson plans provide a consistent learning pathway while leaving space for creativity and individual expression. Each project strengthens design thinking, problem-solving, collaboration, and scientific inquiry, helping children build confidence through making, testing, and improving their own creations.`
+      ],
+      [`Choose one project and identify which competency areas it develops.`]
+    ),
+    richLesson("Start a Project Planning",
+      [
+        `Every Cardboard Maker project begins with a plan. Before building, children organize their ideas on a one-page Project Planning Sheet. It helps them see the complete project at a glance — from the overall concept to the materials, mechanisms, and interactions they will create. Planning encourages children to think ahead, make design decisions, and break a large idea into manageable steps before construction begins.`,
+        { h: 'Sketch', p: 'Children start by sketching their ideas on an isometric grid, allowing them to visualize their project in three dimensions. Shape stickers provide a simple starting point, while leaving plenty of space to customize, combine, and develop original designs.' },
+        { h: 'Assemble', p: 'Children decide how each part of their project will be connected. Different assembly methods support different functions.' },
+        ['Slots — Create foldable or removable structures, inspired by flat-pack furniture.', 'Hot Glue — Reinforce fixed joints and strengthen the overall structure.', 'Pins — Connect moving parts such as arms, legs, doors, or wheels.'],
+        { h: 'Inputs', p: 'This step encourages children to think about how someone will use their creation. Inputs are the controls that send commands to the project.' },
+        { h: 'Outputs', p: 'Children select the responses they want their project to produce and react to the chosen inputs. They begin to understand how different electronic parts create movement, light, or sound.' },
+        { h: 'Interaction', p: 'Finally, children connect the inputs and outputs by planning how the project will behave. This interaction map helps them visualize the flow before they begin building and programming.' },
+        `The Project Planning Sheet provides a clear roadmap throughout the making process, thinking through each decision in advance while building confidence to turn their ideas into working prototypes.`
+      ],
+      [`Print the Project Planning Sheet and design your own project.`]
+    ),
+    richLesson("Interaction Planning",
+      [
+        `The Interaction Planning Sheet helps children define the relationship between inputs, outputs, and the program that connects them. It encourages them to think through each interaction before building and programming, preparing them for the next stage of Cardboard Maker: Magic Maker.`,
+        { h: 'Inputs', p: 'Children choose the electronic components that control their project, such as push buttons, switches, sensors, or other input devices. They consider how a user will interact with their invention and what actions will trigger a response.' },
+        { h: 'Outputs', p: 'Children select the electronic components that respond to the inputs. Outputs may include LEDs, LED strips, motors, buzzers, speakers, or other devices that create movement, light, or sound.' },
+        { h: 'Actions', p: 'For every input and output, children define the expected action. For example:' },
+        ['Push Button → Double click', 'LED Strip → Blink red'],
+        { h: 'Brain', p: 'The Brain section connects everything together. Children describe how the Arduino board should respond to each input and control the corresponding outputs. For example: when the push button is double-clicked → the LED strip blinks red.' },
+        `To support visual thinking, each output has a matching sticker template. Children can sketch exactly what they want the output to do before writing any code. This allows children to communicate interactive ideas visually before turning them into a working program.`
+      ],
+      [`Download and print the Interaction Planning Sheet, then plan an interaction of your own project.`]
+    ),
+    richLesson("Designing Visual",
+      [
+        `The Designing Sheet helps children visualize the appearance of their project before they begin painting. It gives them a space to explore colors, patterns, and visual details while considering how each side of the project will look and function. By planning the design in advance, children develop a clear vision of their finished creation and make more intentional design decisions throughout the making process.`,
+        { h: 'Feelings', p: 'Every design begins with an idea or emotion. Children first think about how they want others to feel when they see their project. The inspiration can come from a feeling, a place, a memory, an object, or anything that sparks their imagination. Children record keywords in the Feelings box using adjectives or nouns, creating a simple design direction that guides their later color and pattern choices.' },
+        { h: 'Main Color', p: 'Children choose the primary color that will appear most often throughout their project. This becomes the visual foundation of the design and helps create a consistent look across different surfaces and components.' },
+        { h: 'Color & Surface Planning', p: 'Children sketch each side of their project and plan where colors, patterns, and decorative details will be applied. They decide which areas will be painted with acrylic paint, acrylic markers, or other art materials, creating an overview of the final appearance before construction is complete.' },
+        `The Designing Sheet encourages children to think like designers by connecting ideas, emotions, and visual communication. It helps them make thoughtful creative choices while building confidence in expressing their own artistic style.`
+      ],
+      [`Download and print the Designing Sheet, then plan the final look of your own project.`]
+    ),
+    richLesson("Set up an Exhibition",
+      [
+        `Planning an exhibition gives children the opportunity to think beyond their own project and consider the experience of the audience. Working together, they organize ideas, make shared decisions, and create a space that showcases everyone's work. The process encourages collaboration, communication, and planning while helping children see how individual projects become part of a larger story.`,
+        { h: 'Theme', p: 'The planning begins with a group brainstorming session. Children decide on a theme, story, or exhibition name that connects all of the projects. A clear theme gives the exhibition a shared identity and helps guide later design decisions.' },
+        { h: 'Floor Plan', p: 'Children sketch the exhibition layout and decide where each one will be displayed. This activity encourages them to think about space, organization, and how visitors will experience the exhibition.' },
+        { h: 'Visitor Path', p: 'Children design the route they would like visitors to follow. They draw the exhibition path and consider where signs, guideposts, or directions might help visitors move through the space.' },
+        { h: 'Exhibition Schedule', p: 'Children create a simple schedule for the event and decide when the exhibition begins, what activities will take place, and how the event will conclude. Planning the timeline helps them organize responsibilities and prepare for the exhibition day. Each schedule needs:' },
+        ['Arrival — Welcome sign, ticket check, or seating arrangement', 'Presenting — Individual or group project presentations', 'Activity — A showcase, performance, concert, or interactive game', 'Ending — Awards, certificates, reflection, or a closing ceremony']
+      ],
+      [`Plan a schedule for a Moving Animal Exhibition. Create three possible event schedules.`]
+    )
   ]),
   mod("Module 05", "Routine and Experience", [
-    lesson("Create a Routine", "Children learn best by working through a real, self-directed project rather than following step-by-step instructions to a fixed result.", "Instead of a worksheet on levers, a child builds a cardboard catapult to see a lever work firsthand."),
-    lesson("ECA", "Educators learn how to co-create a project brief with a child, starting from the child's own interest rather than assigning a topic.", "An educator asks a child what he wants to build and shapes the day's project around his answer: 'a robot dog.'"),
-    lesson("Workshop", "Projects start from a question children investigate through building, rather than a task they're simply told to complete.", "'What makes something float?' leads a group to test three different cardboard hull shapes in a water tray."),
-    lesson("Camp", "Children learn best by working through a real, self-directed project rather than following step-by-step instructions to a fixed result.", "Instead of a worksheet on levers, a child builds a cardboard catapult to see a lever work firsthand."),
-    lesson("Creating Project with Children", "Educators are trained to recognize the recurring snags in these projects, like glue not holding or motivation dropping mid-build, and how to work through them without taking over.", "When a child's motivation drops halfway through a long build, the educator breaks the remaining work into two smaller, finishable goals.")
+    richLesson("Create a Routine",
+      [
+        `A consistent routine helps children feel comfortable, confident, and ready to participate in each session. When children understand the flow of the activity, they can focus their attention on creating, experimenting, and solving problems instead of waiting for instructions.`,
+        `A familiar structure gives children a sense of independence. They learn what materials they need, what steps come next, and how to take responsibility for their own progress. Over time, children become more confident in starting tasks, asking meaningful questions, and supporting their classmates.`,
+        `Cardboard Maker uses three learning formats, each with a routine designed to match the length and depth of the program.`,
+        ['Extra Curricular Activities (ECA)', 'Workshop', 'Camp'],
+        `Each routine is designed to provide a predictable learning structure while allowing children to explore, experiment, and create at their own pace. As projects become more open-ended, the routine remains familiar, helping children build independence and confidence throughout the making process.`,
+        { h: 'Routine and Parents', p: 'A clear routine also helps create stronger communication between facilitators and parents. When the learning process follows a consistent structure, parents can better understand what children are learning, what skills they are developing, and how they can support their child\'s creative journey.' },
+        `A consistent communication routine builds trust between the Cardboard Maker team, schools, and families. Everyone becomes part of the same learning community, supporting children as they imagine, create, and grow.`
+      ],
+      [`Work with your team to practice giving a parent update after class.`]
+    ),
+    richLesson("ECA",
+      [
+        `The Extra Curricular Activities (ECA) format is designed for after-school learning in groups. A typical semester consists of 10 lessons, with each project completed over two sessions: Build and Paint. This structure gives children time to focus on construction before developing the visual design of their project.`,
+        ['Duration: 1 hour', 'Teacher–Student Ratio: 1:5'],
+        { h: 'Session Flow', p: 'Greeting → Lesson → Making → Wrap-up' },
+        { h: "Facilitator's Role — Working with Children", p: '' },
+        ['Leader — Introduces the lesson, demonstrates new techniques, and guides the group through each activity.', 'Supporter — Observes children\'s progress, provides guidance when needed, and encourages children to solve problems and make their own design decisions.'],
+        { h: 'Working with the Team', p: '' },
+        ['Team Player — Works closely with other facilitators to prepare materials, support children, and maintain a positive learning environment.', "Bridge — Communicates effectively between the Cardboard Maker team and the school's staff to ensure each session runs smoothly."],
+        { h: 'Working with Parents', p: '' },
+        ["Communicator — Shares class updates, children's progress, and memorable learning moments.", 'Team Leader — Builds positive relationships with families and helps them feel that educators and parents are working together to support each child\'s growth.']
+      ],
+      [`Download the session planning template and design a complete session flow for an ECA using the theme "Under the Sea."`]
+    ),
+    richLesson("Workshop",
+      [
+        `The workshop format can be delivered as a one-time experience or a short course of 1–8 sessions. In shorter workshops, children personalize projects using prepared templates. In longer workshops, they gradually progress to designing and building original projects from scratch.`,
+        ['Duration: 2 hours', 'Teacher–Student Ratio: 1:4'],
+        { h: 'Session Flow', p: 'Greeting → Lesson → Project Planning → Making → Wrap-up' },
+        { h: "Facilitator's Role — Working with Children", p: '' },
+        ['Leader — Introduces the challenge, demonstrates techniques, and keeps the workshop on schedule.', 'Maker — Demonstrates tools, materials, and mechanisms through hands-on examples.'],
+        { h: 'Working with the Team', p: '' },
+        ['Team Player — Shares responsibilities, supports other facilitators, and helps create a smooth learning experience.', 'Organizer — Prepares materials, manages the workspace, and ensures tools and resources are ready throughout the session.'],
+        { h: 'Working with Parents', p: '' },
+        ["Communicator — Welcomes families, explains the workshop experience, and shares children's achievements throughout the session.", "Learning Partner — Encourages parents to celebrate children's ideas, ask about their projects, and continue creative making at home."]
+      ],
+      [`Download the session planning template and design a complete session flow for a Workshop using the theme "Under the Sea."`]
+    ),
+    richLesson("Camp",
+      [
+        `Cardboard Maker Camp is a one-week program where children develop an original project from concept to completion. Throughout the week, they plan, prototype, build, decorate, and test their inventions. The program concludes with a group exhibition where children present their projects to families and visitors.`,
+        ['Duration: 3 hours per day', 'Teacher–Student Ratio: 1:3'],
+        { h: 'Session Flow', p: 'Greeting → Lesson → Project Planning → Making → Wrap-up' },
+        { h: "Facilitator's Role — Working with Children", p: '' },
+        ['Coach — Encourages reflection, experimentation, and continuous improvement as prototypes evolve.', 'Project Guide — Helps children manage their time, set goals, and prepare for the final exhibition.'],
+        { h: 'Working with the Team', p: '' },
+        ['Team Player — Collaborates with fellow facilitators to support every child and maintain a positive learning environment.', 'Coordinator — Organizes daily activities, prepares materials, and ensures each session progresses smoothly toward the exhibition.'],
+        { h: 'Working with Parents', p: '' },
+        ["Communicator — Shares children's progress, celebrates milestones, and keeps families informed about daily activities.", "Community Builder — Welcomes parents to the final exhibition and helps create a shared celebration of children's learning and achievements."]
+      ],
+      [`Download the session planning template and design a complete session flow for a Camp using the theme "Under the Sea."`]
+    ),
+    richLesson("Creating Project with Children",
+      [
+        `Creating a project with children is different from teaching children how to make a project. The facilitator's goal is not to produce identical results, but to create an environment where every child can develop their own ideas with confidence. Every project should feel like "This is my invention," not "This is the teacher's project."`,
+        `Instead of introducing steps, introduce a challenge. Ask open-ended questions that encourage children to think before they build.`,
+        ['"What would you like to create?"', '"How do you think it could move?"', '"What should we try first?"'],
+        `These conversations help children take ownership of their ideas while giving facilitators valuable insight into each child's thinking.`,
+        `Apply Project-Based Learning. Present a problem, provide materials, and allow children time to explore. Observe how they experiment, then guide them with questions rather than answers.`,
+        `Encourage children to share ideas, ask classmates for feedback, and celebrate different solutions to build a Sense of Belonging. Small moments such as "Can someone help your teammate?" remind children that they are learning together. Invite children to share tools, exchange techniques, and inspire one another to nurture a Crafter Community. Knowledge grows when it is shared.`,
+        `A successful session is not measured by how similar the projects look. It is measured by how many ideas were explored, how many questions were asked, how often children helped one another, and how proudly they can say, "I designed this myself."`
+      ],
+      [
+        `Facilitate a 10-minute making session. In pairs, one person is the child and the other is the Design Buddy. The "child" chooses a simple challenge (e.g., build a moving fish, a bridge, or a cardboard house). The facilitator's goal is not to teach or demonstrate.`,
+        `After 10 minutes, switch roles and reflect.`
+      ]
+    )
   ]),
   mod("Module 06", "The Magic Maker Kit", [
-    lesson("Magic Maker Device", "The 2-hour Workshop format gives the most time for a full project cycle: planning, building, and finishing in one sitting.", "A Saturday workshop group plans, builds, and finishes a full cardboard arcade game in the two hours."),
-    lesson("Electronic Parts", "The 1-hour ECA, or after-school, format compresses the same routine into a tighter session, often spreading one project across several weeks.", "A weekly ECA group builds one section of a shared cardboard city each week over a month."),
-    lesson("Magic Maker Platform", "The 3-hour Camp format allows for a bigger, more ambitious build with more exploration time built in.", "A day-camp group spends the extra time testing multiple motor placements before settling on a final design."),
-    lesson("Make circuit work", "Across all formats, educators are trained to build a group culture where every child feels like a valued part of the maker community.", "An educator learns and uses every child's name and one detail about their project by the second session."),
-  ]),
-  mod("Module 07", "Maker Environment", [
-    lesson("Homey Maker Space", "Every child receives a Magic Maker Kit, the shared set of maker materials, planning sheets, and design templates used across all sessions.", "On day one, each child unpacks their own kit and labels it with their name."),
-    lesson("Beaver Bot Station", "The kit includes design templates that help children translate an idea into a shape they can actually cut and build.", "A child traces a wheel template rather than free-cutting a circle, so both sides of her car match."),
-    lesson("Magic Maker Station", "The kit's electronic parts, buttons, LED lights, a DC gear motor, sensors, and a servo motor, each teach a different kind of control, from a simple on/off state to precise, continuous movement.", "A Junior Designer uses a single button to control one LED, while a Chief Imaginator wires a sensor to control a servo motor's exact position."),
-    lesson("Prepare a Template", "Children learn the basic idea of a circuit, power, connection, and a complete loop, well enough to troubleshoot their own build when something doesn't light up.", "A child traces his own wiring and finds the gap where a wire had come loose from the battery pack.")
-  ]),
-  mod("Module 08", "Child Safety", [
-    lesson("Children's Right", "Educators are trained on children's fundamental rights within the program, including the right to be heard, respected, and kept safe.", "An educator makes sure a child's 'no' to being photographed for a showcase is respected without question."),
-    lesson("Protection", "This lesson covers the procedures educators follow to protect children from harm, including how and when to raise a concern.", "An educator who notices something concerning follows the reporting procedure that same day, rather than waiting."),
-    lesson("First Aid Policies", "Educators are trained in first-aid response for the kinds of minor injuries a craft workshop can involve, plus how to log and report them.", "After a small scissor nick, an educator cleans and bandages the cut, logs the incident, and informs the parent at pickup.")
-  ]),
-  mod("Module 09", "Working with Parents", [
-    lesson("Welcome to the Program", "Educators are trained on children's fundamental rights within the program, including the right to be heard, respected, and kept safe.", "An educator makes sure a child's 'no' to being photographed for a showcase is respected without question."),
-    lesson("Keep the Communication", "This lesson covers the procedures educators follow to protect children from harm, including how and when to raise a concern.", "An educator who notices something concerning follows the reporting procedure that same day, rather than waiting."),
-    lesson("Wrap-up the Program", "Educators are trained in first-aid response for the kinds of minor injuries a craft workshop can involve, plus how to log and report them.", "After a small scissor nick, an educator cleans and bandages the cut, logs the incident, and informs the parent at pickup.")
-  ]),
-  mod("Module 10", "Workplace Policies", [
-    lesson("Employment Roles", "This lesson covers the different roles at Little Lot and what each one is responsible for, so new educators know who to go to for what.", "A new hire learns that scheduling questions go to their site lead, not head office."),
-    lesson("Dress Code", "Educators follow a simple, practical dress code suited to a hands-on, craft-heavy workshop environment.", "An educator wears closed-toe shoes and avoids loose scarves before a session involving cutting tools."),
-    lesson("Performance Management", "This lesson explains how educator performance is reviewed and supported over time, including regular check-ins and feedback.", "An educator receives quarterly feedback focused on parent communication and lesson pacing."),
-    lesson("Working Hours", "This lesson sets expectations for scheduled hours, including prep and pack-down time around each session.", "An educator blocks 30 minutes before a workshop to set up stations, counted as part of working hours."),
-    lesson("Holiday / Sick / Annual / Personal / Business Leave", "Educators are trained on the different leave types available, holiday, sick, annual, personal, and business leave, and how to request each one.", "An educator submits a personal leave request two weeks ahead of a family event, following the standard process.")
+    richLesson("Magic Maker Device",
+      [
+        `Magic Maker Device is a beginner-friendly electronic system designed to help children explore interactive design through hands-on making. It combines a mini Arduino circuit board with a simple connection system, allowing children to bring their cardboard creations to life without needing to start with complex electronics.`,
+        `The device works as a bridge between physical making and digital technology. It connects with the Magic Maker Platform, where children can create simple commands to control their electronic parts. Instead of building circuits from scratch, children can plug in the provided components and immediately experiment with how technology can enhance their designs. Every interactive system follows a simple process: Input → Brain → Output`,
+        { h: 'Input: How the user communicates with the device', p: 'Inputs are the parts that receive information or commands from the user or environment. The Magic Maker Device provides 4 input ports for children to explore different ways of controlling their projects.' },
+        { h: 'Brain: How the system thinks and decides', p: 'The brain is the part that connects inputs and outputs together. In the Magic Maker Device, the mini Arduino board acts as the controller that receives information from inputs and follows programmed instructions that start with a simple command: when this happens → make this happen. For example: when the button is pressed → turn on the LED light.' },
+        { h: 'Output: How the project responds', p: 'Outputs are the parts that create an action or response. They allow the invention to communicate with the user through movement, light, sound, or other interactions. The Magic Maker Device provides 4 output ports for children to connect different electronic components.' }
+      ],
+      [`Choose one input and one output from the Magic Maker Device. Write a simple interaction command.`]
+    ),
+    richLesson("Electronic Parts",
+      [
+        `Electronic parts are the building blocks that allow a project to sense, think, and respond. In interactive design, electronic components help children transform a static object into something that can move, light up, make sounds, or react to the world around it.`,
+        { h: 'Inputs', p: '' },
+        ['Push Button — sends a signal when someone physically presses it. It works like a simple command: pressed or not pressed.', 'Toggle Switch — controls two states, ON and OFF. Unlike a push button that only works while being pressed, a toggle switch keeps its position until it is changed.', 'Distance Sensor — detects how far an object is, allowing a project to respond automatically without someone pressing a button.'],
+        { h: 'Outputs', p: '' },
+        ['DC Gear Motor — creates continuous spinning movement. The gear system helps control speed and provides stronger movement compared to a simple motor.', 'Servomotor — creates controlled movement by rotating to a specific position. Unlike a DC Gear Motor, it does not continuously spin — it is designed for precise movements.', 'LED Light — creates a visual response through light. It is one of the simplest outputs for children to understand because the result is immediately visible. LEDs can communicate information, create atmosphere, or become part of the character design.', 'Speaker — creates sound output, allowing projects to communicate through audio and adding another layer of interaction.']
+      ],
+      [`Choose one input and one output from the electronic parts. Write a simple command to describe how your project will respond.`]
+    ),
+    richLesson("Magic Maker Platform",
+      [
+        `The Magic Maker Platform helps children transform their interactive ideas into real actions. The platform helps children understand the relationship between Input → Brain → Output. By creating simple commands, children learn the foundation of coding and interactive design while seeing immediate results in their own cardboard creations.`,
+        { h: 'Step 1 — Prepare the Magic Maker Device', p: 'Before opening the platform, prepare all necessary equipment:' },
+        ['Magic Maker Device and computer', 'USB-C cable', 'Electronic parts (inputs and outputs)'],
+        { h: 'Step 2 — Connect the Magic Maker Device', p: 'Follow these steps to connect the device:' },
+        ['Plug the USB-C cable into the Magic Maker Device and your computer.', 'On the Magic Maker Platform, click the Connect Device button.', 'Select the connected Magic Maker Device and confirm that the device is connected.'],
+        { h: 'Step 3 — Start Coding on Platform', p: '' },
+        ['Input Section — choose the electronic part you want to use, and set the condition that will start the action.', 'Brain Section — select the action you want to happen.', 'Output Section — choose the electronic part you want to use and adjust the setting if needed.', 'Send the command to the Magic Maker Device.', 'Test the result.'],
+        { h: "If the interaction does not work, check this", p: '' },
+        ['Make sure the USB-C cable is connected properly to both the Magic Maker Device and the computer.', 'Make sure each electronic part is plugged into the correct port.', 'Check that the input and output parts match the components selected on the platform.', 'Check that the input condition is correct.']
+      ],
+      [`Try creating a simple interaction using the Magic Maker Platform and Magic Maker Kit. Test your input, command, and output.`]
+    ),
+    richLesson("Make circuit work",
+      [
+        `An electronic circuit is a pathway that allows electricity to move between different components. In engineering, circuits are designed so that electrical energy can be controlled and transformed into useful actions such as light, sound, or movement.`,
+        { h: 'Electricity', p: 'Electricity needs a complete pathway to flow. A basic circuit has three important parts:' },
+        ['Power — provides electrical energy.', 'Pathway — allows electricity to travel through the circuit.', 'Component — uses the electrical energy to create an action.'],
+        `For example: Battery → Wire → LED → Wire → Battery. When the circuit is complete, electricity can flow through the LED and produce light. If the pathway is broken, the circuit cannot work.`,
+        { h: 'Arduino as the Brain', p: 'Arduino is a programmable microcontroller that can control electronic components. Instead of simply allowing electricity to flow, Arduino can make decisions based on instructions written in code. A simple interactive system can be understood as: Input → Arduino → Output. The input sends information to Arduino. Arduino processes the information according to the program, then sends a signal to the output.' },
+        { h: "When a circuit does not work, children can investigate", p: '' },
+        ['Is the circuit complete?', 'Is the component connected correctly?', 'Is Arduino receiving the information from input?', 'Does the output have the power it needs?']
+      ],
+      [`Use the Magic Maker Device and electronic parts to build a working circuit. Connect, test, and make your creation respond!`]
+    )
   ])
 ];
 
@@ -625,16 +999,52 @@ const DEFAULT_MODULES = [
    ============================================================ */
 const state = {
   modules: null,
-  authed: false,           // admin (CMS) session — in-memory only, resets on reload
   selModule: 0,
   selLesson: 0,
-  loginError: '',
-  users: null,             // learner accounts, managed by admin
-  learnerAuthed: false,    // learner (public site) session — in-memory only
-  learnerLoginError: ''
+  loginError: '',          // shared by the single login page
+  users: null,             // all platform members (admin + learners)
+  loggedIn: false,         // in-memory only — resets on reload by design
+  currentUser: null,       // reference into state.users for whoever is logged in
+  viewAsUser: false        // admin's "preview as a regular user" toggle — session only
 };
 
 const SWATCHES = ['', '#FF6300', '#9EDBFF', '#FCDC67', '#000000'];
+
+/* ---- status tiers (calculated from progress, or manually overridden) ---- */
+const STATUS_TIERS = [
+  { key:'pro',          label:'Pro',          min:76, color:'#FF6300', fg:'#fff' },
+  { key:'advance',      label:'Advance',      min:51, color:'#A4DFDC', fg:'#000' },
+  { key:'intermediate', label:'Intermediate', min:26, color:'#FCDC67', fg:'#000' },
+  { key:'beginner',     label:'Beginner',     min:0,  color:'#9EDBFF', fg:'#000' }
+];
+function calcTierFromPct(pct){
+  for(const t of STATUS_TIERS) if(pct >= t.min) return t.key;
+  return 'beginner';
+}
+function userProgress(user){
+  let total = 0, done = 0;
+  state.modules.forEach((m) => {
+    m.lessons.forEach((l, li) => {
+      total++;
+      const mi = state.modules.indexOf(m);
+      if(user.completions && user.completions[mi+'-'+li]) done++;
+    });
+  });
+  return { done, total, pct: total ? Math.round((done/total)*100) : 0 };
+}
+function userStatusKey(user){
+  if(!user) return 'beginner';
+  if(user.statusOverride) return user.statusOverride; // 'admin' or a pinned tier key
+  return calcTierFromPct(userProgress(user).pct);
+}
+function statusMeta(key){
+  if(key === 'admin') return { key:'admin', label:'Admin', color:'#000000', fg:'#fff' };
+  return STATUS_TIERS.find(t => t.key === key) || STATUS_TIERS[STATUS_TIERS.length-1];
+}
+function isAdminUser(user){ return !!user && userStatusKey(user) === 'admin'; }
+// Whether editing tools should show right now — true admin status AND not
+// currently previewing the site as a regular user.
+function canEdit(){ return isAdminUser(state.currentUser) && !state.viewAsUser; }
 
 async function loadModules(){
   const saved = await storageGet('cms-site-data', true);
@@ -648,24 +1058,35 @@ async function loadModules(){
 async function persist(){
   await storageSet('cms-site-data', { modules: state.modules }, true);
 }
-async function getCredentials(){
-  let c = await storageGet('cms-credentials', true);
-  if(!c){
-    c = { user: 'admin', pass: 'cardboard2026' };
-    await storageSet('cms-credentials', c, true);
-  }
-  return c;
-}
 async function loadUsers(){
   const saved = await storageGet('cms-users', true);
   if(saved && Array.isArray(saved) && saved.length){
-    state.users = saved;
+    // backfill any fields older/partial records might be missing
+    state.users = saved.map(u => ({
+      id: u.id || uid(),
+      name: u.name || 'Member',
+      username: u.username || ('member' + Math.floor(Math.random()*1000)),
+      password: u.password || 'changeme',
+      completions: u.completions || {},
+      statusOverride: u.statusOverride !== undefined ? u.statusOverride : null,
+      avatar: u.avatar || null,
+      todos: u.todos || [],
+      todoMemo: u.todoMemo || '',
+      events: u.events || {},
+      activityLog: u.activityLog || []
+    }));
+    // safety net: make sure at least one admin always exists
+    if(!state.users.some(u => u.statusOverride === 'admin')){
+      state.users[0].statusOverride = 'admin';
+    }
   } else {
     state.users = [
-      { id: uid(), name: 'Program Admin', username: 'educator', password: 'cardboard2026', role: 'Training Lead' }
+      { id: uid(), name: 'Program Admin', username: 'admin', password: 'cardboard2026',
+        completions: {}, statusOverride: 'admin', avatar: null,
+        todos: [], todoMemo: '', events: {}, activityLog: [] }
     ];
-    await storageSet('cms-users', state.users, true);
   }
+  await persistUsers();
 }
 async function persistUsers(){
   await storageSet('cms-users', state.users, true);
@@ -679,17 +1100,21 @@ window.addEventListener('hashchange', render);
 async function boot(){
   await loadModules();
   await loadUsers();
+  // try to restore an existing session (private storage — scoped to this viewer only)
+  try{
+    const session = await storageGet('current-session', false);
+    if(session && session.userId){
+      const u = state.users.find(x => x.id === session.userId);
+      if(u){ state.loggedIn = true; state.currentUser = u; }
+    }
+  } catch(e){ /* no session to restore */ }
   render();
 }
 boot();
 
 function render(){
-  const hash = location.hash;
-  if(hash.startsWith('#admin')){
-    if(state.authed) renderAdmin(); else renderLogin();
-  } else {
-    if(state.learnerAuthed) renderPublic(); else renderLearnerLogin();
-  }
+  if(!state.loggedIn){ renderLoginPage(); return; }
+  renderPublic();
 }
 
 /* ============================================================
@@ -767,21 +1192,18 @@ const RAIL_ICONS = {
   grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
   user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>',
   cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
-  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 000-3l2-1.6-2-3.4-2.4.7a7.6 7.6 0 00-2.6-1.5L14 2h-4l-.4 2.7a7.6 7.6 0 00-2.6 1.5l-2.4-.7-2 3.4 2 1.6a7.6 7.6 0 000 3l-2 1.6 2 3.4 2.4-.7c.7.6 1.6 1.1 2.6 1.5L10 22h4l.4-2.7c1-.4 1.9-.9 2.6-1.5l2.4.7 2-3.4-2-1.6Z"/></svg>'
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 000-3l2-1.6-2-3.4-2.4.7a7.6 7.6 0 00-2.6-1.5L14 2h-4l-.4 2.7a7.6 7.6 0 00-2.6 1.5l-2.4-.7-2 3.4 2 1.6a7.6 7.6 0 000 3l-2 1.6 2 3.4 2.4-.7c.7.6 1.6 1.1 2.6 1.5L10 22h4l.4-2.7c1-.4 1.9-.9 2.6-1.5l2.4.7 2-3.4-2-1.6Z"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>'
 };
 
-// public-view-only state
+// public-view-only state — pure UI/session state now; actual data (completions,
+// todos, events, avatar, name) lives on the logged-in user record so it persists.
 function defaultPubState(){
   return {
     module: 0, search: '', page: 'me', modal: null,
-    completions: {},   // "mi-li" -> "YYYY-MM-DD" the day it was marked complete
-    events: {},        // "YYYY-MM-DD" -> [{id, text}]
-    todos: [],         // [{id, text, done, priority}]
-    todoMemo: '',
     todoAdding: false,
     calYear: new Date().getFullYear(),
-    calMonth: new Date().getMonth(),
-    account: { name: 'Program Admin', role: 'Training Lead', avatar: null }
+    calMonth: new Date().getMonth()
   };
 }
 if(!state.pub) state.pub = defaultPubState();
@@ -790,10 +1212,20 @@ function todayStr(){
   const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
-function isDoneKey(key){ return !!state.pub.completions[key]; }
+function isDoneKey(key){ return !!(state.currentUser && state.currentUser.completions[key]); }
 function toggleDoneKey(key){
-  if(state.pub.completions[key]) delete state.pub.completions[key];
-  else state.pub.completions[key] = todayStr();
+  const u = state.currentUser;
+  if(!u) return;
+  const [mi, li] = key.split('-').map(Number);
+  const lesson = state.modules[mi] && state.modules[mi].lessons[li];
+  const title = lesson ? lesson.title.replace(/&amp;/g,'&') : 'a lesson';
+  if(u.completions[key]){
+    delete u.completions[key];
+    logActivity(u, `Un-marked "${title}" complete`);
+  } else {
+    u.completions[key] = todayStr();
+    logActivity(u, `Completed "${title}"`);
+  }
 }
 function overallProgress(){
   let total = 0, done = 0;
@@ -833,6 +1265,15 @@ function formatRelativeDate(ts){
   return new Date(ts).toLocaleDateString();
 }
 
+/* ---- activity log: "remember all actions each user does" ---- */
+function logActivity(user, action){
+  if(!user) return;
+  if(!Array.isArray(user.activityLog)) user.activityLog = [];
+  user.activityLog.unshift({ ts: Date.now(), action });
+  if(user.activityLog.length > 50) user.activityLog.length = 50; // cap growth
+  persistUsers();
+}
+
 let publicListenerBound = false;
 function bindPublicListenersOnce(){
   if(publicListenerBound) return;
@@ -857,9 +1298,15 @@ function renderPublic(){
     <div class="rail-item ${pub.page===it.key ? 'active':''}" data-rail="${it.key}" title="${it.label}">
       ${it.icon}
     </div>`).join('');
-  const accountIcon = pub.account.avatar
-    ? `<img class="rail-avatar" src="${pub.account.avatar}" alt="">`
+  const accountIcon = state.currentUser.avatar
+    ? `<img class="rail-avatar" src="${state.currentUser.avatar}" alt="">`
     : RAIL_ICONS.user;
+  const viewAsBtnHTML = isAdminUser(state.currentUser)
+    ? `<div class="rail-item ${state.viewAsUser ? 'view-as-active' : ''}" data-rail="toggle-view-as" title="${state.viewAsUser ? 'Exit preview — back to Admin' : 'View as a regular user'}">${RAIL_ICONS.eye}</div>`
+    : '';
+  const previewBanner = state.viewAsUser
+    ? `<div class="preview-banner">👁 Previewing as a regular user <button data-rail="toggle-view-as">Exit preview</button></div>`
+    : '';
 
   app.innerHTML = `
     <div class="blob blob-mint"></div>
@@ -871,13 +1318,18 @@ function renderPublic(){
           <div class="rail-main">${railTopHTML}</div>
           <div class="rail-spacer"></div>
           <div class="rail-bottom">
+            ${viewAsBtnHTML}
             <div class="rail-item ${pub.page==='account' ? 'active':''}" data-rail="account" title="My Account">${accountIcon}</div>
-            <div class="rail-item" data-rail="admin" title="Admin">${RAIL_ICONS.gear}</div>
           </div>
           <div class="rail-version">v1.0.1</div>
         </nav>
-        <main class="dash-main" id="dash-main"></main>
-        <aside class="dash-side" id="dash-side"></aside>
+        <div class="dash-content-col">
+          ${previewBanner}
+          <div class="dash-content-row">
+            <main class="dash-main" id="dash-main"></main>
+            <aside class="dash-side" id="dash-side"></aside>
+          </div>
+        </div>
       </div>
     </div>
     <footer><strong>Little Lot</strong> · Cardboard Maker Curriculum — Powered by Imagination</footer>
@@ -902,15 +1354,19 @@ function renderMePage(){
   const main = document.getElementById('dash-main');
   const side = document.getElementById('dash-side');
   side.style.display = 'none';
-  const acc = state.pub.account;
+  const acc = state.currentUser;
   const { done, total, pct } = overallProgress();
   const cont = findContinueLesson();
   const latest = findLatestUpdate();
   const firstName = (acc.name || '').split(' ')[0] || 'there';
+  const sm = statusMeta(userStatusKey(acc));
 
   main.innerHTML = `
     <div class="dash-hello">
-      <h1>Hi, ${escapeHTML(firstName)}!</h1>
+      <div class="dash-hello-row">
+        <h1>Hi, ${escapeHTML(firstName)}!</h1>
+        <span class="status-badge" style="background:${sm.color};color:${sm.fg}">${sm.label}</span>
+      </div>
       <p>Here's where you left off in Cardboard Maker training.</p>
     </div>
 
@@ -945,13 +1401,13 @@ function renderMePage(){
       </div>
     </div>
 
-    <div class="me-card me-external-card" style="background: #fffef8;">
+    <div class="me-card me-external-card" style="background:var(--kraft);">
       <div>
         <div class="me-card-label">Ready to build?</div>
         <div class="me-card-title">Head to the Maker Studio</div>
         <div class="me-card-sub" style="margin-bottom:0;">Bring your cardboard designs to life.</div>
       </div>
-      <a class="btn btn-primary btn-sm" href="https://maker.littlelot.studio" target="_blank" rel="noopener">Go to Magic Maker ↗</a>
+      <a class="btn btn-primary btn-sm" href="https://maker.littlelot.studio" target="_blank" rel="noopener">Open maker.littlelot.studio ↗</a>
     </div>
   `;
 }
@@ -972,8 +1428,8 @@ function todoRowHTML(t){
 }
 
 function renderTodoWidget(){
-  const rows = state.pub.todos.map(todoRowHTML).join('');
-  const doneCount = state.pub.todos.filter(t => t.done).length;
+  const rows = state.currentUser.todos.map(todoRowHTML).join('');
+  const doneCount = state.currentUser.todos.filter(t => t.done).length;
   const todayLabel = new Date().toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
   const adding = !!state.pub.todoAdding;
 
@@ -984,7 +1440,7 @@ function renderTodoWidget(){
       </div>
       <div class="todo-card-sub">
         <span>${todayLabel}</span>
-        <span>${doneCount}/${state.pub.todos.length} done</span>
+        <span>${doneCount}/${state.currentUser.todos.length} done</span>
       </div>
       <div id="todo-list">
         ${rows || '<div class="nav-empty" style="padding:10px 0;">No tasks yet — add one below.</div>'}
@@ -999,7 +1455,7 @@ function renderTodoWidget(){
       </div>
       <div class="todo-memo">
         <div class="todo-memo-label">Memo</div>
-        <textarea id="todo-memo" placeholder="Notes for yourself…">${escapeHTML(state.pub.todoMemo || '')}</textarea>
+        <textarea id="todo-memo" placeholder="Notes for yourself…">${escapeHTML(state.currentUser.todoMemo || '')}</textarea>
       </div>
     </div>
   `;
@@ -1014,14 +1470,14 @@ function wireTodoWidget(){
     });
   }
   const memo = document.getElementById('todo-memo');
-  if(memo) memo.addEventListener('input', (e) => { state.pub.todoMemo = e.target.value; });
+  if(memo) memo.addEventListener('input', (e) => { state.currentUser.todoMemo = e.target.value; });
 }
 function renderTodoList(){
   const list = document.getElementById('todo-list');
   if(!list) return;
-  list.innerHTML = state.pub.todos.map(todoRowHTML).join('') || '<div class="nav-empty" style="padding:10px 0;">No tasks yet — add one below.</div>';
+  list.innerHTML = state.currentUser.todos.map(todoRowHTML).join('') || '<div class="nav-empty" style="padding:10px 0;">No tasks yet — add one below.</div>';
   const sub = document.querySelector('.todo-card-sub span:last-child');
-  if(sub) sub.textContent = `${state.pub.todos.filter(t=>t.done).length}/${state.pub.todos.length} done`;
+  if(sub) sub.textContent = `${state.currentUser.todos.filter(t=>t.done).length}/${state.currentUser.todos.length} done`;
 }
 
 /* ---------- Modules page ---------- */
@@ -1029,15 +1485,19 @@ function renderModulesPage(){
   const main = document.getElementById('dash-main');
   const side = document.getElementById('dash-side');
   side.style.display = 'block';
+  const admin = canEdit();
 
   main.innerHTML = `
     <div class="dash-hello">
       <h1>Modules</h1>
-      <p>Browse the Cardboard Maker modules and open a lesson for the full breakdown.</p>
+      <p>Browse the Cardboard Maker modules and open a lesson for the full breakdown.${admin ? ' As an admin, you can edit anything right here.' : ''}</p>
     </div>
-    <div class="dash-search">
-      <span class="ic">⌕</span>
-      <input type="text" id="dash-search" placeholder="Search modules…" value="${escapeHTML(state.pub.search)}">
+    <div class="dash-search-row">
+      <div class="dash-search">
+        <span class="ic">⌕</span>
+        <input type="text" id="dash-search" placeholder="Search modules…" value="${escapeHTML(state.pub.search)}">
+      </div>
+      ${admin ? `<button class="btn btn-primary" id="add-module-btn">+ New module</button>` : ''}
     </div>
     <div class="card-grid" id="card-grid"></div>
   `;
@@ -1047,11 +1507,26 @@ function renderModulesPage(){
     state.pub.search = e.target.value;
     renderCardGrid();
   });
+  const addModBtn = document.getElementById('add-module-btn');
+  if(addModBtn){
+    addModBtn.addEventListener('click', async () => {
+      const n = state.modules.length + 1;
+      const newModule = mod(`Module ${String(n).padStart(2,'0')}`, 'Untitled module', []);
+      state.modules.push(newModule);
+      state.pub.module = state.modules.length - 1;
+      logActivity(state.currentUser, `Created module "${newModule.title}"`);
+      await persist();
+      renderCardGrid();
+      renderSidePanel();
+      showModuleEditPopup(newModule, state.modules.length - 1);
+    });
+  }
 }
 
 function renderCardGrid(){
   const grid = document.getElementById('card-grid');
   if(!grid) return;
+  const admin = canEdit();
   const q = state.pub.search.trim().toLowerCase();
   const items = state.modules
     .map((m, mi) => ({ m, mi }))
@@ -1065,6 +1540,7 @@ function renderCardGrid(){
     const count = m.lessons.length;
     return `
       <div class="mod-card ${mi===state.pub.module?'active':''}" data-mi="${mi}" style="background:${cardBg(m, mi)}">
+        ${admin ? `<button class="mod-card-edit" data-edit-module="${mi}" title="Edit module">✏️</button>` : ''}
         <h3>${escapeHTML(m.title.replace(/&amp;/g,'&'))}</h3>
         <div class="stats">Lessons: ${count}<br>Est. time: ${formatMinutes(count*15)}</div>
         <div class="icon">${moduleIconSVG(mi)}</div>
@@ -1076,12 +1552,13 @@ function renderSidePanel(){
   const side = document.getElementById('dash-side');
   const mi = state.pub.module;
   const m = state.modules[mi];
-  const acc = state.pub.account;
+  const acc = state.currentUser;
   if(!m){ side.innerHTML = ''; return; }
 
   const doneCount = m.lessons.filter((_, li) => isDoneKey(mi+'-'+li)).length;
   const total = m.lessons.length;
   const pct = total ? Math.round((doneCount/total)*100) : 0;
+  const sm = statusMeta(userStatusKey(acc));
 
   const items = m.lessons.map((l, li) => {
     const key = mi+'-'+li;
@@ -1101,7 +1578,7 @@ function renderSidePanel(){
       <div class="avatar">${acc.avatar ? `<img src="${acc.avatar}" alt="">` : acc.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
       <div>
         <div class="who">${escapeHTML(acc.name)}</div>
-        <div class="role">${escapeHTML(acc.role)}</div>
+        <span class="status-badge" style="background:${sm.color};color:${sm.fg};padding:3px 10px;font-size:10px;">${sm.label}</span>
       </div>
     </div>
     <div class="profile-progress">
@@ -1111,13 +1588,28 @@ function renderSidePanel(){
     <h3 class="toc-heading" style="margin-top:22px;">${escapeHTML(m.title.replace(/&amp;/g,'&'))}</h3>
     <p class="toc-sub">Table of content</p>
     ${items || '<div class="nav-empty">No lessons yet.</div>'}
+    ${canEdit() ? `<button class="todo-add-trigger" id="add-lesson-btn" style="margin-top:6px;">＋ New lesson</button>` : ''}
   `;
+
+  const addLessonBtn = document.getElementById('add-lesson-btn');
+  if(addLessonBtn){
+    addLessonBtn.addEventListener('click', async () => {
+      const newLesson = lesson('New lesson', 'Write what this lesson teaches…', 'Add a short real-world example…');
+      m.lessons.push(newLesson);
+      const li = m.lessons.length - 1;
+      logActivity(state.currentUser, `Added lesson "${newLesson.title}" to "${m.title.replace(/&amp;/g,'&')}"`);
+      await persist();
+      renderSidePanel();
+      state.pub.modal = { mi, li, editing: true };
+      renderModal();
+    });
+  }
 }
 
 function patchRailAvatar(){
   const item = document.querySelector('[data-rail="account"]');
   if(!item) return;
-  item.innerHTML = state.pub.account.avatar ? `<img class="rail-avatar" src="${state.pub.account.avatar}" alt="">` : RAIL_ICONS.user;
+  item.innerHTML = state.currentUser.avatar ? `<img class="rail-avatar" src="${state.currentUser.avatar}" alt="">` : RAIL_ICONS.user;
 }
 
 /* ---------- My Account page ---------- */
@@ -1125,12 +1617,16 @@ function renderAccountPage(){
   const main = document.getElementById('dash-main');
   const side = document.getElementById('dash-side');
   side.style.display = 'none';
-  const acc = state.pub.account;
+  const acc = state.currentUser;
   const initials = acc.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  const sm = statusMeta(userStatusKey(acc));
+  const prog = userProgress(acc);
+  const log = (acc.activityLog || []).slice(0, 8);
+
   main.innerHTML = `
     <div class="placeholder-page">
       <h1>My Account</h1>
-      <p>These details are just for display in this preview — they reset when the page reloads.</p>
+      <p>Your name, photo, and login stay saved to your account — this is the same login you'll use next time.</p>
       <div class="account-card">
         <div class="avatar-row">
           <div class="avatar-big" id="avatar-preview">${acc.avatar ? `<img src="${acc.avatar}" alt="">` : initials}</div>
@@ -1140,16 +1636,36 @@ function renderAccountPage(){
             ${acc.avatar ? `<button class="btn btn-sm" id="acc-avatar-remove" style="margin-top:8px;">Remove photo</button>` : ''}
           </div>
         </div>
+
+        <div class="status-row">
+          <span class="status-badge" style="background:${sm.color};color:${sm.fg}">${sm.label}</span>
+          <span class="status-row-sub">${prog.pct}% complete (${prog.done}/${prog.total} lessons)${acc.statusOverride ? ' · set manually by admin' : ''}</span>
+        </div>
+
         <div class="field"><label>Name</label><input type="text" id="acc-name" value="${escapeHTML(acc.name)}"></div>
-        <div class="field"><label>Role</label><input type="text" id="acc-role" value="${escapeHTML(acc.role)}"></div>
+        <div class="field"><label>Username</label><input type="text" id="acc-username" value="${escapeHTML(acc.username)}"></div>
+        <div class="field"><label>Password</label><input type="text" id="acc-password" placeholder="Leave blank to keep current password"></div>
         <button class="btn btn-primary" id="acc-save">Save</button>
         <span class="toast" id="acc-toast">Saved ✓</span>
+
+        <div class="activity-block">
+          <div class="me-card-label">Recent activity</div>
+          ${log.length ? log.map(e => `
+            <div class="activity-row">
+              <span>${escapeHTML(e.action)}</span>
+              <span class="activity-time">${formatRelativeDate(e.ts)}</span>
+            </div>`).join('') : '<div class="nav-empty" style="padding:6px 0;">Nothing logged yet.</div>'}
+        </div>
+
         <div class="danger-zone">
           <button class="btn" id="learner-logout">⎋ Log out</button>
         </div>
       </div>
+
+      ${canEdit() ? `<div class="account-card" id="users-panel-wrap" style="max-width:640px;margin-top:24px;"></div>` : ''}
     </div>
   `;
+  if(canEdit()) renderUsersSection(document.getElementById('users-panel-wrap'));
   document.getElementById('acc-avatar-file').addEventListener('change', (e) => {
     const file = e.target.files[0];
     if(!file) return;
@@ -1161,6 +1677,7 @@ function renderAccountPage(){
     const reader = new FileReader();
     reader.onload = () => {
       acc.avatar = reader.result;
+      logActivity(acc, 'Updated profile photo');
       renderAccountPage();
       patchRailAvatar();
     };
@@ -1170,19 +1687,30 @@ function renderAccountPage(){
   if(removeBtn){
     removeBtn.addEventListener('click', () => {
       acc.avatar = null;
+      logActivity(acc, 'Removed profile photo');
       renderAccountPage();
       patchRailAvatar();
     });
   }
-  document.getElementById('acc-save').addEventListener('click', () => {
+  document.getElementById('acc-save').addEventListener('click', async () => {
+    const newUsername = document.getElementById('acc-username').value.trim();
+    if(newUsername && newUsername !== acc.username && state.users.some(u => u.username === newUsername)){
+      showAlert('That username is already taken — pick a different one.');
+      return;
+    }
     acc.name = document.getElementById('acc-name').value || acc.name;
-    acc.role = document.getElementById('acc-role').value || acc.role;
+    if(newUsername) acc.username = newUsername;
+    const newPass = document.getElementById('acc-password').value;
+    if(newPass) acc.password = newPass;
+    logActivity(acc, 'Updated account details');
+    await persistUsers();
     flashToast('acc-toast');
-
   });
-  document.getElementById('learner-logout').addEventListener('click', () => {
-    state.learnerAuthed = false;
-    state.learnerLoginError = '';
+  document.getElementById('learner-logout').addEventListener('click', async () => {
+    logActivity(acc, 'Logged out');
+    await storageSet('current-session', null, false);
+    state.loggedIn = false;
+    state.currentUser = null;
     render();
   });
 }
@@ -1203,7 +1731,7 @@ function renderCalendarPage(){
   const completionsByDay = {};
   state.modules.forEach((m, mi) => {
     m.lessons.forEach((l, li) => {
-      const d = state.pub.completions[mi+'-'+li];
+      const d = state.currentUser.completions[mi+'-'+li];
       if(d){ (completionsByDay[d] = completionsByDay[d] || []).push(l.title.replace(/&amp;/g,'&')); }
     });
   });
@@ -1213,7 +1741,7 @@ function renderCalendarPage(){
   for(let d=1; d<=daysInMonth; d++){
     const key = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
     const hasCompletion = !!completionsByDay[key];
-    const hasEvent = !!(state.pub.events[key] && state.pub.events[key].length);
+    const hasEvent = !!(state.currentUser.events[key] && state.currentUser.events[key].length);
     cells += `
       <div class="day ${key===todayKey?'today':''}" data-day="${key}">
         <span>${d}</span>
@@ -1250,9 +1778,9 @@ function renderCalendarSide(){
   // gather upcoming events (today or later), sorted by date
   const todayKey = todayStr();
   const upcoming = [];
-  Object.keys(state.pub.events).forEach(dateKey => {
+  Object.keys(state.currentUser.events).forEach(dateKey => {
     if(dateKey >= todayKey){
-      (state.pub.events[dateKey] || []).forEach(ev => upcoming.push({ dateKey, text: ev.text }));
+      (state.currentUser.events[dateKey] || []).forEach(ev => upcoming.push({ dateKey, text: ev.text }));
     }
   });
   upcoming.sort((a,b) => a.dateKey.localeCompare(b.dateKey));
@@ -1276,7 +1804,7 @@ function showDayModal(dateKey){
   const completions = [];
   state.modules.forEach((m, mi) => {
     m.lessons.forEach((l, li) => {
-      if(state.pub.completions[mi+'-'+li] === dateKey) completions.push(l.title.replace(/&amp;/g,'&'));
+      if(state.currentUser.completions[mi+'-'+li] === dateKey) completions.push(l.title.replace(/&amp;/g,'&'));
     });
   });
   const niceDate = new Date(dateKey + 'T00:00:00').toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric', year:'numeric' });
@@ -1303,7 +1831,7 @@ function showDayModal(dateKey){
   document.body.appendChild(overlay);
 
   function renderEventsList(){
-    const evs = state.pub.events[dateKey] || [];
+    const evs = state.currentUser.events[dateKey] || [];
     overlay.querySelector('#day-events-list').innerHTML = evs.length ? evs.map(ev => `
       <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:6px;">
         <span style="flex:1;">${escapeHTML(ev.text)}</span>
@@ -1316,7 +1844,7 @@ function showDayModal(dateKey){
     if(e.target === overlay || e.target.dataset.confirm === 'cancel'){ overlay.remove(); renderCalendarPage(); return; }
     const delBtn = e.target.closest('[data-del-event]');
     if(delBtn){
-      state.pub.events[dateKey] = (state.pub.events[dateKey]||[]).filter(ev => ev.id !== delBtn.dataset.delEvent);
+      state.currentUser.events[dateKey] = (state.currentUser.events[dateKey]||[]).filter(ev => ev.id !== delBtn.dataset.delEvent);
       renderEventsList();
     }
   });
@@ -1324,8 +1852,8 @@ function showDayModal(dateKey){
     const input = overlay.querySelector('#day-event-input');
     const text = input.value.trim();
     if(!text) return;
-    if(!state.pub.events[dateKey]) state.pub.events[dateKey] = [];
-    state.pub.events[dateKey].push({ id: uid(), text });
+    if(!state.currentUser.events[dateKey]) state.currentUser.events[dateKey] = [];
+    state.currentUser.events[dateKey].push({ id: uid(), text });
     input.value = '';
     renderEventsList();
   });
@@ -1340,14 +1868,27 @@ function renderModal(){
   const m = state.modules[modal.mi];
   const l = m && m.lessons[modal.li];
   if(!l){ root.innerHTML = ''; return; }
-  const key = modal.mi + '-' + modal.li;
+
+  if(modal.editing && canEdit()){
+    renderLessonEditModal(root, m, l, modal.mi, modal.li);
+  } else {
+    renderLessonViewModal(root, m, l, modal.mi, modal.li);
+  }
+}
+
+function renderLessonViewModal(root, m, l, mi, li){
+  const key = mi + '-' + li;
   const done = isDoneKey(key);
+  const admin = canEdit();
 
   root.innerHTML = `
     <div class="modal-backdrop" data-close-modal="1">
       <div class="modal-card">
         <button class="modal-close" data-close-modal="1">✕</button>
-        <p class="m-eyebrow">${escapeHTML(m.eyebrow)} · Lesson ${modal.mi+1}.${modal.li+1}</p>
+        <div class="modal-top-row">
+          <p class="m-eyebrow">${escapeHTML(m.eyebrow)} · Lesson ${mi+1}.${li+1}</p>
+          ${admin ? `<button class="btn btn-sm" data-edit-lesson="${mi}-${li}">✏️ Edit</button>` : ''}
+        </div>
         <h3 style="${styleFor(l.titleAlign, l.titleColor)}">${escapeHTML(l.title.replace(/&amp;/g,'&'))}</h3>
         ${l.subtitle ? `<p class="m-subtitle" style="${styleFor(l.subtitleAlign, l.subtitleColor)}">${escapeHTML(l.subtitle)}</p>` : ''}
         ${mediaHTML(l.media)}
@@ -1366,502 +1907,85 @@ function renderModal(){
   `;
 }
 
-/* ---------- click delegation ---------- */
-function handlePublicClick(e){
-  const railItem = e.target.closest('.rail-item');
-  if(railItem){
-    const key = railItem.dataset.rail;
-    if(key === 'admin'){ location.hash = '#admin'; return; }
-    state.pub.page = key;
-    renderPublic();
-    return;
-  }
+// Admin's lesson editor — same modal, same click-through as any other
+// lesson, just with the fields swapped for editable ones.
+function renderLessonEditModal(main, m, l, mi, li){
+  main.innerHTML = `
+    <div class="modal-backdrop" data-close-modal="1">
+      <div class="modal-card">
+        <button class="modal-close" data-close-modal="1">✕</button>
+        <p class="m-eyebrow">${escapeHTML(m.eyebrow)} · Editing Lesson ${mi+1}.${li+1}</p>
 
-  const card = e.target.closest('.mod-card');
-  if(card){
-    state.pub.module = Number(card.dataset.mi);
-    renderCardGrid();
-    renderSidePanel();
-    return;
-  }
+        <div class="field">
+          <label>Title</label>
+          <input type="text" id="f-title" value="${escapeHTML(l.title.replace(/&amp;/g,'&'))}">
+          ${styleControls('title', l.titleAlign, l.titleColor)}
+        </div>
 
-  const tocItem = e.target.closest('[data-open-lesson]');
-  if(tocItem){
-    const [mi, li] = tocItem.dataset.openLesson.split('-').map(Number);
-    state.pub.modal = { mi, li };
-    renderModal();
-    return;
-  }
+        <div class="field">
+          <label>Subtitle (optional)</label>
+          <input type="text" id="f-subtitle" value="${escapeHTML(l.subtitle)}">
+          ${styleControls('subtitle', l.subtitleAlign, l.subtitleColor)}
+        </div>
 
-  const markBtn = e.target.closest('[data-mark-done]');
-  if(markBtn){
-    toggleDoneKey(markBtn.dataset.markDone);
-    renderModal();
-    if(state.pub.page === 'modules') renderSidePanel();
-    return;
-  }
+        <div class="field">
+          <label>Read me</label>
+          ${rteToolbar('learn')}
+          <div class="rte" id="rte-learn" contenteditable="true">${sanitizeRTE(l.learnHTML)}</div>
+        </div>
 
-  if(e.target.matches('[data-close-modal]')){
-    state.pub.modal = null;
-    renderModal();
-    return;
-  }
+        <div class="field">
+          <label>Exercise</label>
+          ${rteToolbar('example')}
+          <div class="rte" id="rte-example" contenteditable="true">${sanitizeRTE(l.exampleHTML)}</div>
+        </div>
 
-  const calNav = e.target.closest('[data-action="cal-prev"], [data-action="cal-next"]');
-  if(calNav){
-    const dir = calNav.dataset.action === 'cal-prev' ? -1 : 1;
-    let mo = state.pub.calMonth + dir, yr = state.pub.calYear;
-    if(mo < 0){ mo = 11; yr--; } if(mo > 11){ mo = 0; yr++; }
-    state.pub.calMonth = mo; state.pub.calYear = yr;
-    renderCalendarPage();
-    return;
-  }
-  const dayCell = e.target.closest('.cal-grid .day');
-  if(dayCell && dayCell.dataset.day){
-    showDayModal(dayCell.dataset.day);
-    return;
-  }
-
-  const openAddBtn = e.target.closest('[data-action="open-add-todo"]');
-  if(openAddBtn){
-    state.pub.todoAdding = true;
-    const row = document.getElementById('todo-add-row');
-    if(row){
-      row.innerHTML = `
-        <div class="todo-add-inline">
-          <input type="text" id="todo-input" placeholder="Add a task…">
-          <button class="btn btn-sm btn-primary" data-action="submit-todo">Add</button>
-        </div>`;
-      wireTodoWidget();
-    }
-    return;
-  }
-  const submitAddBtn = e.target.closest('[data-action="submit-todo"]');
-  if(submitAddBtn){
-    const input = document.getElementById('todo-input');
-    const text = input.value.trim();
-    if(text) state.pub.todos.push({ id: uid(), text, done:false, priority:'med' });
-    state.pub.todoAdding = false;
-    renderCalendarSide();
-    return;
-  }
-  const todoToggle = e.target.closest('[data-toggle-todo]');
-  if(todoToggle){
-    const t = state.pub.todos.find(x => x.id === todoToggle.dataset.toggleTodo);
-    if(t) t.done = !t.done;
-    renderTodoList();
-    return;
-  }
-  const todoDel = e.target.closest('[data-del-todo]');
-  if(todoDel){
-    state.pub.todos = state.pub.todos.filter(x => x.id !== todoDel.dataset.delTodo);
-    renderTodoList();
-    return;
-  }
-  const priorityMeta = e.target.closest('[data-cycle-priority]');
-  if(priorityMeta){
-    const t = state.pub.todos.find(x => x.id === priorityMeta.dataset.cyclePriority);
-    if(t){
-      const i = PRIORITY_CYCLE.indexOf(t.priority || 'med');
-      t.priority = PRIORITY_CYCLE[(i + 1) % PRIORITY_CYCLE.length];
-    }
-    renderTodoList();
-    return;
-  }
-}
-
-/* ============================================================
-   ADMIN — LOGIN
-   ============================================================ */
-/* ============================================================
-   LEARNER LOGIN (gates the public site)
-   ============================================================ */
-function renderLearnerLogin(){
-  document.body.className = 'learner-login-body';
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="ll-wrap">
-      <div class="ll-card">
-        <div class="ll-visual">
-          <div class="ll-mark">✂</div>
-          <div class="ll-tag">
-            <p class="ll-tag-eyebrow">You can easily</p>
-            <p class="ll-tag-title">Get access to your Cardboard Maker training, anytime.</p>
+        <div class="field">
+          <label>Media</label>
+          <div class="media-tabs">
+            <button data-mtab="image" class="active">Image</button>
+            <button data-mtab="video">Video</button>
+            <button data-mtab="none">None</button>
           </div>
-        </div>
-        <div class="ll-form-side">
-          <div class="ll-mark ll-mark-dark">✂</div>
-          <h2>Log in to continue</h2>
-          <p class="ll-sub">Enter the account details your program admin gave you to access the modules.</p>
-          <form id="learner-login-form">
-            <label>Username</label>
-            <input type="text" id="ll-user" autocomplete="username" required>
-            <label>Password</label>
-            <div class="ll-pass-wrap">
-              <input type="password" id="ll-pass" autocomplete="current-password" required>
-              <button type="button" class="ll-eye" id="ll-eye" title="Show password">👁</button>
-            </div>
-            <div class="error" id="ll-error">${state.learnerLoginError}</div>
-            <button type="submit" class="btn btn-primary btn-block">Log In</button>
-          </form>
-          <p class="ll-footnote">Don't have an account? <span class="ll-link">Ask your admin to add you.</span></p>
-          <div class="hint" style="margin-top:14px;">Demo login: <strong>educator</strong> / <strong>cardboard2026</strong></div>
-        </div>
-      </div>
-    </div>
-  `;
-  document.getElementById('ll-eye').addEventListener('click', () => {
-    const pass = document.getElementById('ll-pass');
-    pass.type = pass.type === 'password' ? 'text' : 'password';
-  });
-  document.getElementById('learner-login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('ll-user').value.trim();
-    const password = document.getElementById('ll-pass').value;
-    const match = state.users.find(u => u.username === username && u.password === password);
-    if(match){
-      state.learnerAuthed = true;
-      state.learnerLoginError = '';
-      if(!state.pub) state.pub = defaultPubState();
-      state.pub.account = { name: match.name, role: match.role, avatar: (state.pub.account && state.pub.account.avatar) || null };
-      render();
-    } else {
-      state.learnerLoginError = 'Incorrect username or password.';
-      render();
-    }
-  });
-}
-
-function renderLogin(){
-  document.body.className = '';
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="admin-login-wrap">
-      <div class="login-card">
-        <h2>Admin Login</h2>
-        <p class="sub">Cardboard Maker CMS</p>
-        <form id="login-form">
-          <label>Username</label>
-          <input type="text" id="login-user" autocomplete="username" required>
-          <label>Password</label>
-          <input type="password" id="login-pass" autocomplete="current-password" required>
-          <div class="error" id="login-error">${state.loginError}</div>
-          <button type="submit" class="btn btn-primary btn-block">Log in</button>
-        </form>
-        <div class="hint">Demo credentials: <strong>admin</strong> / <strong>cardboard2026</strong><br>Change these once logged in, under Account settings.</div>
-        <div class="hint" style="margin-top:8px;background:rgba(252,220,103,0.4);">Heads up: this is a UI login gate for editing convenience, not production-grade user authentication.</div>
-      </div>
-    </div>
-  `;
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const user = document.getElementById('login-user').value.trim();
-    const pass = document.getElementById('login-pass').value;
-    const creds = await getCredentials();
-    if(user === creds.user && pass === creds.pass){
-      state.authed = true;
-      state.loginError = '';
-      render();
-    } else {
-      state.loginError = 'Incorrect username or password.';
-      render();
-    }
-  });
-}
-
-/* ============================================================
-   ADMIN — DASHBOARD
-   ============================================================ */
-let activeRTE = null; // last-focused contenteditable, for toolbar commands
-
-function renderAdmin(){
-  document.body.className = '';
-  const app = document.getElementById('app');
-  const m = state.modules[state.selModule] || null;
-  const l = m ? (m.lessons[state.selLesson] || null) : null;
-
-  const treeHTML = state.modules.map((mod, mi) => {
-    const isActiveMod = mi === state.selModule;
-    const lessonsHTML = mod.lessons.map((les, li) => {
-      const isActiveLes = isActiveMod && li === state.selLesson;
-      return `
-        <div class="tree-lesson ${isActiveLes ? 'active':''}" data-mi="${mi}" data-li="${li}">
-          <span class="name">${mi+1}.${li+1} ${escapeHTML(les.title.replace(/&amp;/g,'&'))}</span>
-          <span class="tree-reorder">
-            <button data-act="up-lesson" data-mi="${mi}" data-li="${li}" title="Move up">↑</button>
-            <button data-act="down-lesson" data-mi="${mi}" data-li="${li}" title="Move down">↓</button>
-            <button data-act="del-lesson" data-mi="${mi}" data-li="${li}" title="Delete">✕</button>
-          </span>
-        </div>`;
-    }).join('');
-    return `
-      <div class="tree-module">
-        <div class="tree-module-head ${isActiveMod ? 'active':''}" data-act="sel-module" data-mi="${mi}">
-          <span class="num">${String(mi+1).padStart(2,'0')}</span>
-          <span class="name">${escapeHTML(mod.title.replace(/&amp;/g,'&'))}</span>
-          <span class="tree-reorder">
-            <button data-act="up-module" data-mi="${mi}" title="Move up">↑</button>
-            <button data-act="down-module" data-mi="${mi}" title="Move down">↓</button>
-            <button data-act="del-module" data-mi="${mi}" title="Delete">✕</button>
-          </span>
-        </div>
-        <div class="tree-lessons">
-          ${lessonsHTML}
-          <button class="tree-add-lesson" data-act="add-lesson" data-mi="${mi}">+ New lesson</button>
-        </div>
-      </div>`;
-  }).join('');
-
-  app.innerHTML = `
-    <div class="admin-shell">
-      <aside class="admin-sidebar">
-        <h1>Cardboard Maker</h1>
-        <div class="tag">CMS · Content Manager</div>
-        <div class="sidebar-actions">
-          <button class="btn" data-act="add-module">+ New module</button>
-        </div>
-        <div id="tree">${treeHTML}</div>
-        <div class="sidebar-footer">
-          <a href="#" id="view-site">↗ View public site</a>
-          <button data-act="manage-users">👥 Manage users</button>
-          <button data-act="account">⚙ Account settings</button>
-          <button data-act="logout">⎋ Log out</button>
-        </div>
-      </aside>
-      <main class="admin-main" id="admin-main"></main>
-    </div>
-  `;
-
-  const main = document.getElementById('admin-main');
-  if(state.editingUsers){
-    renderUsersPanel(main);
-  } else if(state.editingAccount){
-    renderAccountPanel(main);
-  } else if(l){
-    renderLessonEditor(main, m, l, state.selModule, state.selLesson);
-  } else if(m){
-    renderModuleEditor(main, m, state.selModule);
-  } else {
-    main.innerHTML = `<div class="admin-empty">No modules yet. Use "+ New module" to create your first one.</div>`;
-  }
-
-  wireAdminEvents();
-}
-
-function wireAdminEvents(){
-  document.getElementById('view-site').addEventListener('click', (e) => { e.preventDefault(); location.hash = ''; });
-  document.querySelector('[data-act="logout"]').addEventListener('click', () => { state.authed = false; state.editingAccount=false; state.editingUsers=false; render(); });
-  document.querySelector('[data-act="account"]').addEventListener('click', () => { state.editingAccount = true; state.editingUsers = false; state.selLesson = -1; renderAdmin(); });
-  document.querySelector('[data-act="manage-users"]').addEventListener('click', () => { state.editingUsers = true; state.editingAccount = false; state.selLesson = -1; renderAdmin(); });
-  document.querySelector('[data-act="add-module"]').addEventListener('click', async () => {
-    const n = state.modules.length + 1;
-    state.modules.push(mod(`Module ${String(n).padStart(2,'0')}`, 'Untitled module', []));
-    state.selModule = state.modules.length - 1;
-    state.selLesson = -1;
-    state.editingAccount = false; state.editingUsers = false;
-    state.editingUsers = false;
-    await persist();
-    renderAdmin();
-  });
-
-  document.getElementById('tree').addEventListener('click', async (e) => {
-    const btn = e.target.closest('[data-act]');
-    const treeItem = e.target.closest('.tree-module-head, .tree-lesson');
-    if(!btn && treeItem && treeItem.classList.contains('tree-lesson')){
-      state.selModule = Number(treeItem.dataset.mi);
-      state.selLesson = Number(treeItem.dataset.li);
-      state.editingAccount = false; state.editingUsers = false;
-      renderAdmin();
-      return;
-    }
-    if(!btn) return;
-    const act = btn.dataset.act;
-    const mi = btn.dataset.mi !== undefined ? Number(btn.dataset.mi) : null;
-    const li = btn.dataset.li !== undefined ? Number(btn.dataset.li) : null;
-
-    if(act === 'sel-module'){
-      state.selModule = mi; state.selLesson = -1; state.editingAccount = false; state.editingUsers = false; renderAdmin(); return;
-    }
-    if(act === 'add-lesson'){
-      state.modules[mi].lessons.push(lesson('New lesson', 'Write what this lesson teaches…', 'Add a short real-world example…'));
-      state.selModule = mi; state.selLesson = state.modules[mi].lessons.length - 1; state.editingAccount=false;
-      await persist(); renderAdmin(); return;
-    }
-    if(act === 'up-module' && mi > 0){
-      [state.modules[mi-1], state.modules[mi]] = [state.modules[mi], state.modules[mi-1]];
-      if(state.selModule === mi) state.selModule = mi-1; else if(state.selModule === mi-1) state.selModule = mi;
-      await persist(); renderAdmin(); return;
-    }
-    if(act === 'down-module' && mi < state.modules.length - 1){
-      [state.modules[mi+1], state.modules[mi]] = [state.modules[mi], state.modules[mi+1]];
-      if(state.selModule === mi) state.selModule = mi+1; else if(state.selModule === mi+1) state.selModule = mi;
-      await persist(); renderAdmin(); return;
-    }
-    if(act === 'del-module'){
-      showConfirm(`Delete "${state.modules[mi].title.replace(/&amp;/g,'&')}" and all its lessons?`, async () => {
-        state.modules.splice(mi, 1);
-        state.selModule = Math.max(0, mi - 1); state.selLesson = -1;
-        await persist(); renderAdmin();
-      }, 'Delete module');
-      return;
-    }
-    if(act === 'up-lesson' && li > 0){
-      const arr = state.modules[mi].lessons;
-      [arr[li-1], arr[li]] = [arr[li], arr[li-1]];
-      if(state.selModule===mi && state.selLesson===li) state.selLesson = li-1;
-      else if(state.selModule===mi && state.selLesson===li-1) state.selLesson = li;
-      await persist(); renderAdmin(); return;
-    }
-    if(act === 'down-lesson'){
-      const arr = state.modules[mi].lessons;
-      if(li < arr.length - 1){
-        [arr[li+1], arr[li]] = [arr[li], arr[li+1]];
-        if(state.selModule===mi && state.selLesson===li) state.selLesson = li+1;
-        else if(state.selModule===mi && state.selLesson===li+1) state.selLesson = li;
-        await persist(); renderAdmin();
-      }
-      return;
-    }
-    if(act === 'del-lesson'){
-      showConfirm('Delete this lesson?', async () => {
-        state.modules[mi].lessons.splice(li, 1);
-        if(state.selModule === mi) state.selLesson = -1;
-        await persist(); renderAdmin();
-      }, 'Delete lesson');
-      return;
-    }
-  });
-}
-
-/* ---------- module editor panel ---------- */
-function renderModuleEditor(main, m, mi){
-  main.innerHTML = `
-    <div class="panel">
-      <div class="path">Module ${mi+1}</div>
-      <h2>Edit module</h2>
-      <div class="field">
-        <label>Eyebrow label</label>
-        <input type="text" id="f-eyebrow" value="${escapeHTML(m.eyebrow)}">
-      </div>
-      <div class="field">
-        <label>Module title</label>
-        <input type="text" id="f-modtitle" value="${escapeHTML(m.title.replace(/&amp;/g,'&'))}">
-      </div>
-      <div class="field">
-        <label>Accent color (badge &amp; box tint)</label>
-        <div class="swatch-row">
-          ${SWATCHES.map(c => `<button class="swatch ${m.accent===c?'active':''}" data-color="${c}" style="background:${c||'#A4DFDC'}" data-target="accent"></button>`).join('')}
-          <input type="color" id="f-accent-custom" value="${m.accent || '#A4DFDC'}">
-        </div>
-      </div>
-      <div class="action-row">
-        <button class="btn btn-primary" id="save-module">Save module</button>
-        <span class="toast" id="toast-mod">Saved ✓</span>
-      </div>
-      <div class="hint-box">This module has ${m.lessons.length} lesson${m.lessons.length===1?'':'s'}. Use "+ New lesson" in the sidebar to add one.</div>
-      <div class="danger-zone">
-        <button class="btn" id="del-module-btn">Delete this module</button>
-      </div>
-    </div>
-  `;
-  let pendingAccent = m.accent;
-  main.querySelectorAll('.swatch[data-target="accent"]').forEach(sw => {
-    sw.addEventListener('click', () => {
-      pendingAccent = sw.dataset.color;
-      main.querySelectorAll('.swatch[data-target="accent"]').forEach(s=>s.classList.remove('active'));
-      sw.classList.add('active');
-    });
-  });
-  main.querySelector('#f-accent-custom').addEventListener('input', (e) => { pendingAccent = e.target.value; });
-
-  main.querySelector('#save-module').addEventListener('click', async () => {
-    m.eyebrow = main.querySelector('#f-eyebrow').value || m.eyebrow;
-    m.title = escapeHTML(main.querySelector('#f-modtitle').value || m.title);
-    m.accent = pendingAccent;
-    await persist();
-    flashToast('toast-mod');
-  });
-  main.querySelector('#del-module-btn').addEventListener('click', () => {
-    document.querySelector(`[data-act="del-module"][data-mi="${mi}"]`).click();
-  });
-}
-
-/* ---------- lesson editor panel ---------- */
-function renderLessonEditor(main, m, l, mi, li){
-  main.innerHTML = `
-    <div class="panel">
-      <div class="path">Module ${mi+1} · Lesson ${mi+1}.${li+1}</div>
-      <h2>Edit lesson</h2>
-
-      <div class="field">
-        <label>Title</label>
-        <input type="text" id="f-title" value="${escapeHTML(l.title.replace(/&amp;/g,'&'))}">
-        ${styleControls('title', l.titleAlign, l.titleColor)}
-      </div>
-
-      <div class="field">
-        <label>Subtitle (optional)</label>
-        <input type="text" id="f-subtitle" value="${escapeHTML(l.subtitle)}">
-        ${styleControls('subtitle', l.subtitleAlign, l.subtitleColor)}
-      </div>
-
-      <div class="field">
-        <label>Read me</label>
-        ${rteToolbar('learn')}
-        <div class="rte" id="rte-learn" contenteditable="true">${sanitizeRTE(l.learnHTML)}</div>
-      </div>
-
-      <div class="field">
-        <label>Exercise</label>
-        ${rteToolbar('example')}
-        <div class="rte" id="rte-example" contenteditable="true">${sanitizeRTE(l.exampleHTML)}</div>
-      </div>
-
-      <div class="field">
-        <label>Media</label>
-        <div class="media-tabs">
-          <button data-mtab="image" class="active">Image</button>
-          <button data-mtab="video">Video</button>
-          <button data-mtab="none">None</button>
-        </div>
-        <div id="media-panel-image" class="media-panel">
-          <input type="url" id="img-url" placeholder="Paste an image URL…" value="${l.media && l.media.type==='image' ? l.media.src : ''}">
-          <div class="hint-box">Or upload a small image directly (recommended under ~3MB).</div>
-          <input type="file" id="img-file" accept="image/*" style="margin-top:8px;">
-          <div style="margin-top:12px;">
-            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:6px;">Layout</label>
-            <div class="align-group" id="img-align-group">
-              <button data-align="left" class="${(l.media && l.media.align)==='left'?'active':''}">Left</button>
-              <button data-align="center" class="${!l.media || !l.media.align || l.media.align==='center' ? 'active':''}">Center</button>
-              <button data-align="right" class="${(l.media && l.media.align)==='right'?'active':''}">Right</button>
-              <button data-align="full" class="${(l.media && l.media.align)==='full'?'active':''}">Full width</button>
+          <div id="media-panel-image" class="media-panel">
+            <input type="url" id="img-url" placeholder="Paste an image URL…" value="${l.media && l.media.type==='image' ? l.media.src : ''}">
+            <div class="hint-box">Or upload a small image directly (recommended under ~3MB).</div>
+            <input type="file" id="img-file" accept="image/*" style="margin-top:8px;">
+            <div style="margin-top:12px;">
+              <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:6px;">Layout</label>
+              <div class="align-group" id="img-align-group">
+                <button data-align="left" class="${(l.media && l.media.align)==='left'?'active':''}">Left</button>
+                <button data-align="center" class="${!l.media || !l.media.align || l.media.align==='center' ? 'active':''}">Center</button>
+                <button data-align="right" class="${(l.media && l.media.align)==='right'?'active':''}">Right</button>
+                <button data-align="full" class="${(l.media && l.media.align)==='full'?'active':''}">Full width</button>
+              </div>
             </div>
           </div>
+          <div id="media-panel-video" class="media-panel" style="display:none;">
+            <input type="url" id="video-url" placeholder="Paste a YouTube, Vimeo, or direct video (.mp4) link…" value="${l.media && l.media.type==='video' ? l.media.src : ''}">
+            <div class="hint-box">Recommended — links work at any length/size. Direct file upload below is capped to small clips only.</div>
+            <input type="file" id="video-file" accept="video/*" style="margin-top:8px;">
+          </div>
+          <div class="media-preview" id="media-preview">${mediaHTML(l.media) || '<em style="color:var(--ink-soft);font-size:13px;">No media yet</em>'}</div>
         </div>
-        <div id="media-panel-video" class="media-panel" style="display:none;">
-          <input type="url" id="video-url" placeholder="Paste a YouTube, Vimeo, or direct video (.mp4) link…" value="${l.media && l.media.type==='video' ? l.media.src : ''}">
-          <div class="hint-box">Recommended — links work at any length/size. Direct file upload below is capped to small clips only.</div>
-          <input type="file" id="video-file" accept="video/*" style="margin-top:8px;">
+
+        <div class="field">
+          <label>Attachment (downloadable file)</label>
+          <input type="text" id="file-name" placeholder="Display name, e.g. Worksheet.pdf" value="${escapeHTML(l.file ? l.file.name : '')}">
+          <input type="url" id="file-url" placeholder="Paste a hosted file URL…" value="${l.file && !String(l.file.src).startsWith('data:') ? l.file.src : ''}" style="margin-top:8px;">
+          <div class="hint-box">Or upload a small file directly (recommended under ~3.5MB) — PDFs, worksheets, templates, etc.</div>
+          <input type="file" id="file-upload" style="margin-top:8px;">
+          <div class="media-preview" id="file-preview">${fileHTML(l.file) || '<em style="color:var(--ink-soft);font-size:13px;">No file attached</em>'}</div>
+          <button class="btn btn-sm" id="file-remove" style="margin-top:10px;">Remove attachment</button>
         </div>
-        <div class="media-preview" id="media-preview">${mediaHTML(l.media) || '<em style="color:var(--ink-soft);font-size:13px;">No media yet</em>'}</div>
-      </div>
 
-      <div class="field">
-        <label>Attachment (downloadable file)</label>
-        <input type="text" id="file-name" placeholder="Display name, e.g. Worksheet.pdf" value="${escapeHTML(l.file ? l.file.name : '')}">
-        <input type="url" id="file-url" placeholder="Paste a hosted file URL…" value="${l.file && !String(l.file.src).startsWith('data:') ? l.file.src : ''}" style="margin-top:8px;">
-        <div class="hint-box">Or upload a small file directly (recommended under ~3.5MB) — PDFs, worksheets, templates, etc.</div>
-        <input type="file" id="file-upload" style="margin-top:8px;">
-        <div class="media-preview" id="file-preview">${fileHTML(l.file) || '<em style="color:var(--ink-soft);font-size:13px;">No file attached</em>'}</div>
-        <button class="btn btn-sm" id="file-remove" style="margin-top:10px;">Remove attachment</button>
-      </div>
-
-      <div class="action-row">
-        <button class="btn btn-primary" id="save-lesson">Save lesson</button>
-        <span class="toast" id="toast-lesson">Saved ✓</span>
-      </div>
-      <div class="danger-zone">
-        <button class="btn" id="del-lesson-btn">Delete this lesson</button>
+        <div class="action-row">
+          <button class="btn btn-primary" id="save-lesson">Save</button>
+          <button class="btn" id="cancel-edit-lesson">Cancel</button>
+        </div>
+        <div class="danger-zone">
+          <button class="btn" id="del-lesson-btn" style="border-color:var(--orange);color:var(--orange);">Delete this lesson</button>
+        </div>
       </div>
     </div>
   `;
@@ -1991,15 +2115,222 @@ function renderLessonEditor(main, m, l, mi, li){
     l.media = pendingMedia;
     l.file = (pendingFile && pendingFile.src) ? pendingFile : null;
     l.updatedAt = Date.now();
+    logActivity(state.currentUser, `Edited lesson "${l.title.replace(/&amp;/g,'&')}"`);
     await persist();
-    flashToast('toast-lesson');
-    // refresh sidebar labels (title may have changed)
-    renderAdmin();
+    state.pub.modal = { mi, li, editing: false };
+    renderModal();
+    if(state.pub.page === 'modules') renderSidePanel();
+  });
+  main.querySelector('#cancel-edit-lesson').addEventListener('click', () => {
+    state.pub.modal = { mi, li, editing: false };
+    renderModal();
   });
   main.querySelector('#del-lesson-btn').addEventListener('click', () => {
-    document.querySelector(`[data-act="del-lesson"][data-mi="${mi}"][data-li="${li}"]`).click();
+    showConfirm('Delete this lesson?', async () => {
+      const title = l.title.replace(/&amp;/g,'&');
+      m.lessons.splice(li, 1);
+      logActivity(state.currentUser, `Deleted lesson "${title}"`);
+      await persist();
+      state.pub.modal = null;
+      renderModal();
+      if(state.pub.page === 'modules') renderSidePanel();
+    }, 'Delete lesson');
   });
 }
+
+/* ---------- click delegation ---------- */
+function handlePublicClick(e){
+  const viewAsToggle = e.target.closest('[data-rail="toggle-view-as"]');
+  if(viewAsToggle){
+    state.viewAsUser = !state.viewAsUser;
+    logActivity(state.currentUser, state.viewAsUser ? 'Started previewing as a regular user' : 'Exited user preview');
+    renderPublic();
+    return;
+  }
+
+  const railItem = e.target.closest('.rail-item');
+  if(railItem){
+    state.pub.page = railItem.dataset.rail;
+    renderPublic();
+    return;
+  }
+
+  const editModBtn = e.target.closest('[data-edit-module]');
+  if(editModBtn){
+    const mi = Number(editModBtn.dataset.editModule);
+    showModuleEditPopup(state.modules[mi], mi);
+    return;
+  }
+
+  const card = e.target.closest('.mod-card');
+  if(card){
+    state.pub.module = Number(card.dataset.mi);
+    renderCardGrid();
+    renderSidePanel();
+    return;
+  }
+
+  const tocItem = e.target.closest('[data-open-lesson]');
+  if(tocItem){
+    const [mi, li] = tocItem.dataset.openLesson.split('-').map(Number);
+    state.pub.modal = { mi, li, editing: false };
+    renderModal();
+    return;
+  }
+
+  const editLessonBtn = e.target.closest('[data-edit-lesson]');
+  if(editLessonBtn){
+    const [mi, li] = editLessonBtn.dataset.editLesson.split('-').map(Number);
+    state.pub.modal = { mi, li, editing: true };
+    renderModal();
+    return;
+  }
+
+  const markBtn = e.target.closest('[data-mark-done]');
+  if(markBtn){
+    toggleDoneKey(markBtn.dataset.markDone);
+    renderModal();
+    if(state.pub.page === 'modules') renderSidePanel();
+    return;
+  }
+
+  if(e.target.matches('[data-close-modal]')){
+    state.pub.modal = null;
+    renderModal();
+    return;
+  }
+
+  const calNav = e.target.closest('[data-action="cal-prev"], [data-action="cal-next"]');
+  if(calNav){
+    const dir = calNav.dataset.action === 'cal-prev' ? -1 : 1;
+    let mo = state.pub.calMonth + dir, yr = state.pub.calYear;
+    if(mo < 0){ mo = 11; yr--; } if(mo > 11){ mo = 0; yr++; }
+    state.pub.calMonth = mo; state.pub.calYear = yr;
+    renderCalendarPage();
+    return;
+  }
+  const dayCell = e.target.closest('.cal-grid .day');
+  if(dayCell && dayCell.dataset.day){
+    showDayModal(dayCell.dataset.day);
+    return;
+  }
+
+  const openAddBtn = e.target.closest('[data-action="open-add-todo"]');
+  if(openAddBtn){
+    state.pub.todoAdding = true;
+    const row = document.getElementById('todo-add-row');
+    if(row){
+      row.innerHTML = `
+        <div class="todo-add-inline">
+          <input type="text" id="todo-input" placeholder="Add a task…">
+          <button class="btn btn-sm btn-primary" data-action="submit-todo">Add</button>
+        </div>`;
+      wireTodoWidget();
+    }
+    return;
+  }
+  const submitAddBtn = e.target.closest('[data-action="submit-todo"]');
+  if(submitAddBtn){
+    const input = document.getElementById('todo-input');
+    const text = input.value.trim();
+    if(text) state.currentUser.todos.push({ id: uid(), text, done:false, priority:'med' });
+    state.pub.todoAdding = false;
+    renderCalendarSide();
+    return;
+  }
+  const todoToggle = e.target.closest('[data-toggle-todo]');
+  if(todoToggle){
+    const t = state.currentUser.todos.find(x => x.id === todoToggle.dataset.toggleTodo);
+    if(t) t.done = !t.done;
+    renderTodoList();
+    return;
+  }
+  const todoDel = e.target.closest('[data-del-todo]');
+  if(todoDel){
+    state.currentUser.todos = state.currentUser.todos.filter(x => x.id !== todoDel.dataset.delTodo);
+    renderTodoList();
+    return;
+  }
+  const priorityMeta = e.target.closest('[data-cycle-priority]');
+  if(priorityMeta){
+    const t = state.currentUser.todos.find(x => x.id === priorityMeta.dataset.cyclePriority);
+    if(t){
+      const i = PRIORITY_CYCLE.indexOf(t.priority || 'med');
+      t.priority = PRIORITY_CYCLE[(i + 1) % PRIORITY_CYCLE.length];
+    }
+    renderTodoList();
+    return;
+  }
+}
+
+/* ============================================================
+   ADMIN — LOGIN
+   ============================================================ */
+/* ============================================================
+   LOGIN (single login for everyone — status decides what you can do)
+   ============================================================ */
+function renderLoginPage(){
+  document.body.className = 'learner-login-body';
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="ll-wrap">
+      <div class="ll-card">
+        <div class="ll-visual">
+          <div class="ll-mark">✂</div>
+          <div class="ll-tag">
+            <p class="ll-tag-eyebrow">You can easily</p>
+            <p class="ll-tag-title">Get access to your Cardboard Maker training, anytime.</p>
+          </div>
+        </div>
+        <div class="ll-form-side">
+          <div class="ll-mark ll-mark-dark">✂</div>
+          <h2>Log in to continue</h2>
+          <p class="ll-sub">One login for everyone — admins just see extra editing tools once they're in.</p>
+          <form id="login-form">
+            <label>Username</label>
+            <input type="text" id="ll-user" autocomplete="username" required>
+            <label>Password</label>
+            <div class="ll-pass-wrap">
+              <input type="password" id="ll-pass" autocomplete="current-password" required>
+              <button type="button" class="ll-eye" id="ll-eye" title="Show password">👁</button>
+            </div>
+            <div class="error" id="ll-error">${state.loginError}</div>
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          </form>
+          <p class="ll-footnote">Don't have an account? <span class="ll-link">Ask your admin to add you.</span></p>
+          <div class="hint" style="margin-top:14px;">Demo login: <strong>admin</strong> / <strong>cardboard2026</strong></div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('ll-eye').addEventListener('click', () => {
+    const pass = document.getElementById('ll-pass');
+    pass.type = pass.type === 'password' ? 'text' : 'password';
+  });
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('ll-user').value.trim();
+    const password = document.getElementById('ll-pass').value;
+    const match = state.users.find(u => u.username === username && u.password === password);
+    if(match){
+      state.loggedIn = true;
+      state.loginError = '';
+      state.currentUser = match;
+      if(!state.pub) state.pub = defaultPubState();
+      logActivity(match, 'Logged in');
+      await storageSet('current-session', { userId: match.id }, false);
+      render();
+    } else {
+      state.loginError = 'Incorrect username or password.';
+      render();
+    }
+  });
+}
+
+/* ============================================================
+   ADMIN — DASHBOARD
+   ============================================================ */
+let activeRTE = null; // last-focused contenteditable, for toolbar commands
 
 function styleControls(field, align, color){
   return `
@@ -2094,86 +2425,80 @@ function flashToast(id){
 }
 
 /* ---------- account settings ---------- */
-function renderAccountPanel(main){
-  main.innerHTML = `
-    <div class="panel">
-      <div class="path">Settings</div>
-      <h2>Account</h2>
-      <div class="field"><label>New username</label><input type="text" id="acc-user" placeholder="admin"></div>
-      <div class="field"><label>New password</label><input type="password" id="acc-pass" placeholder="••••••••"></div>
-      <div class="action-row">
-        <button class="btn btn-primary" id="save-account">Update credentials</button>
-        <span class="toast" id="toast-acc">Saved ✓</span>
-      </div>
-      <div class="warn-box">Reminder: this login only gates the editing UI in this preview — it isn't a substitute for real backend authentication in production.</div>
-      <div class="danger-zone">
-        <button class="btn" id="reset-content">Reset all content to defaults</button>
-      </div>
-    </div>
-  `;
-  main.querySelector('#save-account').addEventListener('click', async () => {
-    const u = main.querySelector('#acc-user').value.trim();
-    const p = main.querySelector('#acc-pass').value;
-    const current = await getCredentials();
-    const next = { user: u || current.user, pass: p || current.pass };
-    await storageSet('cms-credentials', next, true);
-    flashToast('toast-acc');
-  });
-  main.querySelector('#reset-content').addEventListener('click', () => {
-    showConfirm('This replaces ALL modules and lessons with the original defaults. Continue?', async () => {
-      state.modules = JSON.parse(JSON.stringify(DEFAULT_MODULES));
-      state.selModule = 0; state.selLesson = 0; state.editingAccount = false; state.editingUsers = false;
-      await persist();
-      renderAdmin();
-    }, 'Reset content');
-  });
-}
+const STATUS_OPTIONS = [
+  { value:'', label:'Auto (from progress)' },
+  { value:'admin', label:'Admin (special)' },
+  { value:'pro', label:'Pro' },
+  { value:'advance', label:'Advance' },
+  { value:'intermediate', label:'Intermediate' },
+  { value:'beginner', label:'Beginner' }
+];
 
-function renderUsersPanel(main){
-  const rows = state.users.map(u => `
+// Admin-only section appended to My Account — same page everyone sees,
+// just with this extra block at the bottom for people who can manage users.
+function renderUsersSection(wrap){
+  if(!wrap) return;
+  const rows = state.users.map(u => {
+    const sm = statusMeta(userStatusKey(u));
+    const prog = userProgress(u);
+    return `
     <div class="user-row">
       <div class="user-row-info">
-        <div class="user-row-name">${escapeHTML(u.name)}</div>
-        <div class="user-row-meta">@${escapeHTML(u.username)} · ${escapeHTML(u.role)}</div>
+        <div class="user-row-name">${escapeHTML(u.name)} <span class="status-badge" style="background:${sm.color};color:${sm.fg};font-size:10px;padding:3px 9px;">${sm.label}</span></div>
+        <div class="user-row-meta">@${escapeHTML(u.username)} · ${prog.pct}% complete (${prog.done}/${prog.total})${u.id===state.currentUser.id ? ' · this is you' : ''}</div>
       </div>
-      <button class="btn btn-sm" data-del-user="${u.id}">Remove</button>
+      <select class="status-select" data-status-for="${u.id}">
+        ${STATUS_OPTIONS.map(o => `<option value="${o.value}" ${(u.statusOverride||'')===o.value ? 'selected':''}>${o.label}</option>`).join('')}
+      </select>
+      <button class="btn btn-sm" data-view-log="${u.id}">Activity</button>
+      <button class="btn btn-sm" data-del-user="${u.id}" ${u.id===state.currentUser.id ? 'disabled title="You cannot remove your own account"' : ''}>Remove</button>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
-  main.innerHTML = `
-    <div class="panel">
-      <div class="path">Users</div>
-      <h2>Manage platform users</h2>
-      <p style="color:var(--ink-soft);font-size:13.5px;margin:0 0 18px;">
-        Only people you add here can log in to the lesson site. The CMS itself (this dashboard) stays admin-only,
-        separate from these accounts.
-      </p>
+  wrap.innerHTML = `
+    <h2 style="font-size:18px;margin:0 0 4px;">Platform users</h2>
+    <p style="color:var(--ink-soft);font-size:13.5px;margin:0 0 18px;">
+      Status is calculated from each member's progress, but you can pin it manually here — including granting Admin,
+      which unlocks these editing tools for them too.
+    </p>
 
-      <div class="user-list">
-        ${rows || '<div class="admin-empty" style="padding:20px 0;">No users yet — add one below.</div>'}
+    <div class="user-list">
+      ${rows || '<div class="admin-empty" style="padding:20px 0;">No users yet — add one below.</div>'}
+    </div>
+
+    <div style="margin-top:22px;">
+      <h3 style="margin:0 0 14px;font-size:15px;">Add a user</h3>
+      <div class="field"><label>Full name</label><input type="text" id="nu-name" placeholder="Jamie Lee"></div>
+      <div class="field"><label>Username</label><input type="text" id="nu-username" placeholder="jamie"></div>
+      <div class="field"><label>Password</label><input type="text" id="nu-password" placeholder="Choose a password"></div>
+      <div class="action-row">
+        <button class="btn btn-primary" id="add-user-btn">Add user</button>
+        <span class="toast" id="toast-user">Added ✓</span>
       </div>
+    </div>
 
-      <div class="panel" style="margin-top:26px;">
-        <h3 style="margin:0 0 14px;font-size:16px;">Add a user</h3>
-        <div class="field"><label>Full name</label><input type="text" id="nu-name" placeholder="Jamie Lee"></div>
-        <div class="field"><label>Username</label><input type="text" id="nu-username" placeholder="jamie"></div>
-        <div class="field"><label>Password</label><input type="text" id="nu-password" placeholder="Choose a password"></div>
-        <div class="field"><label>Role</label><input type="text" id="nu-role" placeholder="Educator"></div>
-        <div class="action-row">
-          <button class="btn btn-primary" id="add-user-btn">Add user</button>
-          <span class="toast" id="toast-user">Added ✓</span>
-        </div>
-      </div>
+    <div class="warn-box" style="margin-top:16px;">Reminder: like the login itself, this is a UI-level access list for this preview, not hardened production authentication (passwords aren't hashed, etc).</div>
 
-      <div class="warn-box">Reminder: like the admin login, this is a UI-level access list for this preview, not hardened production authentication (passwords aren't hashed, etc).</div>
+    <div class="danger-zone">
+      <button class="btn" id="reset-content-btn">Reset all module/lesson content to defaults</button>
     </div>
   `;
 
-  main.querySelector('#add-user-btn').addEventListener('click', async () => {
-    const name = main.querySelector('#nu-name').value.trim();
-    const username = main.querySelector('#nu-username').value.trim();
-    const password = main.querySelector('#nu-password').value;
-    const role = main.querySelector('#nu-role').value.trim() || 'Educator';
+  wrap.querySelector('#reset-content-btn').addEventListener('click', () => {
+    showConfirm('This replaces ALL modules and lessons with the original defaults. Continue?', async () => {
+      state.modules = JSON.parse(JSON.stringify(DEFAULT_MODULES));
+      state.pub.module = 0;
+      logActivity(state.currentUser, 'Reset all content to defaults');
+      await persist();
+      showAlert('All module and lesson content has been reset to defaults.');
+    }, 'Reset content');
+  });
+
+  wrap.querySelector('#add-user-btn').addEventListener('click', async () => {
+    const name = wrap.querySelector('#nu-name').value.trim();
+    const username = wrap.querySelector('#nu-username').value.trim();
+    const password = wrap.querySelector('#nu-password').value;
     if(!name || !username || !password){
       showAlert('Please fill in name, username, and password before adding a user.');
       return;
@@ -2182,19 +2507,43 @@ function renderUsersPanel(main){
       showAlert('That username is already taken — pick a different one.');
       return;
     }
-    state.users.push({ id: uid(), name, username, password, role });
+    const newUser = { id: uid(), name, username, password, completions:{}, statusOverride:null, avatar:null, todos:[], todoMemo:'', events:{}, activityLog:[] };
+    state.users.push(newUser);
+    logActivity(newUser, 'Account created by admin');
+    logActivity(state.currentUser, `Added user "${name}"`);
     await persistUsers();
     flashToast('toast-user');
-    renderUsersPanel(main);
+    renderUsersSection(wrap);
   });
 
-  main.querySelectorAll('[data-del-user]').forEach(btn => {
+  wrap.querySelectorAll('[data-status-for]').forEach(sel => {
+    sel.addEventListener('change', async () => {
+      const u = state.users.find(x => x.id === sel.dataset.statusFor);
+      if(!u) return;
+      u.statusOverride = sel.value || null;
+      logActivity(u, `Status set to "${sel.value ? statusMeta(sel.value).label : 'Auto'}" by admin`);
+      logActivity(state.currentUser, `Changed ${u.name}'s status to "${sel.value ? statusMeta(sel.value).label : 'Auto'}"`);
+      await persistUsers();
+      renderUsersSection(wrap);
+    });
+  });
+
+  wrap.querySelectorAll('[data-view-log]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const u = state.users.find(x => x.id === btn.dataset.viewLog);
+      showActivityLog(u);
+    });
+  });
+
+  wrap.querySelectorAll('[data-del-user]').forEach(btn => {
+    if(btn.disabled) return;
     btn.addEventListener('click', () => {
       const u = state.users.find(x => x.id === btn.dataset.delUser);
       showConfirm(`Remove ${u ? u.name : 'this user'}? They won't be able to log in anymore.`, async () => {
         state.users = state.users.filter(x => x.id !== btn.dataset.delUser);
+        logActivity(state.currentUser, `Removed user "${u ? u.name : ''}"`);
         await persistUsers();
-        renderUsersPanel(main);
+        renderUsersSection(wrap);
       }, 'Remove user');
     });
   });
