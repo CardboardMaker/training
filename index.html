@@ -31,15 +31,12 @@
 
   /* ============ PUBLIC SITE — DASHBOARD SHELL ============ */
   body.public-body{
-    background:#F6F1E7;
-    min-height:100vh;
-    position:relative;
-    overflow-x:hidden;
+    background: url("assets/image/sitebackground.png") center center / cover no-repeat fixed; min-height:100vh; position:relative; overflow-x:hidden;
   }
 
   .dash-wrap{ position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:28px 20px 60px; }
   .dash-card{
-    background:#D9F4EF; border-radius:28px; box-shadow:0 30px 70px -30px rgba(0,0,0,0.35);
+    background:#f9f7ed; border-radius:28px; box-shadow:0 30px 70px -30px rgba(0,0,0,0.35);
     display:flex; overflow:hidden; aspect-ratio:16/10; width:100%;
   }
   .dash-content-col{ flex:1; min-width:0; display:flex; flex-direction:column; }
@@ -55,7 +52,7 @@
 
   /* sidebar */
   .rail{ width:84px; flex:0 0 auto; background:#000; padding:26px 12px; display:flex; flex-direction:column; align-items:center; }
-  .rail .cap{ width:34px; height:34px; margin:0 0 30px; color:var(--kraft); }
+  .rail .cap{ display: block; width: 34px; height: 34px; margin: 0 0 30px; background: url("assets/image/logo.png") center center / contain no-repeat; }
   .rail-main{ display:flex; flex-direction:column; gap:6px; width:100%; align-items:center; }
   .rail-item{
     display:flex; align-items:center; justify-content:center; padding:13px; border-radius:12px; cursor:pointer;
@@ -131,7 +128,7 @@
   .toc-item.done .no{ color:var(--orange); }
 
   /* Me page */
-  .me-progress-card{ background:#F9F7ED; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
+  .me-progress-card{ background:#d9f4ef; border-radius:18px; padding:22px 24px; margin-bottom:22px; }
   .me-progress-top{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
   .me-progress-top .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:700; }
   .me-progress-top .big{ font-size:30px; font-weight:700; line-height:1; margin-top:4px; }
@@ -140,7 +137,7 @@
   .progress-bar-lg > div{ height:100%; background:var(--orange); border-radius:100px; }
 
   .me-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
-  .me-card{ background:#F9F7ED; border-radius:16px; padding:20px; }
+  .me-card{ background:#d9f4ef; border-radius:16px; padding:20px; }
   .me-card-label{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--orange); font-weight:700; margin-bottom:8px; }
   .me-card-title{ font-size:16px; font-weight:700; margin-bottom:2px; }
   .me-card-sub{ font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; }
