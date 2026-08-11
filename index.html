@@ -291,7 +291,7 @@
   .login-card .hint{ margin-top:20px; font-size:12px; color:var(--ink-soft); background:rgba(164,223,220,0.35); border-radius:6px; padding:10px 12px; }
 
   /* learner login (gates the public dashboard) */
-  body.learner-login-body{ background:#F3EEE0; min-height:100vh; }
+  body.learner-login-body{ background: url("assets/image/craftpaper.png"); min-height:100vh; }
   .ll-wrap{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
   .ll-card{
     background:#fff; border-radius:28px; overflow:hidden; display:flex; max-width:840px; width:100%;
@@ -299,13 +299,8 @@
   }
   .ll-visual{
     flex:1; position:relative; padding:36px; display:flex; flex-direction:column; justify-content:space-between;
-    background:
-      radial-gradient(circle at 25% 18%, rgba(255,255,255,0.65), transparent 55%),
-      radial-gradient(circle at 75% 82%, var(--yellow), transparent 55%),
-      radial-gradient(circle at 15% 85%, var(--sky), transparent 55%),
-      var(--kraft);
+    background: url("assets/image/welcome.png");
   }
-  .ll-mark, .ll-mark-dark{ font-size:26px; font-weight:800; color:#000; }
   .ll-tag-eyebrow{ font-size:13px; font-weight:600; margin:0 0 6px; color:#000; opacity:.75; }
   .ll-tag-title{ font-size:21px; font-weight:800; line-height:1.35; margin:0; max-width:260px; color:#000; }
   .ll-form-side{ flex:1; padding:44px 40px; display:flex; flex-direction:column; justify-content:center; }
@@ -2507,14 +2502,12 @@ function renderLoginPage(){
     <div class="ll-wrap">
       <div class="ll-card">
         <div class="ll-visual">
-          <div class="ll-mark">✂</div>
           <div class="ll-tag">
             <p class="ll-tag-eyebrow">You can easily</p>
             <p class="ll-tag-title">Get access to your Cardboard Maker training, anytime.</p>
           </div>
         </div>
         <div class="ll-form-side">
-          <div class="ll-mark ll-mark-dark">✂</div>
           <h2>Log in to continue</h2>
           <p class="ll-sub">One login for everyone — admins just see extra editing tools once they're in.</p>
           <form id="login-form">
