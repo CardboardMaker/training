@@ -1086,6 +1086,17 @@ async function loadUsers(){
         todos: [], todoMemo: '', events: {}, activityLog: [] }
     ];
   }
+  // make sure an "educator" account exists (requested account), regardless of
+  // whether this is a fresh install or a continuing session
+  if(!state.users.some(u => u.username === 'educator')){
+    const educator = {
+      id: uid(), name: 'Educator', username: 'educator', password: 'cardboard2026',
+      completions: {}, statusOverride: null, avatar: null,
+      todos: [], todoMemo: '', events: {}, activityLog: []
+    };
+    state.users.push(educator);
+    logActivity(educator, 'Account created by admin');
+  }
   await persistUsers();
 }
 async function persistUsers(){
