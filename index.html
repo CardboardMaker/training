@@ -989,25 +989,235 @@ const DEFAULT_MODULES = [
         { h: "When a circuit does not work, children can investigate", p: '' },
         ['Is the circuit complete?', 'Is the component connected correctly?', 'Is Arduino receiving the information from input?', 'Does the output have the power it needs?']
       ],
-      [`Use the Magic Maker Device and electronic parts to build a working circuit. Connect, test, and make your creation respond.`]
+      [`Use the Magic Maker Device and electronic parts to build a working circuit. Connect, test, and make your creation respond!`]
     )
   ]),
   mod("Module 07", "Maker Environment", [
     richLesson("Setting Up Maker Space",
-    [
-      `A good maker space helps children feel safe, comfortable, and ready to create. The environment is part of the learning experience. When tools, materials, and working areas have clear places, children can focus more on exploring, building, and solving problems.`,
-      `The goal is to create a home-like maker space where children know where things belong, understand how to use the space, and feel confident moving between activities.`,
-      { h: 'Physically Safe Space', p: 'Safety comes first. Children should be able to explore independently while the environment remains easy for facilitators to supervise.'},
-      ['Keep sharp tools and potentially dangerous equipment above children\'s reach.','Keep walkways and the main floor area clear.','Make sure every child has a designated place to sit and work.','Keep hot glue in a controlled area with facilitator supervision.'],
-      { h: 'Organizing Stations', p: 'Divide the maker space into clear zones based on how each activity is used. Keeping the same zones every day helps children remember where to go, where to find things, and where to return them.'},
-      [ 'Center Station — gathering, introductions, demonstrations, and discussions.','BeaverBot Station — exploring the BeaverBot or mechanical activities.','Storage Station — storing and working with cardboard and craft materials.','Making Station — an open floor area for larger projects and movement.'],
-      { h: 'Light and Sound',p: 'The atmosphere of a maker space can influence how children feel and behave. Aim for an environment that feels energetic enough for making but comfortable enough for concentration.'},
-      ['Use natural light whenever possible.','Use warm, comfortable lighting rather than harsh lighting.','Keep background sound at a comfortable level.','Choose relaxed music such as lo-fi or groove when appropriate.']
-    ],
-    [`Go to Pinterest, search “Kids Maker Space”, and choose 3–5 reference images that inspire your ideal maker space.`]
-  ),
-])
+      [
+        `A good maker space helps children feel safe, comfortable, and ready to create. The environment is part of the learning experience. When tools, materials, and working areas have clear places, children can focus more on exploring, building, and solving problems.`,
+        `The goal is to create a home-like maker space where children know where things belong, understand how to use the space, and feel confident moving between activities.`,
+        { h: 'Physically Safe Space', p: 'Safety comes first. Children should be able to explore independently while the environment remains easy for facilitators to supervise.' },
+        ["Keep sharp tools and potentially dangerous equipment above children's reach.", 'Keep walkways and the main floor area clear.', 'Make sure every child has a designated place to sit and work.', 'Keep hot glue in a controlled area with facilitator supervision.'],
+        { h: 'Organizing Stations', p: 'Divide the maker space into clear zones based on how each activity is used. Keeping the same zones every day helps children remember where to go, where to find things, and where to return them.' },
+        ['Center Station — gathering, introductions, demonstrations, and discussions.', 'BeaverBot Station — exploring the BeaverBot or mechanical activities.', 'Storage Station — storing and working with cardboard and craft materials.', 'Making Station — an open floor area for larger projects and movement.'],
+        { h: 'Light and Sound', p: 'The atmosphere of a maker space can influence how children feel and behave. Aim for an environment that feels energetic enough for making but comfortable enough for concentration.' },
+        ['Use natural light whenever possible.', 'Use warm, comfortable lighting rather than harsh lighting.', 'Keep background sound at a comfortable level.', 'Choose relaxed music such as lo-fi or groove when appropriate.']
+      ],
+      [`Go to Pinterest, search "Kids Maker Space," and choose 3–5 reference images that inspire your ideal maker space.`]
+    ),
+    richLesson("Arrange Stations",
+      [
+        `A well-arranged maker space helps children understand where to gather, where to work, and where to find materials. Instead of having one large space for everything, different stations give each activity its own place. Clear stations also make transitions easier and help children become more independent during the session.`,
+        { h: 'Center Station', p: '' },
+        ['1 large, long table or a clear space on the floor.', 'A mat can be used to define the gathering area.', 'A screen can be added for demonstrations or visual instructions.'],
+        { h: 'BeaverBot Station', p: '' },
+        ['Use a child-height table.', 'Allow approximately 60 cm or more in width, or create a separated floor area with at least 60 cm of working space per child.'],
+        { h: 'Storage Station', p: '' },
+        ['Use shelves, drawers, or stackable boxes.', 'Organize materials by type.', 'Label boxes clearly so children and facilitators can find materials quickly.', 'Prepare lesson-specific materials together so they can be picked up easily when needed.'],
+        { h: 'Making Station', p: '' },
+        ['Keep the floor clear of unnecessary objects.', 'Provide enough space for children to work around their projects.', 'Make sure the area can be accessed easily from other stations.', 'Keep walkways clear so children can move safely.'],
+        `The Making Station can also share the same space as the Center Station when needed. Flexible spaces are useful when activities change throughout the session.`
+      ],
+      [`Draw a plan for each station, then arrange the stations using the space you have.`]
+    ),
+    richLesson("Prepare Cardboard Template",
+      [
+        `A cardboard template makes the starting point of a project easier for both educators and children. It gives children a clear starting structure while leaving enough space for them to change, decorate, and transform it into their own creation.`,
+        `A good template helps educators prepare materials efficiently while giving children more time to focus on designing, making, and exploring.`,
+        `Along with the cardboard, prepare shape stickers or planning pieces that children can use during the design and planning process. Common basic shapes include: Circle, Square, Rectangle, and Arc.`,
+        { h: 'Think About the Mechanics', p: 'Before finalizing a template, consider what electronic parts or mechanical components will need to fit inside the project. The template should provide enough internal space to store the mechanics, wires, and connections safely. As a general guideline, prepare an internal space of at least: 12 × 12 × 8 cm.' },
+        { h: 'Think About Customization', p: 'A good template should have more than one possible outcome. Avoid designing a shape that can only become one specific object.' },
+        ['Can the same template become different projects?', 'Can children choose where the electronics go?', 'Can children add their own functions?'],
+        `For example, one rectangular template could become a car, robot, house, machine, or animal depending on the child's idea.`,
+        { h: 'Template + Planning', p: 'The physical template and shape stickers work together with the planning sheets. Children can first explore the shapes, arrange them, and imagine what they could become before cutting or assembling the final project.' }
+      ],
+      [`Choose one cardboard template and sketch 3 different creations you could make from it.`]
+    )
+  ]),
+  mod("Module 08", "Child Safety", [
+    richLesson("Children's Right",
+      [
+        `Children's Rights are the basic human rights that every child is entitled to simply because they are a child. The United Nations Convention on the Rights of the Child (UNCRC) recognizes every person under 18 as a child and establishes that children have rights to survival, development, protection, and participation. Thailand ratified the Convention in 1992, making it an important framework for how children should be treated, protected, and supported in Thailand.`,
+        `Children's Rights are principles that should shape how we work with children every day. As facilitators, our responsibility is to create an environment where children are safe, respected, heard, included, and given meaningful opportunities to participate.`,
+        { h: "The Facilitator's Responsibility", p: 'Children\'s rights are reflected in small decisions throughout every session:' },
+        ['How we speak to children.', 'How we respond when they make mistakes.', 'How we handle conflict.', 'How we provide support.', 'How we use our authority.', 'How much choice we give.', 'How seriously we listen.'],
+        `A rights-respecting facilitator does not ask only: "Did the children follow my instructions?" They also ask: "Did every child feel safe, respected, heard, and able to participate?"`,
+        `Children's rights become real when children experience them through the way adults treat them. Our responsibility is to create that experience every day.`
+      ],
+      [`Scenario: During a Cardboard Maker session, one child is struggling to build their project. The facilitator notices that other children are finishing quickly, so they take over the child's project and build the difficult part for them. The child becomes quiet and stops participating.`, `How would you manage this situation while respecting the child's rights?`]
+    ),
+    richLesson("Child Protection",
+      [
+        `Child Protection is the responsibility to create an environment where children are safe from violence, abuse, neglect, exploitation, and other forms of harm. The UN Convention on the Rights of the Child, particularly Article 19, recognizes children's right to protection from physical and mental violence, injury, abuse, neglect, maltreatment, and exploitation while they are in the care of adults.`,
+        `Protection also includes psychological safety: children should not be humiliated, threatened, or subjected to degrading punishment.`,
+        { h: 'In practice', p: '' },
+        ['Supervise activities that involve tools, electronics, heat, or other risks.', 'Keep the learning environment physically safe.', "Pay attention to changes in a child's behaviour or signs that they may be uncomfortable or unsafe.", 'Take children\'s concerns seriously and listen without blaming or judging.', 'Never use physical punishment, humiliation, threats, or intimidation as discipline.'],
+        `Protection is not about removing every challenge from children's learning. Children need opportunities to explore, experiment, make mistakes, and take appropriate risks. The facilitator's role is to create safe conditions, provide suitable supervision, and step in when a risk could cause harm.`,
+        `A safe maker space is one where children are free to explore because the adults are responsible for protecting them.`
+      ],
+      [
+        `Write 5 studio rules that help protect children and keep the maker space safe.`,
+        `Think about:`,
+        ['Physical safety', 'Tools and equipment', 'How we treat others', 'What to do when something feels unsafe']
+      ]
+    ),
+    richLesson("Health and Wellbeing",
+      [
+        `Children need more than a safe physical environment to learn and develop. Their health and wellbeing are supported by good health, adequate nutrition, safety, responsive relationships, and opportunities to learn and play. The WHO and UNICEF Nurturing Care Framework emphasizes that these needs work together to help children thrive.`,
+        `For facilitators, supporting wellbeing means paying attention to the whole child throughout the session — not only whether they are completing their project. A child who is tired, overwhelmed, frustrated, hungry, or uncomfortable may need support before they are ready to continue learning.`,
+        { h: 'In practice', p: '' },
+        ['Provide appropriate breaks and access to drinking water.', 'Keep the workspace clean, comfortable, and well ventilated.', 'Notice signs of tiredness, frustration, discomfort, or distress.', 'Give children time and space to pause, calm down, or ask for help.', 'Adjust the activity when the level of challenge is not appropriate for the child.'],
+        `Responsive caregiving means noticing, understanding, and responding appropriately to children's signals. In a maker environment, this might mean changing the pace, offering support, moving to a quieter space, or simply giving a child time to reset.`,
+        `Children's wellbeing is supported when educators and families work together respectfully. Parents and caregivers should receive meaningful information about their child's experience, while respecting the child's dignity and privacy.`,
+        ['Share meaningful observations rather than only reporting behaviour.', 'Communicate challenges respectfully.', "Avoid discussing a child's difficulties publicly."]
+      ],
+      [
+        `Scenario: You have 5 children in a Cardboard Maker Camp — 1 child allergic to seafood, 1 child allergic to wheat, and 1 child allergic to dust.`,
+        `Create a Health & Wellbeing Preparation Plan before the camp begins.`,
+        `Think about:`,
+        ['What information should you collect from parents?', 'What food and snacks should you prepare?', 'What should be prepared in case a child has an allergic reaction?']
+      ]
+    ),
+    richLesson("Equal Treatment",
+      [
+        `Every child has the right to be treated equally and without discrimination. The UN Convention on the Rights of the Child establishes non-discrimination as a fundamental principle, while UNICEF emphasizes that inclusion means removing barriers so every child can participate, learn, and develop their potential.`,
+        `Children come with different abilities, personalities, experiences, languages, and ways of learning. Treating children fairly means creating meaningful opportunities for every child to participate.`,
+        { h: 'In practice', p: '' },
+        ['Give every child opportunities to participate, make choices, and share ideas.', "Avoid comparing children's abilities, speed, or finished projects.", 'Make sure attention is not given only to the most confident or vocal children.', 'Value different approaches, designs, and ways of solving problems.', 'Notice and remove barriers that prevent a child from participating.'],
+        `Equal treatment is about making sure every child has a fair opportunity to participate, learn, and belong. Children have the right to express their views and have those views taken seriously in matters that affect them.`,
+        `The facilitator still provides boundaries, safety rules, and guidance. Within those boundaries, children should have space to make meaningful decisions about their own work.`
+      ],
+      [`You have five children working on cardboard projects. One child finishes very quickly and starts to run around. Three children are still struggling to cut and assemble their template and need your help.`, `How would you manage the situation so that every child has a fair opportunity to participate, make choices, and be heard?`]
+    ),
+    richLesson("First-Aid Policies",
+      [
+        `First aid is the immediate care given when a child is injured or becomes suddenly unwell. A clear first-aid policy helps educators respond calmly, protect the child from further harm, and seek additional medical care when necessary.`,
+        { h: 'When a Child Gets Injured', p: '' },
+        ['Stop the activity and make the area safe.', 'Stay with the child and assess what happened and whether they need urgent medical attention.', 'Provide appropriate first aid within your level of training.', 'Call emergency medical services when the injury appears serious or the child shows danger signs. Do not delay urgent care while waiting for a parent.', 'Continue to monitor the child and follow the appropriate medical or safeguarding procedure.'],
+        { h: 'Communicating with Parents', p: "Parents should be informed about injuries according to the studio's incident-reporting procedure. Communicate clearly, calmly, and factually. Explain what happened, what you observed, what first aid was provided, and what action was taken." },
+        `Avoid guessing, blaming, or minimizing the injury. If further medical attention is recommended or the child needs to be collected, explain this clearly and follow the studio's procedure.`,
+        `For serious injuries or emergencies, the priority is the child's safety and timely access to appropriate medical care. Parents should be contacted as soon as the situation is safely managed, while emergency services or medical professionals should be contacted immediately when required.`
+      ],
+      [`Scenario: During a Cardboard Maker session, a child accidentally cuts their finger while cutting cardboard. The finger is bleeding, and the child starts to cry.`, `Write what you would do step by step, from the moment the injury happens until you communicate with the parent.`]
+    ),
+    richLesson("Emergency Policies",
+      [
+        `Emergency policies help educators respond quickly and calmly when something unexpected happens. When working with children, the priority is always to protect children, account for everyone, and get appropriate help. Whether the emergency is a fire, earthquake, security threat, or another serious situation, follow the emergency policies.`,
+        { h: 'When an Emergency Happens', p: '' },
+        ['Stay calm and assess the situation. Quickly identify the immediate danger.', 'Stop the activity. Put down tools and move children away from danger.', 'Follow the appropriate emergency procedure — evacuate for a fire, use the designated earthquake safety procedure, or follow protocol during a security threat.', 'Bring the children to the designated safe area or assembly point. Do not stop to collect unnecessary belongings or materials.', 'Check attendance. Make sure every child and staff member is accounted for.', 'Contact emergency services or the designated emergency contact when required.', 'Stay together and wait for further instructions. Do not return to the building until it has been declared safe.'],
+        `For an earthquake, the recommended immediate action is generally Drop, Cover, and Hold On when appropriate.`,
+        `For a fire, evacuate using the designated route and never return to the building until authorities say it is safe.`,
+        `For a security or terrorist threat, follow the studio's established security procedure and instructions from emergency authorities rather than attempting to confront the threat.`,
+        { h: 'After the Emergency', p: "Once the immediate danger has passed, continue to monitor the children and provide reassurance. The team should later review what happened: What worked? What was difficult? What should we change before the next emergency?" },
+        `Emergency preparation is part of creating a safe environment. Everyone should know where to go, who is responsible, how to account for children, and how to communicate with families before an emergency happens.`
+      ],
+      [`Write and review a step-by-step emergency protocol with your team for earthquake, fire, and security threats, then print and display it in the studio.`]
+    )
+  ]),
+  mod("Module 09", "Working with Parents", [
+    richLesson("Welcome Parents to the Team",
+      [
+        `Parents are an important part of a child's learning experience. A strong relationship with parents helps children feel supported before, during, and after the session. The goal is to make parents feel that we are working together as one team for their child.`,
+        { h: 'Make Parents Part of the Team', p: 'Parents may need to help with practical things before or during the program. When asking parents for information, explain how it helps the team support their child. Be clear about what you need from them and explain why it matters. For example:' },
+        ['Share allergies, medical needs, or other important information.', 'Inform the team about changes to pick-up arrangements.', 'Bring required materials or personal items.', "Let the facilitator know if there are concerns that may affect the child's participation."],
+        { h: 'Keep the Communication Going', p: "Communication should not stop after the first welcome message. Parents appreciate meaningful updates about their child's experience. At the end of the session each day, share:" },
+        ['What the children explored.', 'Interesting moments from the session.', 'Progress or challenges.', 'What children will do next.'],
+        `When communicating a challenge, focus on what happened, how the child was supported, and what the team will do next. The goal is to build a relationship where parents feel: "You know my child, you care about my child, and we are working together."`
+      ],
+      [`Before the session, a parent contacts the studio and says their child is worried about entering a new environment. On the first day, the parent and child arrive. The child looks nervous and stays close to the parent.`, `How would you welcome the child, support their transition, and communicate with the parent?`]
+    ),
+    richLesson("Keep Communicate",
+      [
+        `Communication with parents should continue throughout the program, not only before the first session. Regular communication helps parents understand what is happening, feel connected to their child's experience, and know how they can support the program.`,
+        { h: 'Keep Communication Clear', p: 'Parents should know what to expect and what we need from them. Keep messages simple, friendly, and specific. The way we communicate matters as much as what we communicate. Parents should feel that their child is in a place where people are attentive, professional, and caring.' },
+        `Use a tone that is warm, clear, respectful, confident, and collaborative. Even when communicating about a problem, avoid making parents feel blamed. Focus on what happened, what the team did, and what can happen next.`,
+        { h: 'Keep Parents Updated', p: "Parents do not need a report about every small moment, but meaningful updates help them understand their child's learning. Share what children explored or learned, interesting moments from the session, or what children will do next." },
+        { h: 'Keep the Conversation Open', p: 'Communication should go both ways. Invite parents to share information that may help the facilitator understand and support their child. Small updates from both sides can help the team respond to children\'s needs more effectively.' },
+        { h: 'Keep the Relationship', p: 'Good parent communication is about creating trust through consistent, thoughtful communication. When parents know what is happening, feel comfortable asking questions, and see that the team pays attention to their child, they become part of the learning community.' },
+        `The goal is simple: keep parents informed, keep the conversation open, keep working as one team.`
+      ],
+      [`Write 5 questions you can ask parents to start a meaningful conversation.`, `Think beyond schedules and logistics. Ask questions that help you understand the child's interests, experiences, and needs.`]
+    ),
+    richLesson("Common Challenges in Collaboration",
+      [
+        `Working with parents is a partnership, but every partnership can have moments that are difficult to navigate. Parents may have different expectations, communication styles, or concerns about their child's experience. The facilitator's role is to stay calm, listen carefully, and work toward a solution that supports the child.`,
+        { h: 'Different Expectations', p: 'Parents may expect a specific result from the program, while the facilitator may focus more on the child\'s process and learning. For example, a parent might ask "Why didn\'t my child finish the project today?" Instead of becoming defensive, explain the learning behind the process to help parents see that progress is not always visible as a finished product.' },
+        ['Listen without interrupting.', 'Thank them for sharing the concern.', 'Explain what the team observed and did.', 'Agree on what can be done next.'],
+        { h: 'Communication Gaps', p: "Miscommunication can happen when information about schedules, pick-up arrangements, allergies, materials, or a child's needs is unclear. To reduce confusion:" },
+        ['Communicate important information in writing.', 'Confirm changes to arrangements.', 'Make sure the whole teaching team receives important information.'],
+        { h: 'When There Is a Serious Concern', p: "If a concern involves a child's safety, wellbeing, health, or possible safeguarding issue, do not try to solve it alone. Follow the studio's safeguarding and reporting procedures and involve the appropriate responsible person. Keep communication professional and protect the child's privacy. Share sensitive information only with people who need to know." }
+      ],
+      [`List one challenge you have faced when working with parents and describe how you managed it:`, ['What happened?', 'How did you respond?', 'What would you do next time?']]
+    )
+  ]),
+  mod("Module 10", "Workplace Policies", [
+    richLesson("Employment Roles",
+      [
+        `Clear roles help the team work smoothly and make sure every session is prepared, supported, and delivered consistently. Each person has different responsibilities, but everyone works toward the same goal: creating a safe, meaningful, and engaging learning experience for children.`,
+        { h: 'Lead Educator', p: 'The Lead Educator takes the main responsibility for planning and leading the learning experience, and works with the General Educator and Head Office to make sure the lesson is realistic and well prepared.' },
+        ['Plan and write the lesson.', 'Prepare lesson information and instructions.', 'Lead the session and guide children through the activities.', 'Communicate important lesson information with the educator team.'],
+        { h: 'General Educator', p: 'The General Educator works closely with the Lead Educator to prepare and support the session, turning the lesson plan into a smooth, hands-on experience for children.' },
+        ['Prepare materials, tools, and cardboard templates.', 'Set up the learning environment before the session.', 'Support children during activities and provide individual support.', 'Help manage transitions, materials, and classroom routines.'],
+        { h: 'Head Office', p: 'Head Office supports the educators by providing resources, direction, and coordination across programs.' },
+        ['Provide required materials and resources.', 'Cooperate with educators during lesson planning.', 'Develop and communicate program themes.', 'Coordinate resources and expectations across different sessions or locations.'],
+        `These roles are different, but they should not work separately. The Lead Educator leads the learning, the General Educator supports the learning experience, and Head Office provides the resources and direction needed to make the program possible.`
+      ],
+      [`Coming Soon`]
+    ),
+    richLesson("Working Hours",
+      [
+        `Clear working hours help the team prepare properly, run sessions smoothly, and maintain a healthy working environment. Working time is not only the time spent teaching children — preparation, setup, communication, cleanup, and team coordination are also important parts of the work.`,
+        ['Working hours: 9:00–18:00', 'Break: 12:00–13:00', 'Workshop hours: 10:00–12:00 | 13:00–15:00 | 15:00–17:00'],
+        `If an educator is working multiple sessions, the preparation and closing time should be coordinated with the team to ensure continuous coverage and a proper handover.`,
+        { h: 'Before the Session', p: '' },
+        ['Setting up stations and workspaces.', 'Preparing cardboard templates and materials.', 'Checking tools and electronic equipment.', 'Preparing lesson materials.'],
+        { h: 'After the Session', p: '' },
+        ['Clean and return materials.', 'Check and store tools and electronic equipment.', 'Prepare materials for the next session.', 'Communicate relevant updates with the team or parents when required.'],
+        { h: 'Punctuality and Changes', p: 'Being on time is part of professional responsibility. If an educator is going to be late, absent, or unable to complete their scheduled responsibilities, they should inform the appropriate team member as early as possible.' },
+        `Working hours may vary depending on the type of program, such as ECA, Workshop, or Camp. Always follow the agreed schedule and workplace policy for the specific program.`
+      ],
+      [`Coming Soon`]
+    ),
+    richLesson("Leave and Holiday",
+      [
+        `All leave should follow the company's policy and applicable employment laws.`,
+        { h: 'Holiday', p: 'Holidays include company holidays, public holidays, and other scheduled days off. When a public holiday falls on a scheduled workshop or working day, the holiday entitlement can be taken as an alternative day off instead. Educators can arrange their own day off with the office, subject to prior agreement and team scheduling.' },
+        { h: 'Sick Leave', p: 'Sick leave is used when an employee is unwell and unable to work. If you are responsible for a session, inform the team immediately so a replacement can be arranged.' },
+        ['Inform the responsible manager as soon as possible.', 'Provide the expected absence and return date when known.', "Follow the company's required documentation or procedures."],
+        { h: 'Annual Leave', p: 'Annual leave is planned time away from work for rest, travel, or personal needs. Request annual leave in advance whenever possible. Before taking leave, check whether you have any scheduled sessions or responsibilities that need to be handed over to another team member.' },
+        { h: 'Personal Leave', p: "Personal leave is used for important personal matters that require time away from work. Submit the request according to the company's leave procedure and provide the necessary information. Employees do not need to share more personal information than the company requires." },
+        { h: 'Business Leave', p: 'Business leave is time away from regular duties for work-related activities, such as meetings, training, site visits, events, or other activities carried out on behalf of the organization. Communicate the date, time, location, and purpose of the activity so the team can coordinate schedules and responsibilities.' }
+      ],
+      [`Coming Soon`]
+    ),
+    richLesson("Meeting and Reflection Sessions",
+      [
+        `Regular meetings help educators stay aligned, solve problems early, and continuously improve the learning experience.`,
+        { h: 'Morning Meeting', p: "The Morning Meeting is a short daily check-in between the Lead Educator and General Educators. Use this time to review the day's lesson and activities, check the schedule and responsibilities, confirm that all materials, templates, and equipment are ready, and share any important information about the children." },
+        ['Duration: 15–30 minutes', 'Frequency: Every day'],
+        { h: 'Reflection Meeting', p: 'The Reflection Session is a weekly conversation between the Manager and Educators to review the week and support professional growth. During this session, the team reflects on what went well, discusses challenges, and identifies what could be improved.' },
+        ['Duration: Up to 1 hour', 'Frequency: Every week'],
+        { h: 'Team Meeting', p: 'The Team Meeting brings together the Office Team and Educators to stay connected. This meeting provides an opportunity to update the team on upcoming events, introduce new projects or programs, and discuss any progress or challenges that different teams may be experiencing.' },
+        ['Duration: 1 hour or more', 'Frequency: At least once a month'],
+        `Morning Meeting → Prepare for today. Reflection Session → Learn from this week. Team Meeting → Connect with the bigger picture.`,
+        `Regular communication creates a team that does not simply repeat the same routine. It gives everyone opportunities to notice what is happening, learn from experience, and improve together.`
+      ],
+      [`Coming Soon`]
+    ),
+    richLesson("Professional Development",
+      [
+        `Professional Development is an ongoing part of working as an educator. Developing our skills does not happen only through formal training. We learn through daily practice, conversations with colleagues, reflection, and opportunities to try new approaches.`,
+        `Regular Morning Meetings, Reflection Sessions, and Team Meetings provide opportunities to learn from everyday experiences. Educators can share what worked, discuss challenges, exchange ideas, and reflect on how to improve future sessions.`,
+        `The office may provide short courses, workshops, or learning opportunities to develop specific skills related to the educator's role. These may include topics such as teaching practice, child development, maker education, safety, technology, or other professional skills.`,
+        `Educators are encouraged to take part in relevant learning opportunities and apply what they learn in their practice.`,
+        { h: 'Learn, Try, Reflect', p: 'Professional development is most useful when new knowledge is put into practice. After learning something new, educators should have opportunities to try it in their sessions, observe what happens, and reflect with the team.' }
+      ],
+      [`Find your next learning opportunity: think about one area you are interested in and connect it with the work you do. Then find a program, course, or workshop that could help you develop that interest and improve your professional skills.`]
+    )
+  ])
 ];
+
 
 /* ============================================================
    APP STATE
