@@ -646,12 +646,14 @@ function lesson(title, learn, example){
       else if(align === 'full'){ style += 'display:block;width:100%;margin:12px 0;';}
       else { style += 'display:block;max-width:80%;margin:12px auto;';}
       return `<img src="${escapeHTML(b.src)}" style="${style}" alt="${escapeHTML(b.alt || '')}">`;}
-    // Download file
-    if(b && typeof b === 'object' && b.type === 'download'){
+    // Attached file
+    if(b && typeof b === 'object' && b.type === 'attach'){
       return `
-        <a href="${escapeHTML(b.src)}" download class="download-btn">
-          ↓ ${escapeHTML(b.label || 'Download File')}
-        </a>
+        <div class="file-attach">
+          <a href="${escapeHTML(b.src)}" download>
+            📎 ${escapeHTML(b.label || 'Download File')}
+          </a>
+        </div>
       `;}
     // Heading + paragraph
     if(b && typeof b === 'object' && b.h){
@@ -847,7 +849,7 @@ const DEFAULT_MODULES = [
         { h: 'Outputs', p: 'Children select the responses they want their project to produce and react to the chosen inputs. They begin to understand how different electronic parts create movement, light, or sound.' },
         { h: 'Interaction', p: 'Finally, children connect the inputs and outputs by planning how the project will behave. This interaction map helps them visualize the flow before they begin building and programming.' },
         `The Project Planning Sheet provides a clear roadmap throughout the making process, thinking through each decision in advance while building confidence to turn their ideas into working prototypes.`,
-        { type: 'download',src: 'assets/files/CardboardMaker_Worksheet_ProjectPlanning.pdf',label: 'Download Project Planning Sheet'}
+        { type: 'attach', src: 'assets/files/CardboardMaker_Worksheet_ProjectPlanning.pdf', label: 'Project Planning Sheet'}
       ],
       [`Print the Project Planning Sheet and design your own project.`]
     ),
