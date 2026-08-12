@@ -633,46 +633,25 @@ function lesson(title, learn, example){
 //  - an array of strings -> <ul><li>
 //  - {h, p} -> a bold sub-heading followed by its paragraph
   function blocksToHTML(blocks){
-
   return blocks.map(b => {
-
     // Bullet list
     if(Array.isArray(b)){
-      return `<ul>${b.map(li => `<li>${escapeHTML(li)}</li>`).join('')}</ul>`;
-    }
-
+      return `<ul>${b.map(li => `<li>${escapeHTML(li)}</li>`).join('')}</ul>`;}
     // Photo
     if(b && typeof b === 'object' && b.type === 'photo'){
       const align = b.align || 'left';
-
       let style = 'border-radius:8px;';
-
-      if(align === 'left'){
-        style += 'display:block;max-width:45%;margin:12px 16px 12px 0;';
-      }
-      else if(align === 'right'){
-        style += 'display:block;max-width:45%;margin:12px 0 12px auto;';
-      }
-      else if(align === 'full'){
-        style += 'display:block;width:100%;margin:12px 0;';
-      }
-      else {
-        style += 'display:block;max-width:80%;margin:12px auto;';
-      }
-
-      return `<img src="${escapeHTML(b.src)}" style="${style}" alt="${escapeHTML(b.alt || '')}">`;
-    }
-
+      if(align === 'left'){ style += 'display:block;max-width:45%;margin:12px 16px 12px 0;'; }
+      else if(align === 'right'){ style += 'display:block;max-width:45%;margin:12px 0 12px auto;';}
+      else if(align === 'full'){ style += 'display:block;width:100%;margin:12px 0;';}
+      else { style += 'display:block;max-width:80%;margin:12px auto;';}
+      return `<img src="${escapeHTML(b.src)}" style="${style}" alt="${escapeHTML(b.alt || '')}">`;}
     // Heading + paragraph
     if(b && typeof b === 'object' && b.h){
-      return `<p><strong>${escapeHTML(b.h)}</strong>${b.p ? '<br>'+escapeHTML(b.p) : ''}</p>`;
-    }
-
+      return `<p><strong>${escapeHTML(b.h)}</strong>${b.p ? '<br>'+escapeHTML(b.p) : ''}</p>`;}
     // Normal text
     return `<p>${escapeHTML(b)}</p>`;
-
   }).join('');
-
 }
 function richLesson(title, learnBlocks, exampleBlocks){
   return {
